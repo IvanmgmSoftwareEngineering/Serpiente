@@ -26,7 +26,7 @@ public class Serpiente extends Thread {
         this.color = color;
         this.velocidad = velocidad;
         this.suspended = false;
-        this.direccion = Direccion.ABAJO;
+        this.direccion = Direccion.ARRIBA;
         
         
     }
@@ -38,6 +38,10 @@ public class Serpiente extends Thread {
     
     public void pausar(){
         suspended = true;
+    }
+    
+    public void girar(Direccion dir) {
+        this.direccion = dir;
     }
     
     

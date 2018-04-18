@@ -31,7 +31,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
      * Creates new form NewJFrame
      */
     
-    private final int NUM_FILAS = 70; 
+    private final int NUM_FILAS = 40; 
     private final int NUM_COLUMNAS = 50;
     private List<Serpiente> serpientes;
     private JPanel [][] matriz;
@@ -47,8 +47,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
         serpientes = new ArrayList<Serpiente>();
         matriz = new JPanel [NUM_FILAS][NUM_COLUMNAS];
         this.jPanel2.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
-        this.posicionCabezaFila = NUM_FILAS/2;
-        this.posicionCabezaColumna = NUM_COLUMNAS/2;
+        this.posicionCabezaFila = NUM_FILAS / 2;
+        this.posicionCabezaColumna = NUM_COLUMNAS / 2;
         desplegableColores.addItem("Green");
         desplegableColores.addItem("Red");
         desplegableColores.addItem("Black");
@@ -112,6 +112,11 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
         botonGirarArriba.setText("▲");
         botonGirarArriba.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonGirarArriba.setEnabled(false);
+        botonGirarArriba.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGirarArribaActionPerformed(evt);
+            }
+        });
 
         botonGirarIzquierda.setText("◀");
         botonGirarIzquierda.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -134,6 +139,11 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
         botonGirarAbajo.setText("▼");
         botonGirarAbajo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         botonGirarAbajo.setEnabled(false);
+        botonGirarAbajo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGirarAbajoActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setToolTipText("");
@@ -262,8 +272,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
         if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {
-            this.posicionCabezaFila = NUM_FILAS/2;
-            this.posicionCabezaColumna = NUM_COLUMNAS/2;
+            this.posicionCabezaFila = NUM_FILAS / 2;
+            this.posicionCabezaColumna = NUM_COLUMNAS / 2;
             muestraCoordenadaX.setEnabled(true);
             muestraCoordenadaY.setEnabled(true);
             muestraCoordenadaX.setText(String.valueOf(posicionCabezaFila));
@@ -332,7 +342,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
-        
+        girarSerpiente(Direccion.DERECHA);
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
     private void desplegableColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableColoresActionPerformed
@@ -341,8 +351,16 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
-        // TODO add your handling code here:
+        girarSerpiente(Direccion.IZQUIERDA);
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
+
+    private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
+        girarSerpiente(Direccion.ARRIBA);
+    }//GEN-LAST:event_botonGirarArribaActionPerformed
+
+    private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
+        girarSerpiente(Direccion.ABAJO);
+    }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
     
     
@@ -479,6 +497,32 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
                 serpientes.clear();
               
                 break;
+                
+            case ARRIBA:
+                for (Serpiente serpiente : serpientes){
+                    serpiente.girar(Direccion.ARRIBA);
+                }
+                break;
+                
+            case ABAJO:
+                for (Serpiente serpiente : serpientes){
+                    serpiente.girar(Direccion.ABAJO);
+                }
+                break;
+                
+            case IZQUIERDA:
+                for (Serpiente serpiente : serpientes){
+                    serpiente.girar(Direccion.IZQUIERDA);
+                }
+                break;
+            
+            case DERECHA:
+                for (Serpiente serpiente : serpientes){
+                    serpiente.girar(Direccion.DERECHA);
+                }
+                break;
+                
+                
             
             
         }
@@ -487,77 +531,105 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     
     @Override
     public boolean serpienteEstaDentroLimitesDelTablero(){
-        return posicionCabezaFila > 0 && posicionCabezaColumna > 0 && posicionCabezaFila < this.NUM_FILAS-1 && posicionCabezaColumna < this.NUM_COLUMNAS-1;
+        return posicionCabezaFila > 0 && posicionCabezaColumna > 0 && posicionCabezaFila < this.NUM_FILAS && posicionCabezaColumna < this.NUM_COLUMNAS;
     }
     @Override
     public void mostrarGameOver (){
-        botonIniciar.setEnabled(true);
-        botonPausa.setEnabled(false);
+        
         //Muestra la G
-        matriz[30][20].setBackground(Color.red);
-        matriz[30][19].setBackground(Color.red);
-        matriz[30][18].setBackground(Color.red);
-        matriz[30][17].setBackground(Color.red);
-        matriz[30][16].setBackground(Color.red);
-        matriz[31][16].setBackground(Color.red);
-        matriz[32][16].setBackground(Color.red);
-        matriz[33][16].setBackground(Color.red);
-        matriz[34][16].setBackground(Color.red);
-        matriz[35][16].setBackground(Color.red);
-        matriz[36][16].setBackground(Color.red);
-        matriz[37][16].setBackground(Color.red);
-        matriz[38][16].setBackground(Color.red);
-        matriz[39][16].setBackground(Color.red);
-        matriz[40][16].setBackground(Color.red);        
-        matriz[40][17].setBackground(Color.red);
-        matriz[40][18].setBackground(Color.red);
-        matriz[40][19].setBackground(Color.red);
-        matriz[40][20].setBackground(Color.red);
-        matriz[40][20].setBackground(Color.red);
-        matriz[40][21].setBackground(Color.red);
-        matriz[39][21].setBackground(Color.red);
-        matriz[38][21].setBackground(Color.red);
-        matriz[37][21].setBackground(Color.red);
-        matriz[36][21].setBackground(Color.red);
-        matriz[36][20].setBackground(Color.red);
-        matriz[36][19].setBackground(Color.red);
-   
-         
-        //Muestra la A
-        matriz[30][25].setBackground(Color.red);
-        matriz[31][25].setBackground(Color.red);
-        matriz[32][25].setBackground(Color.red);
-        matriz[33][25].setBackground(Color.red);
-        matriz[34][25].setBackground(Color.red);
-        matriz[35][25].setBackground(Color.red);
-        matriz[36][25].setBackground(Color.red);
-        matriz[37][25].setBackground(Color.red);
-        matriz[38][25].setBackground(Color.red);
-        matriz[39][25].setBackground(Color.red);
-        matriz[40][25].setBackground(Color.red);       
-        matriz[30][26].setBackground(Color.red);
-        matriz[30][27].setBackground(Color.red);
-        matriz[30][28].setBackground(Color.red);
-        matriz[30][29].setBackground(Color.red);
-        matriz[30][30].setBackground(Color.red);
-        matriz[30][30].setBackground(Color.red);
-        matriz[31][30].setBackground(Color.red);
-        matriz[32][30].setBackground(Color.red);
-        matriz[33][30].setBackground(Color.red);
-        matriz[34][30].setBackground(Color.red);
-        matriz[35][30].setBackground(Color.red);
-        matriz[36][30].setBackground(Color.red);
-        matriz[37][30].setBackground(Color.red);
-        matriz[38][30].setBackground(Color.red);
-        matriz[39][30].setBackground(Color.red);
-        matriz[40][30].setBackground(Color.red);
-        matriz[40][29].setBackground(Color.red);
-        matriz[40][28].setBackground(Color.red);
-        matriz[40][27].setBackground(Color.red);
-        matriz[40][26].setBackground(Color.red);
+        matriz[2][3].setBackground(Color.red);
+        matriz[2][4].setBackground(Color.red);
+        matriz[3][2].setBackground(Color.red);
+        matriz[4][2].setBackground(Color.red);
+        matriz[5][2].setBackground(Color.red);
+        matriz[5][4].setBackground(Color.red);
+        matriz[6][3].setBackground(Color.red);
+        matriz[6][4].setBackground(Color.red);
                
-        //Muestra el punto
-        matriz[40][23].setBackground(Color.red);
+        //Muestra la A
+        matriz[2][7].setBackground(Color.red);
+        matriz[3][6].setBackground(Color.red);
+        matriz[3][8].setBackground(Color.red);
+        matriz[4][6].setBackground(Color.red);
+        matriz[4][7].setBackground(Color.red);
+        matriz[4][8].setBackground(Color.red);
+        matriz[5][6].setBackground(Color.red);
+        matriz[5][8].setBackground(Color.red);
+        matriz[6][6].setBackground(Color.red);
+        matriz[6][8].setBackground(Color.red);
+        
+        //Muestra la M
+        matriz[2][11].setBackground(Color.red);
+        matriz[2][13].setBackground(Color.red);
+        matriz[3][10].setBackground(Color.red);
+        matriz[3][12].setBackground(Color.red);
+        matriz[3][14].setBackground(Color.red);
+        matriz[4][10].setBackground(Color.red);
+        matriz[4][12].setBackground(Color.red);
+        matriz[4][14].setBackground(Color.red);
+        matriz[5][10].setBackground(Color.red);
+        matriz[5][12].setBackground(Color.red);
+        matriz[5][14].setBackground(Color.red);
+        matriz[6][10].setBackground(Color.red);
+        matriz[6][14].setBackground(Color.red);
+        
+        //Muestra la E
+        matriz[2][16].setBackground(Color.red);
+        matriz[2][17].setBackground(Color.red);
+        matriz[2][18].setBackground(Color.red);
+        matriz[3][16].setBackground(Color.red);
+        matriz[4][16].setBackground(Color.red);
+        matriz[4][17].setBackground(Color.red);
+        matriz[5][16].setBackground(Color.red);
+        matriz[6][16].setBackground(Color.red);
+        matriz[6][17].setBackground(Color.red);
+        matriz[6][18].setBackground(Color.red);
+        
+        //Muestra la O
+        matriz[8][4].setBackground(Color.red);
+        matriz[9][3].setBackground(Color.red);
+        matriz[9][5].setBackground(Color.red);
+        matriz[10][3].setBackground(Color.red);
+        matriz[10][5].setBackground(Color.red);
+        matriz[11][3].setBackground(Color.red);
+        matriz[11][5].setBackground(Color.red);
+        matriz[12][4].setBackground(Color.red);
+        
+        //Muestra la V
+        matriz[8][7].setBackground(Color.red);
+        matriz[8][9].setBackground(Color.red);
+        matriz[9][7].setBackground(Color.red);
+        matriz[9][9].setBackground(Color.red);
+        matriz[10][7].setBackground(Color.red);
+        matriz[10][9].setBackground(Color.red);
+        matriz[11][7].setBackground(Color.red);
+        matriz[11][9].setBackground(Color.red);
+        matriz[12][8].setBackground(Color.red);
+        
+        //Muestra la E
+        matriz[8][11].setBackground(Color.red);
+        matriz[8][12].setBackground(Color.red);
+        matriz[8][13].setBackground(Color.red);
+        matriz[9][11].setBackground(Color.red);
+        matriz[10][11].setBackground(Color.red);
+        matriz[10][12].setBackground(Color.red);
+        matriz[11][11].setBackground(Color.red);
+        matriz[12][11].setBackground(Color.red);
+        matriz[12][12].setBackground(Color.red);
+        matriz[12][13].setBackground(Color.red);
+        
+        //Mustra la R
+        matriz[8][15].setBackground(Color.red);
+        matriz[8][16].setBackground(Color.red);
+        matriz[9][15].setBackground(Color.red);
+        matriz[9][17].setBackground(Color.red);
+        matriz[10][15].setBackground(Color.red);
+        matriz[10][16].setBackground(Color.red);
+        matriz[11][15].setBackground(Color.red);
+        matriz[11][17].setBackground(Color.red);
+        matriz[12][15].setBackground(Color.red);
+        matriz[12][17].setBackground(Color.red);
+        
     }
 
     @Override
@@ -568,6 +640,28 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
          posicionCabezaFila += direccion.getVariacionFila();
          posicionCabezaColumna += direccion.getVariacionColumna();
             
+    }
+    
+    @Override
+    public void girarSerpiente(Direccion direccion) {
+        
+        switch(direccion) {
+            case ARRIBA:
+                manejarEvento(new GameEvent(GameEvent.EventType.ARRIBA, null));
+            break;
+            case ABAJO:     
+                manejarEvento(new GameEvent(GameEvent.EventType.ABAJO, null));
+            break;
+            case IZQUIERDA:
+                manejarEvento(new GameEvent(GameEvent.EventType.IZQUIERDA, null));
+            break;
+            case DERECHA:
+                manejarEvento(new GameEvent(GameEvent.EventType.DERECHA, null));
+            break;
+            
+    }
+        
+        
     }
 
     @Override
