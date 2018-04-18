@@ -282,7 +282,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
             botonPausa.setEnabled(true);
             botonGirarDerecha.setEnabled(true);
             botonGirarIzquierda.setEnabled(true);
-            botonGirarAbajo.setEnabled(true);
+            botonGirarAbajo.setEnabled(false);
             botonGirarArriba.setEnabled(true);
             botonIniciar.setText("Reiniciar");
             desplegableColores.setEnabled(false);
@@ -342,6 +342,9 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
+        botonGirarIzquierda.setEnabled(false);
+        botonGirarAbajo.setEnabled(true);
+        botonGirarArriba.setEnabled(true);
         girarSerpiente(Direccion.DERECHA);
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
@@ -351,14 +354,23 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
+        botonGirarDerecha.setEnabled(false);
+        botonGirarAbajo.setEnabled(true);
+        botonGirarArriba.setEnabled(true);
         girarSerpiente(Direccion.IZQUIERDA);
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
+        botonGirarAbajo.setEnabled(false);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarDerecha.setEnabled(true);
         girarSerpiente(Direccion.ARRIBA);
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
+        botonGirarArriba.setEnabled(false);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarDerecha.setEnabled(true);
         girarSerpiente(Direccion.ABAJO);
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
