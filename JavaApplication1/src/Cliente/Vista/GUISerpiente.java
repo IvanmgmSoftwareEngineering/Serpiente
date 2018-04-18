@@ -15,6 +15,8 @@ public interface GUISerpiente {
     
     public void moverSerpiente(Direccion direccion);
     
+    public void girarSerpiente(Direccion direccion);
+    
     public void definirColorSerpiente(String color);
     
     public boolean serpienteEstaDentroLimitesDelTablero();

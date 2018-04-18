@@ -35,5 +35,8 @@ public class Controlador {
     public void reiniciar() {
         modelo.reiniciar();
     }
+    public void girarDerecha() {
+        modelo.girarDerecha();
+    }
     
 }

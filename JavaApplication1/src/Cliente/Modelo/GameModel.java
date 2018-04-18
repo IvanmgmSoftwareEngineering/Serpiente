@@ -54,6 +54,10 @@ public class GameModel implements Observable {
     public void stop() {
 
     }
+    
+    public void girarDerecha() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.DERECHA, null));
+    }
       
     
 

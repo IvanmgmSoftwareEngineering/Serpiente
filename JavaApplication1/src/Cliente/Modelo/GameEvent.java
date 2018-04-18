@@ -17,6 +17,11 @@ public class GameEvent {
         STOP,
         REANUDAR,
         REINICIAR,
+        ARRIBA,
+        ABAJO,
+        IZQUIERDA,
+        DERECHA
+        
         
     }
     
