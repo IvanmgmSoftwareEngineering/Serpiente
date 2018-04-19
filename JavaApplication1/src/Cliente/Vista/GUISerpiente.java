@@ -21,7 +21,9 @@ public interface GUISerpiente {
     
     public boolean serpienteEstaDentroLimitesDelTablero();
     
-    public void mostrarGameOver ();
+    public void setSerpienteFueraDeLimites();
+    
+    public void finDelJuego ();
     
     public void mostrarCoordenadasCabeza();
     
