@@ -40,6 +40,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     private int posicionCabezaFila;
     private int posicionCabezaColumna;
     private Color color;
+    private boolean dentroLimites = true;
     
     public VentanaApp(Controlador controlador) {
         this.controlador = controlador;
@@ -107,7 +108,12 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
             }
         });
 
+        muestraNombre.setEditable(false);
         jScrollPane1.setViewportView(muestraNombre);
+
+        muestraCoordenadaX.setEditable(false);
+
+        muestraCoordenadaY.setEditable(false);
 
         botonGirarArriba.setText("▲");
         botonGirarArriba.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -282,7 +288,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
             botonPausa.setEnabled(true);
             botonGirarDerecha.setEnabled(true);
             botonGirarIzquierda.setEnabled(true);
-            botonGirarAbajo.setEnabled(true);
+            botonGirarAbajo.setEnabled(false);
             botonGirarArriba.setEnabled(true);
             botonIniciar.setText("Reiniciar");
             desplegableColores.setEnabled(false);
@@ -303,6 +309,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
             muestraCoordenadaX.setText("-");
             muestraCoordenadaY.setText("-");
             nombreIntroducido = false;
+            dentroLimites = true;
             this.controlador.reiniciar();
         }
     }//GEN-LAST:event_botonIniciarActionPerformed
@@ -342,6 +349,9 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
+        botonGirarIzquierda.setEnabled(false);
+        botonGirarAbajo.setEnabled(true);
+        botonGirarArriba.setEnabled(true);
         girarSerpiente(Direccion.DERECHA);
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
@@ -351,14 +361,23 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
+        botonGirarDerecha.setEnabled(false);
+        botonGirarAbajo.setEnabled(true);
+        botonGirarArriba.setEnabled(true);
         girarSerpiente(Direccion.IZQUIERDA);
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
+        botonGirarDerecha.setEnabled(true);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarAbajo.setEnabled(false);
         girarSerpiente(Direccion.ARRIBA);
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
+        botonGirarDerecha.setEnabled(true);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarArriba.setEnabled(false);
         girarSerpiente(Direccion.ABAJO);
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
@@ -531,9 +550,23 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     
     @Override
     public boolean serpienteEstaDentroLimitesDelTablero(){
-        return posicionCabezaFila > 0 && posicionCabezaColumna > 0 && posicionCabezaFila < this.NUM_FILAS && posicionCabezaColumna < this.NUM_COLUMNAS;
+        return 
+                (this.dentroLimites)
+                && posicionCabezaFila >= 0 
+                && posicionCabezaColumna >= 0 
+                && posicionCabezaFila <= this.NUM_FILAS 
+                && posicionCabezaColumna <= this.NUM_COLUMNAS;
     }
     @Override
+    public void setSerpienteFueraDeLimites() {
+        this.dentroLimites = false;
+    }
+    @Override
+    public void finDelJuego() {
+        this.mostrarGameOver();
+        //Aquí tenemos que meter más cosas para parar la partida
+    }
+    
     public void mostrarGameOver (){
         
         //Muestra la G
@@ -634,12 +667,15 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
 
     @Override
     public void moverSerpiente(Direccion direccion) {
-       
+        try{
          this.matriz[posicionCabezaFila][posicionCabezaColumna].setBackground(Color.white);
          this.matriz[posicionCabezaFila + direccion.getVariacionFila()][posicionCabezaColumna + direccion.getVariacionColumna()].setBackground(this.color);
          posicionCabezaFila += direccion.getVariacionFila();
          posicionCabezaColumna += direccion.getVariacionColumna();
-            
+        }
+        catch (ArrayIndexOutOfBoundsException fueraDelTablero) {
+            setSerpienteFueraDeLimites();
+        }
     }
     
     @Override
