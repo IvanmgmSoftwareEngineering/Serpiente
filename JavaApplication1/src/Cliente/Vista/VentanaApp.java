@@ -37,10 +37,14 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     private JPanel [][] matriz;
     private Controlador controlador;
     private boolean nombreIntroducido = false;
-    private int posicionCabezaFila;
-    private int posicionCabezaColumna;
+    private ArrayList<PosicionSerpiente> posicionesSerpiente;
     private Color color;
     private boolean dentroLimites = true;
+    private boolean frutaComida = true;
+    private int posicionFrutaFila;
+    private int posicionFrutaColumna;
+    
+    
     
     public VentanaApp(Controlador controlador) {
         this.controlador = controlador;
@@ -48,8 +52,9 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
         serpientes = new ArrayList<Serpiente>();
         matriz = new JPanel [NUM_FILAS][NUM_COLUMNAS];
         this.jPanel2.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
-        this.posicionCabezaFila = NUM_FILAS / 2;
-        this.posicionCabezaColumna = NUM_COLUMNAS / 2;
+        posicionesSerpiente = new ArrayList<PosicionSerpiente>();
+        PosicionSerpiente posicionCabeza = new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2);
+        posicionesSerpiente.add(posicionCabeza);
         desplegableColores.addItem("Green");
         desplegableColores.addItem("Red");
         desplegableColores.addItem("Black");
@@ -278,12 +283,12 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
         if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {
-            this.posicionCabezaFila = NUM_FILAS / 2;
-            this.posicionCabezaColumna = NUM_COLUMNAS / 2;
+            apareceFruta();
+            this.posicionesSerpiente.set(0, new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2));
             muestraCoordenadaX.setEnabled(true);
             muestraCoordenadaY.setEnabled(true);
-            muestraCoordenadaX.setText(String.valueOf(posicionCabezaFila));
-            muestraCoordenadaY.setText(String.valueOf(posicionCabezaFila));
+            muestraCoordenadaX.setText(String.valueOf(posicionesSerpiente.get(0).posicionFila));
+            muestraCoordenadaY.setText(String.valueOf(posicionesSerpiente.get(0).posicionColumna));
             botonIniciar.setEnabled(false);
             botonPausa.setEnabled(true);
             botonGirarDerecha.setEnabled(true);
@@ -541,6 +546,11 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
                 }
                 break;
                 
+             case APARECE_FRUTA:
+                
+                 
+                break;
+                
                 
             
             
@@ -552,10 +562,10 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     public boolean serpienteEstaDentroLimitesDelTablero(){
         return 
                 (this.dentroLimites)
-                && posicionCabezaFila >= 0 
-                && posicionCabezaColumna >= 0 
-                && posicionCabezaFila <= this.NUM_FILAS 
-                && posicionCabezaColumna <= this.NUM_COLUMNAS;
+                && this.posicionesSerpiente.get(0).getPosicionFila() > 0 
+                && this.posicionesSerpiente.get(0).getPosicionColumna() > 0 
+                && this.posicionesSerpiente.get(0).getPosicionFila() < this.NUM_FILAS-1 
+                && this.posicionesSerpiente.get(0).getPosicionColumna() < this.NUM_COLUMNAS-1;
     }
     @Override
     public void setSerpienteFueraDeLimites() {
@@ -667,15 +677,20 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
 
     @Override
     public void moverSerpiente(Direccion direccion) {
-        try{
-         this.matriz[posicionCabezaFila][posicionCabezaColumna].setBackground(Color.white);
-         this.matriz[posicionCabezaFila + direccion.getVariacionFila()][posicionCabezaColumna + direccion.getVariacionColumna()].setBackground(this.color);
-         posicionCabezaFila += direccion.getVariacionFila();
-         posicionCabezaColumna += direccion.getVariacionColumna();
+        try {
+         this.matriz[this.posicionesSerpiente.get(0).getPosicionFila()][this.posicionesSerpiente.get(0).getPosicionColumna()].setBackground(Color.white);
+         this.matriz[this.posicionesSerpiente.get(0).getPosicionFila() + direccion.getVariacionFila()][this.posicionesSerpiente.get(0).getPosicionColumna() + direccion.getVariacionColumna()].setBackground(this.color);
+         this.posicionesSerpiente.set(0, new PosicionSerpiente(this.posicionesSerpiente.get(0).getPosicionFila()+direccion.getVariacionFila(),this.posicionesSerpiente.get(0).getPosicionColumna()));
+         this.posicionesSerpiente.set(0, new PosicionSerpiente(this.posicionesSerpiente.get(0).getPosicionFila(),this.posicionesSerpiente.get(0).getPosicionColumna()+ direccion.getVariacionColumna()));
+         
+         if (posicionesSerpiente.get(0).getPosicionFila() == posicionFrutaFila && posicionesSerpiente.get(0).getPosicionColumna() == posicionFrutaColumna){
+             comeFruta();
+         }
         }
         catch (ArrayIndexOutOfBoundsException fueraDelTablero) {
             setSerpienteFueraDeLimites();
         }
+            
     }
     
     @Override
@@ -729,7 +744,30 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     
     @Override
     public void mostrarCoordenadasCabeza(){
-        muestraCoordenadaX.setText(String.valueOf(posicionCabezaFila));
-        muestraCoordenadaY.setText(String.valueOf(posicionCabezaColumna));
+        muestraCoordenadaX.setText(String.valueOf(posicionesSerpiente.get(0).posicionFila));
+        muestraCoordenadaY.setText(String.valueOf(posicionesSerpiente.get(0).posicionColumna));
     }
+    
+    @Override
+    public void apareceFruta(){
+        int posicionFrutaFila = (int) Math.floor(Math.random()*(NUM_FILAS));
+        int posicionFrutaColumna = (int) Math.floor(Math.random()*(NUM_COLUMNAS));
+        
+        if(posicionesSerpiente.get(0).getPosicionFila() != posicionFrutaFila || posicionesSerpiente.get(0).getPosicionColumna() != posicionFrutaColumna){
+            this.posicionFrutaFila = posicionFrutaFila;
+            this.posicionFrutaColumna = posicionFrutaColumna;
+            matriz[this.posicionFrutaFila][this.posicionFrutaColumna].setBackground(Color.PINK); 
+            frutaComida = false;
+        }
+    }
+    
+    @Override
+    public void comeFruta(){
+        matriz[this.posicionFrutaFila][this.posicionFrutaColumna].setBackground(Color.white);
+        apareceFruta();
+    }
+    
+    
+    
+    
 }

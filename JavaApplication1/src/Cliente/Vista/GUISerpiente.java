@@ -27,4 +27,8 @@ public interface GUISerpiente {
     
     public void mostrarCoordenadasCabeza();
     
+    public void apareceFruta();
+    
+    public void comeFruta();
+    
 }
