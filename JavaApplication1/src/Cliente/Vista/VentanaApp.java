@@ -373,16 +373,16 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
-        botonGirarDerecha.setEnabled(true);
-        botonGirarIzquierda.setEnabled(true);
         botonGirarAbajo.setEnabled(false);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarDerecha.setEnabled(true);
         girarSerpiente(Direccion.ARRIBA);
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
-        botonGirarDerecha.setEnabled(true);
-        botonGirarIzquierda.setEnabled(true);
         botonGirarArriba.setEnabled(false);
+        botonGirarIzquierda.setEnabled(true);
+        botonGirarDerecha.setEnabled(true);
         girarSerpiente(Direccion.ABAJO);
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
