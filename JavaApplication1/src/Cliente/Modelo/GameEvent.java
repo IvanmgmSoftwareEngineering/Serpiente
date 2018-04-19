@@ -20,7 +20,8 @@ public class GameEvent {
         ARRIBA,
         ABAJO,
         IZQUIERDA,
-        DERECHA
+        DERECHA,
+        APARECE_FRUTA,
         
         
     }
