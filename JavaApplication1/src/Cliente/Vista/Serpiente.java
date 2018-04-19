@@ -66,7 +66,7 @@ public class Serpiente extends Thread {
             guiSerpiente.mostrarCoordenadasCabeza();
         }
         if(!guiSerpiente.serpienteEstaDentroLimitesDelTablero()){
-            guiSerpiente.mostrarGameOver();
+            guiSerpiente.finDelJuego();
         }
     }
     
