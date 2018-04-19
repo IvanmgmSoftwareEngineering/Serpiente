@@ -562,10 +562,10 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     public boolean serpienteEstaDentroLimitesDelTablero(){
         return 
                 (this.dentroLimites)
-                && this.posicionesSerpiente.get(0).getPosicionFila() > 0 
-                && this.posicionesSerpiente.get(0).getPosicionColumna() > 0 
-                && this.posicionesSerpiente.get(0).getPosicionFila() < this.NUM_FILAS-1 
-                && this.posicionesSerpiente.get(0).getPosicionColumna() < this.NUM_COLUMNAS-1;
+                && this.posicionesSerpiente.get(0).getPosicionFila() >= 0 
+                && this.posicionesSerpiente.get(0).getPosicionColumna() >= 0 
+                && this.posicionesSerpiente.get(0).getPosicionFila() <= this.NUM_FILAS-1 
+                && this.posicionesSerpiente.get(0).getPosicionColumna() <= this.NUM_COLUMNAS-1;
     }
     @Override
     public void setSerpienteFueraDeLimites() {
