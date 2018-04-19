@@ -50,17 +50,15 @@ public class GameModel implements Observable {
         this.juegoFinalizado = false;
         this.notifyObservers(new GameEvent(GameEvent.EventType.REINICIAR, null));
     }
-     
-    public void stop() {
-
-    }
     
     public void girarDerecha() {
         this.notifyObservers(new GameEvent(GameEvent.EventType.DERECHA, null));
     }
-      
     
-
+    public void apareceFruta() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.APARECE_FRUTA, null));
+    }
+    
     @Override
     public void addObserver(Observer observador) {
         this.observadores.add(observador);
