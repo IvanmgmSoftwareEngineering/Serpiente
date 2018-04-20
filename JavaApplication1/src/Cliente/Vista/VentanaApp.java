@@ -42,6 +42,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     private boolean frutaComida = true;
     private int posicionFrutaFila;
     private int posicionFrutaColumna;
+    public boolean haCrecido = false;
    
     public VentanaApp(Controlador controlador) {
         this.controlador = controlador;
@@ -292,6 +293,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
             this.controlador.start(); 
         }
         else if (botonIniciar.getText() == "Reiniciar"){
+            this.posicionesSerpiente.clear();
+            this.posicionesSerpiente.set(0, new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2));
             desplegableColores.setEnabled(true);
             desplegableColores.setSelectedItem(" ");
             botonIniciar.setText("Iniciar");
@@ -544,6 +547,9 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
     @Override
     public void mostrarGameOver (){
         
+        this.botonPausa.setEnabled(false);
+        this.botonIniciar.setEnabled(true);
+        
         //Muestra la G
         matriz[2][3].setBackground(Color.red);
         matriz[2][4].setBackground(Color.red);
@@ -642,17 +648,74 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
 
     @Override
     public void moverSerpiente(Direccion direccion) {
-       
+        
+        int aux1_posicionFilaAntigua;
+        int aux1_posicionColumnaAntigua;
+        int aux2_posicionFilaAntigua;
+        int aux2_posicionColumnaAntigua;
+        
+        if (posicionesSerpiente.size()==1){//LA SERPIENTE TIENE TAMAÑO 1
+            
          this.matriz[this.posicionesSerpiente.get(0).getPosicionFila()][this.posicionesSerpiente.get(0).getPosicionColumna()].setBackground(Color.white);
          this.matriz[this.posicionesSerpiente.get(0).getPosicionFila() + direccion.getVariacionFila()][this.posicionesSerpiente.get(0).getPosicionColumna() + direccion.getVariacionColumna()].setBackground(this.color);
          this.posicionesSerpiente.set(0, new PosicionSerpiente(this.posicionesSerpiente.get(0).getPosicionFila()+direccion.getVariacionFila(),this.posicionesSerpiente.get(0).getPosicionColumna()));
          this.posicionesSerpiente.set(0, new PosicionSerpiente(this.posicionesSerpiente.get(0).getPosicionFila(),this.posicionesSerpiente.get(0).getPosicionColumna()+ direccion.getVariacionColumna()));
-         
+        
          if (posicionesSerpiente.get(0).getPosicionFila() == posicionFrutaFila && posicionesSerpiente.get(0).getPosicionColumna() == posicionFrutaColumna){
              comeFruta();
+             creceSerpiente(direccion);
+             this.matriz[this.posicionesSerpiente.get(1).getPosicionFila()][this.posicionesSerpiente.get(1).getPosicionColumna()].setBackground(this.color);
+                
+             
          }
+        
+        }
+        else{//LA SERPIENTE TIENE TAMAÑO  MAYOR DE 1 PIXEL
+            aux1_posicionFilaAntigua = this.posicionesSerpiente.get(0).getPosicionFila();
+            aux1_posicionColumnaAntigua = this.posicionesSerpiente.get(0).getPosicionColumna();
             
+        for (int i = 0 ; i <= posicionesSerpiente.size() ; i++){
+         if (i == 0){
+            this.matriz[this.posicionesSerpiente.get(0).getPosicionFila() + direccion.getVariacionFila()][this.posicionesSerpiente.get(0).getPosicionColumna() + direccion.getVariacionColumna()].setBackground(this.color);
+            this.posicionesSerpiente.set(0, new PosicionSerpiente(this.posicionesSerpiente.get(0).getPosicionFila()+direccion.getVariacionFila(),this.posicionesSerpiente.get(0).getPosicionColumna()+ direccion.getVariacionColumna()));
+            
+            if (posicionesSerpiente.get(0).getPosicionFila() == posicionFrutaFila && posicionesSerpiente.get(0).getPosicionColumna() == posicionFrutaColumna){
+                comeFruta();
+                //creceSerpiente();                 
+            }
+         }
+         else if (0 < i  && i < posicionesSerpiente.size()-1 ){
+             aux2_posicionFilaAntigua = posicionesSerpiente.get(i).getPosicionFila();
+             aux2_posicionColumnaAntigua = posicionesSerpiente.get(i).getPosicionColumna();
+             
+             posicionesSerpiente.get(i).setPosicionFila(aux1_posicionFilaAntigua);
+             posicionesSerpiente.get(i).setPosicionColumna(aux1_posicionColumnaAntigua);
+             
+             this.matriz[this.posicionesSerpiente.get(i).getPosicionFila()][this.posicionesSerpiente.get(i).getPosicionColumna()].setBackground(this.color);
+
+             
+             aux1_posicionFilaAntigua = aux2_posicionFilaAntigua;
+             aux1_posicionColumnaAntigua = aux2_posicionColumnaAntigua;
+             
+   
+         }
+         else if(i == posicionesSerpiente.size()-1){
+             aux2_posicionFilaAntigua = posicionesSerpiente.get(i).getPosicionFila();
+             aux2_posicionColumnaAntigua = posicionesSerpiente.get(i).getPosicionColumna();
+             
+             posicionesSerpiente.get(i).setPosicionFila(aux1_posicionFilaAntigua);
+             posicionesSerpiente.get(i).setPosicionColumna(aux1_posicionColumnaAntigua);
+             
+             this.matriz[aux2_posicionFilaAntigua][aux2_posicionColumnaAntigua].setBackground(Color.white);
+             this.matriz[this.posicionesSerpiente.get(i).getPosicionFila()][this.posicionesSerpiente.get(0).getPosicionColumna()].setBackground(this.color);
+             
+        
+         }
+        }
+        }
     }
+            
+    
     
     @Override
     public void girarSerpiente(Direccion direccion) {
@@ -728,7 +791,35 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente {
         apareceFruta();
     }
     
-    
-    
-    
+    @Override
+    public void creceSerpiente(Direccion direccion){
+        
+        if(posicionesSerpiente.size() == 1){//LA SERPIENTE TIENE TAMAÑO 1 Y VA A CRECER A TAMAÑO 2
+            if(direccion.getVariacionFila() == 1)//LA SERPIENTE VA HACIA ABAJO, ENTONCES EL NUEVO PIXEL TIENE QUE PONERSE ARRIBA
+                posicionesSerpiente.add(new PosicionSerpiente(posicionesSerpiente.get(0).getPosicionFila() - 1,posicionesSerpiente.get(0).getPosicionColumna()));
+            
+            }
+            else if(direccion.getVariacionFila() == -1){//LA SERPIENTE VA HACIA ARRIBA, ENTONCES EL NUEVO PIXEL TIENE QUE PONERSE DEBAJO
+                posicionesSerpiente.add(new PosicionSerpiente(posicionesSerpiente.get(0).getPosicionFila() +1 ,posicionesSerpiente.get(0).getPosicionColumna()));
+            
+            }
+            else if(direccion.getVariacionColumna() == 1){//LA SERPIENTE VA HACIA DERECHA, ENTONCES EL NUEVO PIXEL TIENE QUE PONERSE IZQUIERDA
+                posicionesSerpiente.add(new PosicionSerpiente(posicionesSerpiente.get(0).getPosicionFila(),posicionesSerpiente.get(0).getPosicionColumna() - 1));
+            
+            }
+            else if(direccion.getVariacionColumna() == -1){//LA SERPIENTE VA HACIA IZQUIERDA, ENTONCES EL NUEVO PIXEL TIENE QUE PONERSE DERECHA
+                posicionesSerpiente.add(new PosicionSerpiente(posicionesSerpiente.get(0).getPosicionFila(),posicionesSerpiente.get(0).getPosicionColumna() + 1));
+            
+            }
+            //aqui tengo que calcular la posicion del nuevo pixel de la cola en funcion de la direccion de la serpiente, 
+            //la direccion vendra dado por la relacion entre los dos ultimimos pixeles de la serpiente almacendas en el array list
+            
+        
+    }               
+     
 }
+    
+    
+    
+    
+    
