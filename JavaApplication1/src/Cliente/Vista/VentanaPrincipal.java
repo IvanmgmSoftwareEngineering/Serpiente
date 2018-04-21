@@ -29,7 +29,7 @@ import java.util.logging.Logger;
  *
  * @author i.martingo.2016
  */
-public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyListener {
+public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente {
 
     /**
      * Creates new form NewJFrame
@@ -42,7 +42,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     private Controlador controlador;
     private boolean nombreIntroducido = false;
     private Deque<PosicionSerpiente> posicionesSerpiente;
-    private Color color;
+    private Color colorSerpiente;
+    private Color colorFruta;
     private boolean dentroLimites = true;
     private boolean frutaComida = true;
     private int posicionFrutaFila;
@@ -51,20 +52,22 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     
     
     
-    public VentanaApp(Controlador controlador) {
+    public VentanaPrincipal(Controlador controlador) {
         this.controlador = controlador;
         initComponents();
         serpientes = new ArrayList<Serpiente>();
         matriz = new JPanel [NUM_FILAS][NUM_COLUMNAS];
         this.jPanel2.setLayout(new GridLayout(NUM_FILAS,NUM_COLUMNAS));
         posicionesSerpiente = new ArrayDeque<PosicionSerpiente>();
-        PosicionSerpiente posicionCabeza = new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2);
-        posicionesSerpiente.add(posicionCabeza);
         desplegableColores.addItem("Green");
         desplegableColores.addItem("Red");
         desplegableColores.addItem("Black");
         desplegableColores.addItem("Blue");
         introducirNombre.setText("Introduzca nombre del jugador, el color y pulsar iniciar");
+        this.anadirFuncionalidadTeclado();
+        this.colorFruta = Color.pink;
+        this.rellenaPanel();
+        
     }
 
     /**
@@ -288,7 +291,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
         if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {
-            apareceFruta();
+            this.controlador.apareceFruta();
             this.posicionesSerpiente.addFirst(new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2));
             muestraCoordenadaX.setEnabled(true);
             muestraCoordenadaY.setEnabled(true);
@@ -362,6 +365,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
         botonGirarIzquierda.setEnabled(false);
+        botonGirarIzquierda.setText("◀ " );
         botonGirarAbajo.setEnabled(true);
         botonGirarArriba.setEnabled(true);
         this.controlador.girarDerecha();
@@ -374,6 +378,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
         botonGirarDerecha.setEnabled(false);
+        botonGirarDerecha.setText("► ");
         botonGirarAbajo.setEnabled(true);
         botonGirarArriba.setEnabled(true);
         this.controlador.girarIzquierda();
@@ -381,6 +386,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
         botonGirarAbajo.setEnabled(false);
+        botonGirarDerecha.setText("▼ " );
         botonGirarIzquierda.setEnabled(true);
         botonGirarDerecha.setEnabled(true);
         this.controlador.girarArriba();
@@ -388,6 +394,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
         botonGirarArriba.setEnabled(false);
+        botonGirarDerecha.setText("▲ " );
         botonGirarIzquierda.setEnabled(true);
         botonGirarDerecha.setEnabled(true);
         this.controlador.girarAbajo();
@@ -435,25 +442,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     //public JPanel muestraPosicion (JPanel panelPrincipal){
         
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-       
-        SwingUtilities.invokeLater(new Runnable() { 
-            //EDT (Event dispatch Thread: es la hebra de despacho de swin, es la hebra que se encarga de despachar la hebras
-            //SwingUgilities clase que contiene el metodod static 'invokeLater'
-            //Runnable: interfaz que solo tiene el método run.
-            // el objetivo de lo anterior es crear una cola de eventos para ir almacenando los eventos
-            public void run() {
-                GameModel modelo = new GameModel();
-                VentanaApp ventana = new VentanaApp(new Controlador(modelo));
-                modelo.addObserver(ventana);
-                ventana.setVisible(true);
-                ventana.rellenaPanel();
-            }
-        });
-    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botonGirarAbajo;
     private javax.swing.JButton botonGirarArriba;
@@ -473,36 +462,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     private javax.swing.JTextField muestraCoordenadaY;
     private javax.swing.JTextPane muestraNombre;
     // End of variables declaration//GEN-END:variables
-    @Override
-    public void keyPressed(KeyEvent e){ // tecla soltada
-        if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode()== 39){
-            botonGirarIzquierda.setEnabled(false);
-            botonGirarAbajo.setEnabled(true);
-            botonGirarArriba.setEnabled(true);
-            this.controlador.girarDerecha();
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode()== 37){
-            botonGirarDerecha.setEnabled(false);
-            botonGirarAbajo.setEnabled(true);
-            botonGirarArriba.setEnabled(true);
-            this.controlador.girarIzquierda();
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode()== 38){
-            botonGirarAbajo.setEnabled(false);
-            botonGirarIzquierda.setEnabled(true);
-            botonGirarDerecha.setEnabled(true);
-            this.controlador.girarArriba();
-            
-        }
-        else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
-            botonGirarArriba.setEnabled(false);
-            botonGirarIzquierda.setEnabled(true);
-            botonGirarDerecha.setEnabled(true);
-            this.controlador.girarAbajo();
-            
-        }
-    }
     
+   
     @Override
     public void notifyEvent(GameEvent evento) {
         
@@ -582,14 +543,8 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
                     
             case CRECE_SERPIENTE:
                     this.creceSerpiente((Direccion)evento.getDatos());
-                    break;        
-                
-                
-                
-            
-            
-        }
-        
+                    break;                   
+        } 
     }
     
     @Override
@@ -605,6 +560,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     public void setSerpienteFueraDeLimites() {
         this.dentroLimites = false;
     }
+    
     @Override
     public void finalizarJuego() {
         botonPausa.setEnabled(false);
@@ -615,8 +571,10 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     }
     
     private void mostrarGameOver (){
-        
-        //Muestra la G
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Muestra la G
         matriz[2][3].setBackground(Color.red);
         matriz[2][4].setBackground(Color.red);
         matriz[3][2].setBackground(Color.red);
@@ -709,26 +667,39 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
         matriz[11][17].setBackground(Color.red);
         matriz[12][15].setBackground(Color.red);
         matriz[12][17].setBackground(Color.red);
+            }
+        }).start();
+        
         
     }
 
     @Override
     public void moverSerpiente(Direccion direccion) {
             try { 
-                this.posicionesSerpiente.addFirst (new PosicionSerpiente(this.posicionesSerpiente.getFirst().getFila()+direccion.getVariacionFila(),this.posicionesSerpiente.getFirst().getColumna()+ direccion.getVariacionColumna()));
-                this.matriz[this.posicionesSerpiente.getFirst().getFila()][this.posicionesSerpiente.getFirst().getColumna()].setBackground(this.color);
-                this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(Color.white);
-                this.posicionesSerpiente.removeLast();
+                if(this.serpienteNoChoca(direccion))  {   
+                    this.posicionesSerpiente.addFirst (new PosicionSerpiente(this.posicionesSerpiente.getFirst().getFila()+direccion.getVariacionFila(),this.posicionesSerpiente.getFirst().getColumna()+ direccion.getVariacionColumna()));
+                    this.matriz[this.posicionesSerpiente.getFirst().getFila()][this.posicionesSerpiente.getFirst().getColumna()].setBackground(this.colorSerpiente);
+                    this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(Color.white);
+                    this.posicionesSerpiente.removeLast();
                     
-                if (posicionesSerpiente.getFirst().getFila() == posicionFrutaFila && posicionesSerpiente.getFirst().getColumna() == posicionFrutaColumna){
-                    this.controlador.comerFruta(); // LLAMA AL CONTROLADOR
-                    this.controlador.crecerSerpiente(direccion);//LLAMA AL CONTROLADOR
-                    this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(this.color); 
+                    if (posicionesSerpiente.getFirst().getFila() == posicionFrutaFila && posicionesSerpiente.getFirst().getColumna() == posicionFrutaColumna){
+                        this.controlador.comerFruta(); // LLAMA AL CONTROLADOR
+                        this.controlador.crecerSerpiente(direccion);//LLAMA AL CONTROLADOR
+                        this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(this.colorSerpiente); 
+                    }
+                    
+                }
+                else{
+                    this.controlador.finalizarJuego();
                 }
             }
             catch (ArrayIndexOutOfBoundsException fueraDelTablero) {
                 setSerpienteFueraDeLimites();
-            }
+            }      
+    }
+    
+    private boolean serpienteNoChoca(Direccion direccion) {
+        return (this.matriz[this.posicionesSerpiente.getFirst().getFila()+ direccion.getVariacionFila()][this.posicionesSerpiente.getFirst().getColumna()+ direccion.getVariacionColumna()].getBackground() == Color.white) || (this.matriz[this.posicionesSerpiente.getFirst().getFila()+ direccion.getVariacionFila()][this.posicionesSerpiente.getFirst().getColumna()+ direccion.getVariacionColumna()].getBackground() == colorFruta) ;
     }
     
     @Override
@@ -765,22 +736,22 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
             
             case "Green":
                 
-                this.color = Color.green;
+                this.colorSerpiente = Color.green;
                 break;
              
             case "Red":
                 
-                this.color = Color.red; 
+                this.colorSerpiente = Color.red; 
                 break;
                 
             case "Black":
                 
-                this.color = Color.black; 
+                this.colorSerpiente = Color.black; 
                 break;   
                 
              case "Blue":
                 
-                this.color = Color.blue; 
+                this.colorSerpiente = Color.blue; 
                 break;  
         }
     }
@@ -799,7 +770,7 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
         if(posicionesSerpiente.getFirst().getFila() != posicionFrutaFila || posicionesSerpiente.getFirst().getColumna() != posicionFrutaColumna){
             this.posicionFrutaFila = posicionFrutaFila;
             this.posicionFrutaColumna = posicionFrutaColumna;
-            matriz[this.posicionFrutaFila][this.posicionFrutaColumna].setBackground(Color.PINK); 
+            matriz[this.posicionFrutaFila][this.posicionFrutaColumna].setBackground(this.colorFruta); 
             frutaComida = false;
         }
     }
@@ -807,19 +778,87 @@ public class VentanaApp  extends JFrame implements Observer, GUISerpiente, KeyLi
     @Override
     public void comeFruta(){
         this.controlador.apareceFruta();// LLAMA AL CONTROLADOR
-    }
+    }    
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    private void anadirFuncionalidadTeclado() {
+        this.setFocusable(true);
+        this.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyCode());
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode()== 39){
+                    if(botonGirarDerecha.getText()== "► "){
+                        
+                    }
+                    else{
+                        botonGirarIzquierda.setText("◀ ");
+                        botonGirarDerecha.setText("►");
+                        botonGirarArriba.setText("▲");
+                        botonGirarAbajo.setText("▼");
+                        
+                        botonGirarIzquierda.setEnabled(false);
+                        botonGirarAbajo.setEnabled(true);
+                        botonGirarArriba.setEnabled(true);
+                        controlador.girarDerecha(); 
+                    }
+                    
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode()== 37){
+                    if(botonGirarIzquierda.getText()== "◀ "){
+                        
+                    }
+                    else{
+                        botonGirarIzquierda.setText("◀");
+                        botonGirarDerecha.setText("► ");
+                        botonGirarArriba.setText("▲");
+                        botonGirarAbajo.setText("▼");   
+                    
+                        botonGirarDerecha.setEnabled(false);
+                        botonGirarAbajo.setEnabled(true);
+                        botonGirarArriba.setEnabled(true);
+                        controlador.girarIzquierda();
+                    }
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode()== 38){
+                    if(botonGirarArriba.getText()== "▲ "){
+                        
+                    }
+                    else{
+                        botonGirarIzquierda.setText("◀");
+                        botonGirarDerecha.setText("►");
+                        botonGirarArriba.setText("▲");
+                        botonGirarAbajo.setText("▼ "); 
+                        botonGirarAbajo.setEnabled(false);
+                        botonGirarIzquierda.setEnabled(true);
+                        botonGirarDerecha.setEnabled(true);
+                        controlador.girarArriba();
+                    }
+            
+                }
+                else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
+                    if(botonGirarAbajo.getText()== "▼  "){
+                        
+                    }
+                    else{
+                        botonGirarIzquierda.setText("◀");
+                        botonGirarDerecha.setText("►");
+                        botonGirarArriba.setText("▲ ");
+                        botonGirarAbajo.setText("▼"); 
+                        botonGirarArriba.setEnabled(false);
+                        botonGirarIzquierda.setEnabled(true);
+                        botonGirarDerecha.setEnabled(true);
+                        controlador.girarAbajo();
+                    }
+            
+                }           
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
     }
-    
-    
-    
-    
 }
