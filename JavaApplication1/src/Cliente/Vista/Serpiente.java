@@ -67,7 +67,7 @@ public class Serpiente extends Thread {
             
         }
         if(!guiSerpiente.serpienteEstaDentroLimitesDelTablero()){
-            guiSerpiente.finDelJuego();
+            guiSerpiente.finalizarJuego();
         }
     }
     

@@ -23,12 +23,14 @@ public interface GUISerpiente {
     
     public void setSerpienteFueraDeLimites();
     
-    public void finDelJuego ();
+    public void finalizarJuego ();
     
     public void mostrarCoordenadasCabeza();
     
     public void apareceFruta();
     
     public void comeFruta();
+    
+     public void creceSerpiente(Direccion direccion);
     
 }

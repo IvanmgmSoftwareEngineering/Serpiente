@@ -6,6 +6,7 @@
 package Cliente.Controlador;
 
 import Cliente.Modelo.GameModel;
+import Cliente.Vista.Direccion;
 
 /**
  *
@@ -35,8 +36,37 @@ public class Controlador {
     public void reiniciar() {
         modelo.reiniciar();
     }
+    
+    public void finalizarJuego() {
+        modelo.finalizarJuego();
+    }
+    
     public void girarDerecha() {
         modelo.girarDerecha();
+    }
+
+    public void girarArriba() {
+        modelo.girarArriba();
+    }
+
+    public void girarAbajo() {
+        modelo.girarAbajo();
+    }
+
+    public void girarIzquierda() {
+        modelo.girarIzquierda();
+    }
+
+    public void comerFruta() {
+        modelo.comerFruta();
+    }
+
+    public void apareceFruta() {
+        modelo.apareceFruta();
+    }
+
+    public void crecerSerpiente(Direccion direccion) {
+        modelo.creceSerpiente(direccion);
     }
     
 }

@@ -7,6 +7,7 @@ package Cliente.Modelo;
 
 import Cliente.Observable.Observable;
 import Cliente.Observable.Observer;
+import Cliente.Vista.Direccion;
 import java.util.ArrayList;
 import java.util.List;
 /**
@@ -17,7 +18,7 @@ public class GameModel implements Observable {
     
     private boolean juegoFinalizado;
     private boolean juegoPausado;
-    private final int TAM_SERPIENTE = 1;
+    private final int TAM_SERPIENTE_INICIAL = 1;
     
     private List<Observer> observadores;
     
@@ -31,7 +32,7 @@ public class GameModel implements Observable {
     public void start() {
         this.juegoPausado = false;
         this.juegoFinalizado = false;
-        this.notifyObservers(new GameEvent(GameEvent.EventType.START, TAM_SERPIENTE));
+        this.notifyObservers(new GameEvent(GameEvent.EventType.START, TAM_SERPIENTE_INICIAL));
        
     }
     
@@ -52,11 +53,37 @@ public class GameModel implements Observable {
     }
     
     public void girarDerecha() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.DERECHA, null));
+        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_DERECHA, null));
+    }
+    
+    public void girarArriba() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ARRIBA, null));
+    }
+
+    public void girarAbajo() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ABAJO, null));
+    }
+
+    public void girarIzquierda() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_IZQUIERDA, null));
+    }
+    
+    public void comerFruta() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.COMER_FRUTA, null));    
     }
     
     public void apareceFruta() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.APARECE_FRUTA, null));
+        this.notifyObservers(new GameEvent(GameEvent.EventType.APARECE_FRUTA, null));    
+       
+    }
+    
+    public void creceSerpiente(Direccion direccion) {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.CRECE_SERPIENTE, direccion));    
+    }
+    
+    public void finalizarJuego() {
+        this.notifyObservers(new GameEvent(GameEvent.EventType.FINALIZAR_JUEGO, null));
+        
     }
     
     @Override
@@ -76,4 +103,12 @@ public class GameModel implements Observable {
         }
         
     }
+
+    
+
+    
+
+    
+
+    
 }

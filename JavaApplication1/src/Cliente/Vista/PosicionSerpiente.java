@@ -11,27 +11,27 @@ package Cliente.Vista;
  */
 public class PosicionSerpiente {
     
-    public int posicionFila;
-    public int posicionColumna;
+    private int posicionFila;
+    private int posicionColumna;
     
     public PosicionSerpiente(int posicionFila, int posicionColumna){
         this.posicionFila = posicionFila;
         this.posicionColumna = posicionColumna;
     }
 
-    public int getPosicionFila() {
+    public int getFila() {
         return posicionFila;
     }
 
-    public int getPosicionColumna() {
+    public int getColumna() {
         return posicionColumna;
     }
 
-    public void setPosicionFila(int posicionFila) {
+    public void setFila(int posicionFila) {
         this.posicionFila = posicionFila;
     }
 
-    public void setPosicionColumna(int posicionColumna) {
+    public void setColumna(int posicionColumna) {
         this.posicionColumna = posicionColumna;
     }
     

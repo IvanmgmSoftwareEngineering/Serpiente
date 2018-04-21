@@ -17,11 +17,14 @@ public class GameEvent {
         STOP,
         REANUDAR,
         REINICIAR,
-        ARRIBA,
-        ABAJO,
-        IZQUIERDA,
-        DERECHA,
-        APARECE_FRUTA,
+        FINALIZAR_JUEGO, 
+        GIRAR_ARRIBA, 
+        GIRAR_ABAJO, 
+        GIRAR_IZQUIERDA, 
+        GIRAR_DERECHA, 
+        COMER_FRUTA,
+        APARECE_FRUTA, 
+        CRECE_SERPIENTE, 
         
         
     }
