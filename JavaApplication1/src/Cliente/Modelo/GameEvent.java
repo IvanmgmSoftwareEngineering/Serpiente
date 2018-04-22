@@ -30,19 +30,25 @@ public class GameEvent {
     }
     
    
-    private Object datos;
+    private Object datos1;
+    private Object datos2;
     private EventType evento;
     
     
     
-    public GameEvent(EventType evento, Object datos){
+    public GameEvent(EventType evento, Object datos1, Object datos2){
         this.evento = evento;
-        this.datos = datos;
+        this.datos1 = datos1;
+        this.datos2 = datos2;
         
     }
 
-    public Object getDatos() {
-        return datos;
+    public Object getDatos1() {
+        return datos1;
+    }
+    
+    public Object getDatos2() {
+        return datos2;
     }
     
    

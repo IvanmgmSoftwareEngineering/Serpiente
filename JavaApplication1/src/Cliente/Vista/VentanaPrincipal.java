@@ -125,6 +125,11 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
         jScrollPane1.setViewportView(muestraNombre);
 
         muestraCoordenadaX.setEditable(false);
+        muestraCoordenadaX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                muestraCoordenadaXActionPerformed(evt);
+            }
+        });
 
         muestraCoordenadaY.setEditable(false);
 
@@ -309,7 +314,6 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
         }
         else if (botonIniciar.getText() == "Reiniciar"){
             this.posicionesSerpiente.clear();
-            this.posicionesSerpiente.addFirst(new PosicionSerpiente(NUM_FILAS / 2,NUM_COLUMNAS / 2));
             desplegableColores.setEnabled(true);
             desplegableColores.setSelectedItem(" ");
             botonIniciar.setText("Iniciar");
@@ -400,6 +404,10 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
         this.controlador.girarAbajo();
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
+    private void muestraCoordenadaXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muestraCoordenadaXActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_muestraCoordenadaXActionPerformed
+
     
     
     
@@ -421,8 +429,8 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     
     public  void rellenaPanel (){
                 
-                for(int i =0; i<NUM_FILAS ; i++){
-                    for(int j =0; j<NUM_COLUMNAS ; j++){
+                for(int i =0; i < NUM_FILAS ; i++){
+                    for(int j =0; j < NUM_COLUMNAS ; j++){
                             JPanel panel = new JPanel();
                             matriz[i][j]= new JPanel();
                             matriz[i][j].setBackground(Color.white);
@@ -432,12 +440,17 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
             }
      
     public void ponerBlanco () {
-        for(int i =0; i<NUM_FILAS ; i++){
-            for(int j =0; j<NUM_COLUMNAS ; j++){
-                matriz[i][j].setBackground(Color.white); 
+        SwingUtilities.invokeLater(new Runnable() {            
+            @Override
+            public void run() {
+                for(int i =0; i < NUM_FILAS ; i++) {
+                    for(int j =0; j < NUM_COLUMNAS ; j++) {
+                        matriz[i][j].setBackground(Color.white); 
+                    }
+                }
             }
-        }
-     }
+        });
+    }
     
     //public JPanel muestraPosicion (JPanel panelPrincipal){
         
@@ -482,7 +495,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
         switch (evento.getEvento()){
             
             case START: 
-                    Serpiente serpiente1 = new Serpiente("green", 10, this);
+                    Serpiente serpiente1 = new Serpiente(colorSerpiente.toString(), 10, this);
                     serpientes.add(serpiente1);
                     serpiente1.start();
                 
@@ -542,7 +555,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
                     break;
                     
             case CRECE_SERPIENTE:
-                    this.creceSerpiente((Direccion)evento.getDatos());
+                    this.creceSerpiente((Direccion)evento.getDatos1());
                     break;                   
         } 
     }
@@ -571,106 +584,133 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     }
     
     private void mostrarGameOver (){
-        new Thread(new Runnable() {
+        SwingUtilities.invokeLater(new Runnable() {            
             @Override
             public void run() {
                 //Muestra la G
-        matriz[2][3].setBackground(Color.red);
-        matriz[2][4].setBackground(Color.red);
-        matriz[3][2].setBackground(Color.red);
-        matriz[4][2].setBackground(Color.red);
-        matriz[5][2].setBackground(Color.red);
-        matriz[5][4].setBackground(Color.red);
-        matriz[6][3].setBackground(Color.red);
-        matriz[6][4].setBackground(Color.red);
-               
-        //Muestra la A
-        matriz[2][7].setBackground(Color.red);
-        matriz[3][6].setBackground(Color.red);
-        matriz[3][8].setBackground(Color.red);
-        matriz[4][6].setBackground(Color.red);
-        matriz[4][7].setBackground(Color.red);
-        matriz[4][8].setBackground(Color.red);
-        matriz[5][6].setBackground(Color.red);
-        matriz[5][8].setBackground(Color.red);
-        matriz[6][6].setBackground(Color.red);
-        matriz[6][8].setBackground(Color.red);
-        
-        //Muestra la M
-        matriz[2][11].setBackground(Color.red);
-        matriz[2][13].setBackground(Color.red);
-        matriz[3][10].setBackground(Color.red);
-        matriz[3][12].setBackground(Color.red);
-        matriz[3][14].setBackground(Color.red);
-        matriz[4][10].setBackground(Color.red);
-        matriz[4][12].setBackground(Color.red);
-        matriz[4][14].setBackground(Color.red);
-        matriz[5][10].setBackground(Color.red);
-        matriz[5][12].setBackground(Color.red);
-        matriz[5][14].setBackground(Color.red);
-        matriz[6][10].setBackground(Color.red);
-        matriz[6][14].setBackground(Color.red);
-        
-        //Muestra la E
-        matriz[2][16].setBackground(Color.red);
-        matriz[2][17].setBackground(Color.red);
-        matriz[2][18].setBackground(Color.red);
-        matriz[3][16].setBackground(Color.red);
-        matriz[4][16].setBackground(Color.red);
-        matriz[4][17].setBackground(Color.red);
-        matriz[5][16].setBackground(Color.red);
-        matriz[6][16].setBackground(Color.red);
-        matriz[6][17].setBackground(Color.red);
-        matriz[6][18].setBackground(Color.red);
-        
-        //Muestra la O
-        matriz[8][4].setBackground(Color.red);
-        matriz[9][3].setBackground(Color.red);
-        matriz[9][5].setBackground(Color.red);
-        matriz[10][3].setBackground(Color.red);
-        matriz[10][5].setBackground(Color.red);
-        matriz[11][3].setBackground(Color.red);
-        matriz[11][5].setBackground(Color.red);
-        matriz[12][4].setBackground(Color.red);
-        
-        //Muestra la V
-        matriz[8][7].setBackground(Color.red);
-        matriz[8][9].setBackground(Color.red);
-        matriz[9][7].setBackground(Color.red);
-        matriz[9][9].setBackground(Color.red);
-        matriz[10][7].setBackground(Color.red);
-        matriz[10][9].setBackground(Color.red);
-        matriz[11][7].setBackground(Color.red);
-        matriz[11][9].setBackground(Color.red);
-        matriz[12][8].setBackground(Color.red);
-        
-        //Muestra la E
-        matriz[8][11].setBackground(Color.red);
-        matriz[8][12].setBackground(Color.red);
-        matriz[8][13].setBackground(Color.red);
-        matriz[9][11].setBackground(Color.red);
-        matriz[10][11].setBackground(Color.red);
-        matriz[10][12].setBackground(Color.red);
-        matriz[11][11].setBackground(Color.red);
-        matriz[12][11].setBackground(Color.red);
-        matriz[12][12].setBackground(Color.red);
-        matriz[12][13].setBackground(Color.red);
-        
-        //Mustra la R
-        matriz[8][15].setBackground(Color.red);
-        matriz[8][16].setBackground(Color.red);
-        matriz[9][15].setBackground(Color.red);
-        matriz[9][17].setBackground(Color.red);
-        matriz[10][15].setBackground(Color.red);
-        matriz[10][16].setBackground(Color.red);
-        matriz[11][15].setBackground(Color.red);
-        matriz[11][17].setBackground(Color.red);
-        matriz[12][15].setBackground(Color.red);
-        matriz[12][17].setBackground(Color.red);
+                matriz[2][3].setBackground(Color.red);
+                matriz[2][4].setBackground(Color.red);
+                matriz[3][2].setBackground(Color.red);
+                matriz[4][2].setBackground(Color.red);
+                matriz[5][2].setBackground(Color.red);
+                matriz[5][4].setBackground(Color.red);
+                matriz[6][3].setBackground(Color.red);
+                matriz[6][4].setBackground(Color.red);
             }
-        }).start();
+        });
         
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {       
+        //Muestra la A
+                matriz[2][7].setBackground(Color.red);
+                matriz[3][6].setBackground(Color.red);
+                matriz[3][8].setBackground(Color.red);
+                matriz[4][6].setBackground(Color.red);
+                matriz[4][7].setBackground(Color.red);
+                matriz[4][8].setBackground(Color.red);
+                matriz[5][6].setBackground(Color.red);
+                matriz[5][8].setBackground(Color.red);
+                matriz[6][6].setBackground(Color.red);
+                matriz[6][8].setBackground(Color.red);
+            }
+        });
         
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {
+        //Muestra la M
+                matriz[2][11].setBackground(Color.red);
+                matriz[2][13].setBackground(Color.red);
+                matriz[3][10].setBackground(Color.red);
+                matriz[3][12].setBackground(Color.red);
+                matriz[3][14].setBackground(Color.red);
+                matriz[4][10].setBackground(Color.red);
+                matriz[4][12].setBackground(Color.red);
+                matriz[4][14].setBackground(Color.red);
+                matriz[5][10].setBackground(Color.red);
+                matriz[5][12].setBackground(Color.red);
+                matriz[5][14].setBackground(Color.red);
+                matriz[6][10].setBackground(Color.red);
+                matriz[6][14].setBackground(Color.red);
+            }
+        });
+        
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {
+        //Muestra la E
+                matriz[2][16].setBackground(Color.red);
+                matriz[2][17].setBackground(Color.red);
+                matriz[2][18].setBackground(Color.red);
+                matriz[3][16].setBackground(Color.red);
+                matriz[4][16].setBackground(Color.red);
+                matriz[4][17].setBackground(Color.red);
+                matriz[5][16].setBackground(Color.red);
+                matriz[6][16].setBackground(Color.red);
+                matriz[6][17].setBackground(Color.red);
+                matriz[6][18].setBackground(Color.red);
+            }
+        });
+        
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {
+        //Muestra la O
+                matriz[8][4].setBackground(Color.red);
+                matriz[9][3].setBackground(Color.red);
+                matriz[9][5].setBackground(Color.red);
+                matriz[10][3].setBackground(Color.red);
+                matriz[10][5].setBackground(Color.red);
+                matriz[11][3].setBackground(Color.red);
+                matriz[11][5].setBackground(Color.red);
+                matriz[12][4].setBackground(Color.red);
+            }
+        });
+        
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {
+        //Muestra la V
+                matriz[8][7].setBackground(Color.red);
+                matriz[8][9].setBackground(Color.red);
+                matriz[9][7].setBackground(Color.red);
+                matriz[9][9].setBackground(Color.red);
+                matriz[10][7].setBackground(Color.red);
+                matriz[10][9].setBackground(Color.red);
+                matriz[11][7].setBackground(Color.red);
+                matriz[11][9].setBackground(Color.red);
+                matriz[12][8].setBackground(Color.red);
+            }
+        });
+        
+        SwingUtilities.invokeLater(new Runnable() {            @Override
+            public void run() {
+        //Muestra la E
+                matriz[8][11].setBackground(Color.red);
+                matriz[8][12].setBackground(Color.red);
+                matriz[8][13].setBackground(Color.red);
+                matriz[9][11].setBackground(Color.red);
+                matriz[10][11].setBackground(Color.red);
+                matriz[10][12].setBackground(Color.red);
+                matriz[11][11].setBackground(Color.red);
+                matriz[12][11].setBackground(Color.red);
+                matriz[12][12].setBackground(Color.red);
+                matriz[12][13].setBackground(Color.red);
+            }
+        });
+        
+        SwingUtilities.invokeLater(new Runnable() {            
+            @Override
+            public void run() {
+                //Muestra la R
+                matriz[8][15].setBackground(Color.red);
+                matriz[8][16].setBackground(Color.red);
+                matriz[9][15].setBackground(Color.red);
+                matriz[9][17].setBackground(Color.red);
+                matriz[10][15].setBackground(Color.red);
+                matriz[10][16].setBackground(Color.red);
+                matriz[11][15].setBackground(Color.red);
+                matriz[11][17].setBackground(Color.red);
+                matriz[12][15].setBackground(Color.red);
+                matriz[12][17].setBackground(Color.red);
+            }
+        });
     }
 
     @Override
@@ -684,13 +724,13 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
                     
                     if (posicionesSerpiente.getFirst().getFila() == posicionFrutaFila && posicionesSerpiente.getFirst().getColumna() == posicionFrutaColumna){
                         this.controlador.comerFruta(); // LLAMA AL CONTROLADOR
-                        this.controlador.crecerSerpiente(direccion);//LLAMA AL CONTROLADOR
+                        this.controlador.crecerSerpiente(direccion,posicionesSerpiente.size()+1);//LLAMA AL CONTROLADOR
                         this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(this.colorSerpiente); 
                     }
                     
                 }
                 else{
-                    this.controlador.finalizarJuego();
+                    this.finalizarJuego();
                 }
             }
             catch (ArrayIndexOutOfBoundsException fueraDelTablero) {
@@ -839,7 +879,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
             
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
-                    if(botonGirarAbajo.getText()== "▼  "){
+                    if(botonGirarAbajo.getText()== "▼ "){
                         
                     }
                     else{

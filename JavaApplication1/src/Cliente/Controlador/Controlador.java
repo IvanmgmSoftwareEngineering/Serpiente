@@ -65,8 +65,8 @@ public class Controlador {
         modelo.apareceFruta();
     }
 
-    public void crecerSerpiente(Direccion direccion) {
-        modelo.creceSerpiente(direccion);
+    public void crecerSerpiente(Direccion direccion, int tamSerpiente) {
+        modelo.creceSerpiente(direccion, tamSerpiente);
     }
     
 }
