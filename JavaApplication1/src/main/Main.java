@@ -8,6 +8,7 @@ package main;
 import Cliente.Controlador.Controlador;
 import Cliente.Modelo.GameModel;
 import Cliente.Vista.VentanaPrincipal;
+import Cliente.Vista.VentanaPuntuacion;
 import javax.swing.SwingUtilities;
 
 /**
@@ -27,9 +28,13 @@ public class Main {
             // el objetivo de lo anterior es crear una cola de eventos para ir almacenando los eventos
             public void run() {
                 GameModel modelo = new GameModel();
-                VentanaPrincipal ventana = new VentanaPrincipal(new Controlador(modelo));
-                modelo.addObserver(ventana);
-                ventana.setVisible(true);
+                Controlador controlador = new Controlador(modelo);
+                VentanaPuntuacion ventanaPuntuacion = new VentanaPuntuacion();
+                VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(controlador);
+                modelo.addObserver(ventanaPuntuacion);
+                modelo.addObserver(ventanaPrincipal);
+                ventanaPuntuacion.setVisible(true);
+                ventanaPrincipal.setVisible(true);
             }
         });
     }
