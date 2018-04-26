@@ -6,7 +6,7 @@ package Cliente.Vista;
  * and open the template in the editor.
  */
 
-
+//aaaaaaaaaaaa
 import Cliente.Controlador.Controlador;
 import Cliente.Modelo.GameEvent;
 import Cliente.Modelo.GameModel;
