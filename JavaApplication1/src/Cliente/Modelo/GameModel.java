@@ -52,20 +52,28 @@ public class GameModel implements Observable {
         this.notifyObservers(new GameEvent(GameEvent.EventType.REINICIAR, null,null));
     }
     
-    public void girarDerecha() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_DERECHA, null,null));
+    public void girarDerecha(Direccion direccion) {
+        if(direccion != Direccion.IZQUIERDA){
+            this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_DERECHA, null,null));
+        }
     }
     
-    public void girarArriba() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ARRIBA, null,null));
+    public void girarArriba(Direccion direccion) {
+        if(direccion != Direccion.ABAJO){
+            this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ARRIBA, null,null));
+        }
     }
 
-    public void girarAbajo() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ABAJO, null,null));
+    public void girarAbajo(Direccion direccion) {
+        if(direccion != Direccion.ARRIBA){
+            this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_ABAJO, null,null));
+        }
     }
 
-    public void girarIzquierda() {
-        this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_IZQUIERDA, null,null));
+    public void girarIzquierda(Direccion direccion) {
+        if(direccion != Direccion.DERECHA){
+            this.notifyObservers(new GameEvent(GameEvent.EventType.GIRAR_IZQUIERDA, null,null));
+        }
     }
     
     public void comerFruta() {

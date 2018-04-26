@@ -41,20 +41,20 @@ public class Controlador {
         modelo.finalizarJuego();
     }
     
-    public void girarDerecha() {
-        modelo.girarDerecha();
+    public void girarDerecha(Direccion direccion) {
+        modelo.girarDerecha(direccion);
     }
 
-    public void girarArriba() {
-        modelo.girarArriba();
+    public void girarArriba(Direccion direccion) {
+        modelo.girarArriba(direccion);
     }
 
-    public void girarAbajo() {
-        modelo.girarAbajo();
+    public void girarAbajo(Direccion direccion) {
+        modelo.girarAbajo(direccion);
     }
 
-    public void girarIzquierda() {
-        modelo.girarIzquierda();
+    public void girarIzquierda(Direccion direccion) {
+        modelo.girarIzquierda(direccion);
     }
 
     public void comerFruta() {
@@ -67,6 +67,14 @@ public class Controlador {
 
     public void crecerSerpiente(Direccion direccion, int tamSerpiente) {
         modelo.creceSerpiente(direccion, tamSerpiente);
+    }
+
+    public void girarArriba() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void girarIzquierda() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

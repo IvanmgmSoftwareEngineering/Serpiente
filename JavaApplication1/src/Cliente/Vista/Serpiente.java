@@ -43,6 +43,12 @@ public class Serpiente extends Thread {
     public void girar(Direccion dir) {
         this.direccion = dir;
     }
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+    
+    
     
     
     
