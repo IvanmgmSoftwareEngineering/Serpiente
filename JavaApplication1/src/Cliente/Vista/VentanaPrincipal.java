@@ -48,6 +48,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     private boolean frutaComida = true;
     private int posicionFrutaFila;
     private int posicionFrutaColumna;
+    private Direccion direccion;
     
     
     
@@ -306,7 +307,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
             botonPausa.setEnabled(true);
             botonGirarDerecha.setEnabled(true);
             botonGirarIzquierda.setEnabled(true);
-            botonGirarAbajo.setEnabled(false);
+            botonGirarAbajo.setEnabled(true);
             botonGirarArriba.setEnabled(true);
             botonIniciar.setText("Reiniciar");
             desplegableColores.setEnabled(false);
@@ -368,11 +369,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
-        botonGirarIzquierda.setEnabled(false);
-        botonGirarIzquierda.setText("◀ " );
-        botonGirarAbajo.setEnabled(true);
-        botonGirarArriba.setEnabled(true);
-        this.controlador.girarDerecha();
+        this.controlador.girarDerecha(this.direccion);
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
     private void desplegableColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableColoresActionPerformed
@@ -381,27 +378,15 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
-        botonGirarDerecha.setEnabled(false);
-        botonGirarDerecha.setText("► ");
-        botonGirarAbajo.setEnabled(true);
-        botonGirarArriba.setEnabled(true);
-        this.controlador.girarIzquierda();
+        this.controlador.girarIzquierda(this.direccion);
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
-        botonGirarAbajo.setEnabled(false);
-        botonGirarDerecha.setText("▼ " );
-        botonGirarIzquierda.setEnabled(true);
-        botonGirarDerecha.setEnabled(true);
-        this.controlador.girarArriba();
+        this.controlador.girarArriba(this.direccion);
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
-        botonGirarArriba.setEnabled(false);
-        botonGirarDerecha.setText("▲ " );
-        botonGirarIzquierda.setEnabled(true);
-        botonGirarDerecha.setEnabled(true);
-        this.controlador.girarAbajo();
+    this.controlador.girarAbajo(this.direccion);
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
     private void muestraCoordenadaXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muestraCoordenadaXActionPerformed
@@ -497,6 +482,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
             case START: 
                     Serpiente serpiente1 = new Serpiente(colorSerpiente.toString(), 10, this);
                     serpientes.add(serpiente1);
+                    direccion = serpiente1.getDireccion();
                     serpiente1.start();
                 
                     break; 
@@ -716,6 +702,7 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     @Override
     public void moverSerpiente(Direccion direccion) {
             try { 
+                this.direccion = direccion;
                 if(this.serpienteNoChoca(direccion))  {   
                     this.posicionesSerpiente.addFirst (new PosicionSerpiente(this.posicionesSerpiente.getFirst().getFila()+direccion.getVariacionFila(),this.posicionesSerpiente.getFirst().getColumna()+ direccion.getVariacionColumna()));
                     this.matriz[this.posicionesSerpiente.getFirst().getFila()][this.posicionesSerpiente.getFirst().getColumna()].setBackground(this.colorSerpiente);
@@ -752,22 +739,24 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
         
         switch(direccion) {
             case ARRIBA:
-                this.controlador.girarArriba();
+                this.controlador.girarArriba(this.direccion);
             break;
             case ABAJO:     
-                this.controlador.girarAbajo();
+                this.controlador.girarAbajo(this.direccion);
             break;
             case IZQUIERDA:
-                this.controlador.girarIzquierda();
+                this.controlador.girarIzquierda(this.direccion);
             break;
             case DERECHA:
-                this.controlador.girarDerecha();
+                this.controlador.girarDerecha(this.direccion);
             break;
             
     }
         
         
     }
+    
+            
 
     @Override
     public void definirColorSerpiente(String color) {
@@ -830,68 +819,26 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode()== 39){
-                    if(botonGirarDerecha.getText()== "► "){
-                        
-                    }
-                    else{
-                        botonGirarIzquierda.setText("◀ ");
-                        botonGirarDerecha.setText("►");
-                        botonGirarArriba.setText("▲");
-                        botonGirarAbajo.setText("▼");
-                        
-                        botonGirarIzquierda.setEnabled(false);
-                        botonGirarAbajo.setEnabled(true);
-                        botonGirarArriba.setEnabled(true);
-                        controlador.girarDerecha(); 
-                    }
+                    
+                        controlador.girarDerecha(direccion);
+                    
                     
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode()== 37){
-                    if(botonGirarIzquierda.getText()== "◀ "){
-                        
-                    }
-                    else{
-                        botonGirarIzquierda.setText("◀");
-                        botonGirarDerecha.setText("► ");
-                        botonGirarArriba.setText("▲");
-                        botonGirarAbajo.setText("▼");   
                     
-                        botonGirarDerecha.setEnabled(false);
-                        botonGirarAbajo.setEnabled(true);
-                        botonGirarArriba.setEnabled(true);
-                        controlador.girarIzquierda();
-                    }
+                        controlador.girarIzquierda(direccion);
+                    
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode()== 38){
-                    if(botonGirarArriba.getText()== "▲ "){
-                        
-                    }
-                    else{
-                        botonGirarIzquierda.setText("◀");
-                        botonGirarDerecha.setText("►");
-                        botonGirarArriba.setText("▲");
-                        botonGirarAbajo.setText("▼ "); 
-                        botonGirarAbajo.setEnabled(false);
-                        botonGirarIzquierda.setEnabled(true);
-                        botonGirarDerecha.setEnabled(true);
-                        controlador.girarArriba();
-                    }
+                    
+                        controlador.girarArriba(direccion);
+                    
             
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
-                    if(botonGirarAbajo.getText()== "▼ "){
-                        
-                    }
-                    else{
-                        botonGirarIzquierda.setText("◀");
-                        botonGirarDerecha.setText("►");
-                        botonGirarArriba.setText("▲ ");
-                        botonGirarAbajo.setText("▼"); 
-                        botonGirarArriba.setEnabled(false);
-                        botonGirarIzquierda.setEnabled(true);
-                        botonGirarDerecha.setEnabled(true);
-                        controlador.girarAbajo();
-                    }
+                    
+                        controlador.girarAbajo(direccion);
+                    
             
                 }           
             }
