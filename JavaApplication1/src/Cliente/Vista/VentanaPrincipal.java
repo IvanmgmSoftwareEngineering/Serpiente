@@ -793,8 +793,9 @@ public class VentanaPrincipal  extends JFrame implements Observer, GUISerpiente 
     
     @Override
     public void apareceFruta(){
-        int posicionFrutaFila = (int) Math.floor(Math.random()*(NUM_FILAS));
-        int posicionFrutaColumna = (int) Math.floor(Math.random()*(NUM_COLUMNAS));
+        
+            int posicionFrutaFila = (int) Math.floor(Math.random()*(NUM_FILAS));
+            int posicionFrutaColumna = (int) Math.floor(Math.random()*(NUM_COLUMNAS));
         
         if(posicionesSerpiente.getFirst().getFila() != posicionFrutaFila || posicionesSerpiente.getFirst().getColumna() != posicionFrutaColumna){
             this.posicionFrutaFila = posicionFrutaFila;
