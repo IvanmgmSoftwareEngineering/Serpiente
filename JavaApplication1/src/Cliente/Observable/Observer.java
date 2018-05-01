@@ -5,7 +5,7 @@
  */
 package Cliente.Observable;
 
-import Cliente.Modelo.GameEvent;
+import Servidor.GameEvent;
 
 /**
  *

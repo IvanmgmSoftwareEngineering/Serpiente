@@ -5,7 +5,7 @@
  */
 package Cliente.Vista;
 
-import Cliente.Modelo.GameEvent;
+import Servidor.GameEvent;
 import Cliente.Observable.Observer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -16,12 +16,18 @@ import javax.swing.SwingUtilities;
  */
 public class VentanaPuntuacion extends JFrame implements Observer {
     
+    private int idVentana;
+    private int puntuacion;
+    private String nombreCliente;
 
-    public VentanaPuntuacion() {
+    public VentanaPuntuacion(int idVentana) {
            initComponents();
-           puntuacionTextField.setEnabled(true);
-           puntuacionTextField.setEditable(true);
-           puntuacionTextField.setText("");
+           this.idVentana = idVentana;
+           this.puntuacion = 1;
+           this.nombreCliente = "";
+           this.puntuacionTextField.setEnabled(true);
+           this.puntuacionTextField.setEditable(true);
+           this.puntuacionTextField.setText("");
 
     }
 
@@ -122,12 +128,18 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
             
-            case START: 
+            case START:
+                if(this.idVentana == (int)evento.getDatos6()){
+                    this.nombreCliente = (String)evento.getDatos4();
                     iniciarMarcador();
+                }
                     break; 
             
-            case CRECE_SERPIENTE: 
-                    mostrarPuntuacion(evento.getDatos2());
+            case NUEVA_FRUTA: 
+                if(this.idVentana == (int)evento.getDatos2()){
+                    this.puntuacion = this.puntuacion +1;
+                    mostrarPuntuacion(this.puntuacion);
+                }
                     break;
                     
             case REINICIAR: 
@@ -136,15 +148,17 @@ public class VentanaPuntuacion extends JFrame implements Observer {
         }
     }
     
-    private void mostrarPuntuacion(Object puntuacion) {
-        puntuacionTextField.setText("         " + puntuacion.toString());
+    private void mostrarPuntuacion(int puntuacion) {
+        puntuacionTextField.setText("         " + puntuacion);
     }
 
     private void reiniciarMarcador() {
+        this.jLabel1.setText("Puntuación");
         puntuacionTextField.setText("         1");
     }
 
     private void iniciarMarcador() {
+        this.jLabel1.setText(this.nombreCliente);
         puntuacionTextField.setText("         1");
     }
 }

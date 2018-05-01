@@ -5,8 +5,10 @@
  */
 package Cliente.Controlador;
 
-import Cliente.Modelo.GameModel;
+import Servidor.GameModel;
 import Cliente.Vista.Direccion;
+import Servidor.Posicion;
+import java.util.Deque;
 
 /**
  *
@@ -21,8 +23,8 @@ public class Controlador {
         this.modelo = modelo;    
     }
     
-    public void start() {
-        modelo.start();
+    public void start(int idVentana,String colorSerpiente, int velocidadSerpiente, String nombreCliente) {
+        modelo.start(idVentana,colorSerpiente, velocidadSerpiente, nombreCliente);
     }
     
     public void pause() {
@@ -41,33 +43,26 @@ public class Controlador {
         modelo.finalizarJuego();
     }
     
-    public void girarDerecha(Direccion direccion) {
-        modelo.girarDerecha(direccion);
+    public void girarDerecha(int idVentana) {
+        modelo.girarDerecha(idVentana);
     }
 
-    public void girarArriba(Direccion direccion) {
-        modelo.girarArriba(direccion);
+    public void girarArriba(int idVentana) {
+        modelo.girarArriba(idVentana);
     }
 
-    public void girarAbajo(Direccion direccion) {
-        modelo.girarAbajo(direccion);
+    public void girarAbajo(int idVentana) {
+        modelo.girarAbajo(idVentana);
     }
 
-    public void girarIzquierda(Direccion direccion) {
-        modelo.girarIzquierda(direccion);
+    public void girarIzquierda(int idVentana) {
+        modelo.girarIzquierda(idVentana);
     }
 
-    public void comerFruta() {
-        modelo.comerFruta();
-    }
 
-    public void apareceFruta() {
-        modelo.apareceFruta();
-    }
-
-    public void crecerSerpiente(Direccion direccion, int tamSerpiente) {
-        modelo.creceSerpiente(direccion, tamSerpiente);
-    }
+    //public void crecerSerpiente(Direccion direccion, int tamSerpiente) {
+       // modelo.creceSerpiente(direccion, tamSerpiente);
+    //}
 
     public void girarArriba() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -76,5 +71,7 @@ public class Controlador {
     public void girarIzquierda() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
     
 }

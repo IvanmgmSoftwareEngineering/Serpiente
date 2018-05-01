@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente.Modelo;
+package Servidor;
 
 /**
  *
@@ -15,16 +15,13 @@ public class GameEvent {
         START,
         PAUSE,
         STOP,
+        MOVER_SERPIENTE,
+        NUEVA_FRUTA,
         REANUDAR,
         REINICIAR,
         FINALIZAR_JUEGO, 
-        GIRAR_ARRIBA, 
-        GIRAR_ABAJO, 
-        GIRAR_IZQUIERDA, 
-        GIRAR_DERECHA, 
-        COMER_FRUTA,
-        APARECE_FRUTA, 
-        CRECE_SERPIENTE, 
+        NOMBRE_NO_VALIDO,
+        COLOR_NO_VALIDO,
         
         
     }
@@ -32,14 +29,22 @@ public class GameEvent {
    
     private Object datos1;
     private Object datos2;
+    private Object datos3;
+    private Object datos4;
+    private Object datos5;
+    private Object datos6;
     private EventType evento;
     
     
     
-    public GameEvent(EventType evento, Object datos1, Object datos2){
+    public GameEvent(EventType evento, Object datos1, Object datos2, Object datos3, Object datos4, Object datos5, Object datos6){
         this.evento = evento;
         this.datos1 = datos1;
         this.datos2 = datos2;
+        this.datos3 = datos3;
+        this.datos4 = datos4;
+        this.datos5 = datos5;
+        this.datos6 = datos6;
         
     }
 
@@ -50,6 +55,30 @@ public class GameEvent {
     public Object getDatos2() {
         return datos2;
     }
+
+    public Object getDatos3() {
+        return datos3;
+    }
+
+    public Object getDatos4() {
+        return datos4;
+    }
+
+    public Object getDatos5() {
+        return datos5;
+    }
+
+    public Object getDatos6() {
+        return datos6;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
     
    
     public EventType getEvento() {
