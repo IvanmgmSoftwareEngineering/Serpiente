@@ -6,7 +6,8 @@
 package Cliente.Vista;
 
 import Servidor.GameEvent;
-import Cliente.Observable.Observer;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -111,7 +112,7 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     private javax.swing.JTextField puntuacionTextField;
     // End of variables declaration//GEN-END:variables
 
-    @Override
+    //@Override
     public void notifyEvent(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -123,6 +124,11 @@ public class VentanaPuntuacion extends JFrame implements Observer {
                 manejarEvento(evento);
             } 
         });
+    }
+    
+    public void update(Observable o, Object arg) {
+        GameEvent evento = (GameEvent) arg;
+        manejarEvento(evento);
     }
     
     public void manejarEvento (GameEvent evento) {

@@ -11,7 +11,8 @@ import Cliente.Controlador.Controlador;
 import Servidor.GameEvent;
 import java.awt.Color;
 import javax.swing.*;
-import Cliente.Observable.Observer;
+import java.util.Observer;
+import java.util.Observable;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -416,7 +417,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     // End of variables declaration//GEN-END:variables
     
    
-    @Override
+    //@Override
     public void notifyEvent(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -428,6 +429,11 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                 manejarEvento(evento);
             } 
         });
+    }
+    
+    public void update(Observable o, Object arg) {
+        GameEvent evento = (GameEvent) arg;
+        manejarEvento(evento);
     }
     
     public void manejarEvento (GameEvent evento) {

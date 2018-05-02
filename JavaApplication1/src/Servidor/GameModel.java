@@ -5,8 +5,8 @@
  */
 package Servidor;
 
-import Cliente.Observable.Observable;
-import Cliente.Observable.Observer;
+import java.util.Observable;
+import java.util.Observer;
 import Cliente.Vista.Direccion;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Iterator;
  *
  * @author img
  */
-public class GameModel implements Observable, Serpiente {
+public class GameModel extends Observable implements Serpiente {
     
     private boolean juegoPausado;
     private boolean dentroLimites;
@@ -64,9 +64,11 @@ public class GameModel implements Observable, Serpiente {
         }
         
         if(mismoNombre){
+            this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.NOMBRE_NO_VALIDO,nombreCliente,idVentana,null,null,null,null));   
         }
         else if(mismoColor){
+            this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.COLOR_NO_VALIDO,colorSerpiente,nombreCliente,idVentana,null,null,null));   
         }
         else{
@@ -75,6 +77,7 @@ public class GameModel implements Observable, Serpiente {
         
         
  
+        this.setChanged();
         this.notifyObservers(new GameEvent(GameEvent.EventType.START, this.jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getFirst(),jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getLast(),jugadores.get(jugadores.size()-1).getSerpiente().getColor(), nombreCliente, this.posicionFruta, idVentana));
         //this.notifyObservers(new GameEvent(GameEvent.EventType.APARECE_FRUTA, this.posicionFruta,null,null));
         
@@ -87,6 +90,7 @@ public class GameModel implements Observable, Serpiente {
             for(Jugador jugador: this.jugadores){
                 jugador.getSerpiente().pausar();
             }
+            this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.PAUSE, null,null,null,null,null,null));   
     }
     
@@ -95,6 +99,7 @@ public class GameModel implements Observable, Serpiente {
             for(Jugador jugador: this.jugadores){
                 jugador.getSerpiente().reanudar();
             }
+            this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.REANUDAR, null,null,null,null,null,null));   
     }
     
@@ -104,6 +109,7 @@ public class GameModel implements Observable, Serpiente {
                 jugador.getSerpiente().interrupt();
             }
         jugadores.clear();
+        this.setChanged();
         this.notifyObservers(new GameEvent(GameEvent.EventType.REINICIAR, null,null,null,null,null,null));
     }
     
@@ -201,12 +207,14 @@ public class GameModel implements Observable, Serpiente {
             if(encontrado1){
                 jugadorAux.getPosicionesSerpiente().addLast(new Posicion(jugadorAux.getPosicionesSerpiente().getLast().getFila()- direccion.getVariacionFila(),jugadorAux.getPosicionesSerpiente().getLast().getColumna()- direccion.getVariacionColumna()));
                 this.nuevaFruta();
+                this.setChanged();
                 this.notifyObservers(new GameEvent(GameEvent.EventType.NUEVA_FRUTA,this.posicionFruta,idVentana,null,null,null,null));      
                 
             }
             
             if( this.serpienteEstaDentroLimitesDelTablero(jugadorAux.getPosicionesSerpiente().getFirst()) && (!this.serpientesChocan(jugadorAux))){
                 jugadorAux.getPosicionesSerpiente().addFirst(new Posicion(jugadorAux.getPosicionesSerpiente().getFirst().getFila()+ direccion.getVariacionFila(),jugadorAux.getPosicionesSerpiente().getFirst().getColumna()+ direccion.getVariacionColumna()));
+                this.setChanged();
                 this.notifyObservers(new GameEvent(GameEvent.EventType.MOVER_SERPIENTE, jugadorAux.getPosicionesSerpiente().getFirst(), jugadorAux.getPosicionesSerpiente().getLast(),jugadorAux.getSerpiente().getColor(),idVentana,null,null));      
                 jugadorAux.getPosicionesSerpiente().removeLast();   
             }
@@ -247,11 +255,12 @@ public class GameModel implements Observable, Serpiente {
     }
     
     public void finalizarJuego() {
+        this.setChanged();
         this.notifyObservers(new GameEvent(GameEvent.EventType.FINALIZAR_JUEGO, null,null,null,null,null,null));
         
     }
     
-    @Override
+    /*@Override
     public void addObserver(Observer observador) {
         this.observadores.add(observador);
         
@@ -267,7 +276,7 @@ public class GameModel implements Observable, Serpiente {
             observer.notifyEvent(evento);
         }
         
-    }
+    }*/
 
     private boolean serpientesChocan(Jugador jugador) {
         Posicion posCabeza = jugador.getPosicionesSerpiente().getFirst();
