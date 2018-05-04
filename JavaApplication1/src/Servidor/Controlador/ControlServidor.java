@@ -11,6 +11,7 @@ package Servidor.Controlador;
  */
 
 import Servidor.GameEvent;
+import Servidor.GameModel;
 import Servidor.Posicion;
 import java.net.ServerSocket;
 import java.util.Observable;
@@ -33,8 +34,36 @@ public class ControlServidor implements Observer {
     */
     
     private ServerSocket socket;
+    private GameModel modelo;
+    private int id;
+    
+    
+    public ControlServidor(int identificador) {
+        this.id = identificador;
+    }
+    
+    private String idC() {
+        return Integer.toString(this.id);
+    }
+    
     
     // MENSAJES DEL SOCKET AL MODELO
+    
+    public void girarDerecha(int idVentana) {
+        modelo.girarDerecha(idVentana);
+    }
+
+    public void girarArriba(int idVentana) {
+        modelo.girarArriba(idVentana);
+    }
+
+    public void girarAbajo(int idVentana) {
+        modelo.girarAbajo(idVentana);
+    }
+
+    public void girarIzquierda(int idVentana) {
+        modelo.girarIzquierda(idVentana);
+    }
     
     
     
@@ -45,7 +74,7 @@ public class ControlServidor implements Observer {
         manejarEvento(evento);
     }
     
-    public void manejarEvento (GameEvent evento) {
+    private void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
             
             case START: 
@@ -54,23 +83,36 @@ public class ControlServidor implements Observer {
                 }
                     this.dibujaFruta((Posicion)evento.getDatos5());
                     this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int) evento.getDatos6());*/
-                    break; 
+                enviarSocket("IDC;" + idC() + ":");
+                
+                break; 
 
             case MOVER_SERPIENTE: 
 //                    this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int)evento.getDatos4());
-                    break; 
+                Posicion posNueva = (Posicion)evento.getDatos1();
+                Posicion posBlanco = (Posicion) evento.getDatos2();
+                int nuevaY = posNueva.getFila();
+                int nuevaX = posNueva.getColumna();
+                int blancoY = posBlanco.getFila();
+                int blancoX = posBlanco.getColumna();
+                int idJugador = (int) evento.getDatos4();
+                enviarSocket("MOV;" + idJugador + ";" + nuevaX + ";" + nuevaY + ";" + blancoX + ";" + blancoY + ":");
+                break; 
                     
             case PUNTOS: 
                 
                 break;
                     
-            case NUEVA_FRUTA: //no hay mensaje en el enunciado para crear fruta nueva, pero debería haberlo
+            case NUEVA_FRUTA: 
+                // Este no sale en el enunciado pero se pueden 
+                // añadir más protocolos, y este es necesario
+                
 //                    this.dibujaFruta((Posicion) evento.getDatos1());
-                    break;         
+                break;         
                    
             case FINALIZAR_JUEGO:
 //                    this.finalizarJuego();
-                    break;
+                break;
              
             case ERROR:
                 
@@ -78,6 +120,10 @@ public class ControlServidor implements Observer {
                     
                     
         } 
+    }
+    
+    private void enviarSocket (String mensaje) {
+        
     }
     
     
