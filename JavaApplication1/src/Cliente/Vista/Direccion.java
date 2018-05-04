@@ -31,6 +31,24 @@ package Cliente.Vista;
     public int getVariacionColumna() {
         return variacionColumna;
     }
+
+    public static Direccion getDERECHA() {
+        return DERECHA;
+    }
+
+    public static Direccion getIZQUIERDA() {
+        return IZQUIERDA;
+    }
+
+    public static Direccion getARRIBA() {
+        return ARRIBA;
+    }
+
+    public static Direccion getABAJO() {
+        return ABAJO;
+    }
+    
+    
         
         
     }

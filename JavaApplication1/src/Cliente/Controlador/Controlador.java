@@ -5,7 +5,10 @@
  */
 package Cliente.Controlador;
 
-import Cliente.Modelo.GameModel;
+import Servidor.GameModel;
+import Cliente.Vista.Direccion;
+import Servidor.Posicion;
+import java.util.Deque;
 
 /**
  *
@@ -20,8 +23,8 @@ public class Controlador {
         this.modelo = modelo;    
     }
     
-    public void start() {
-        modelo.start();
+    public void start(int idVentana,String colorSerpiente, int velocidadSerpiente, String nombreCliente) {
+        modelo.start(idVentana,colorSerpiente, velocidadSerpiente, nombreCliente);
     }
     
     public void pause() {
@@ -35,8 +38,40 @@ public class Controlador {
     public void reiniciar() {
         modelo.reiniciar();
     }
-    public void girarDerecha() {
-        modelo.girarDerecha();
+    
+    public void finalizarJuego() {
+        modelo.finalizarJuego();
     }
+    
+    public void girarDerecha(int idVentana) {
+        modelo.girarDerecha(idVentana);
+    }
+
+    public void girarArriba(int idVentana) {
+        modelo.girarArriba(idVentana);
+    }
+
+    public void girarAbajo(int idVentana) {
+        modelo.girarAbajo(idVentana);
+    }
+
+    public void girarIzquierda(int idVentana) {
+        modelo.girarIzquierda(idVentana);
+    }
+
+
+    //public void crecerSerpiente(Direccion direccion, int tamSerpiente) {
+       // modelo.creceSerpiente(direccion, tamSerpiente);
+    //}
+
+    public void girarArriba() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void girarIzquierda() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    
     
 }
