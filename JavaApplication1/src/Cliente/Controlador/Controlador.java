@@ -23,6 +23,8 @@ public class Controlador {
         this.modelo = modelo;    
     }
     
+    // MÉTODOS DESDE LA VISTA
+    
     public void start(int idVentana,String colorSerpiente, int velocidadSerpiente, String nombreCliente) {
         modelo.start(idVentana,colorSerpiente, velocidadSerpiente, nombreCliente);
     }
@@ -71,7 +73,31 @@ public class Controlador {
     public void girarIzquierda() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    
+    
+    // MÉTODOS DESDE EL MODELO
+    
+    public void identificador (int id) {
+        //ICD; 1:
+    }
+    
+    public void direccionArriba() {
+        
+    }
+    
+    public void direccionAbajo() {
+        
+    }
+    
+    public void direccionIzq() {
+        
+    }
+    
+    public void direccionDer() {
+        
+    }
+    
+    public void dibujarSerpiente(Posicion primero, Posicion ultimo, )
     
     
 }
