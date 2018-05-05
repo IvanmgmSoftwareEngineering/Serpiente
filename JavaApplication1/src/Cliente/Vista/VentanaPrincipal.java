@@ -6,7 +6,6 @@ package Cliente.Vista;
  * and open the template in the editor.
  */
 
-import Servidor.Posicion;
 import Cliente.Controlador.Controlador;
 import Servidor.GameEvent;
 import java.awt.Color;
@@ -487,7 +486,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         } 
     }
     
-    private void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana){
+    public void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana){
         this.matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(this.StringColorSerpienteToColor(colorSerpiente));
         this.matriz[PosicionColaPonerABlanco.getFila()][PosicionColaPonerABlanco.getColumna()].setBackground(Color.white);
         if(idVentana == this.idVentana){
@@ -498,7 +497,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
 
     }
     
-    private void dibujaFruta (Posicion posicionFruta){
+    public void dibujaFruta (Posicion posicionFruta){
         this.matriz[posicionFruta.getFila()][posicionFruta.getColumna()].setBackground(this.colorFruta);
     }
     /*

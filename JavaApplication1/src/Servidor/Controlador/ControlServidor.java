@@ -38,7 +38,7 @@ public class ControlServidor implements Observer {
     
         Protocolos propios:
             FRT para decir al cliente que hay una fruta nueva
-            MOV ha sido editado para que tenga el número de cliente al final
+            DIR ha sido editado para que tenga el número de cliente al final
     */
     
     private ServerSocket serverSocket;
@@ -90,6 +90,7 @@ public class ControlServidor implements Observer {
             mensaje = (String) iterator.next();
             procesarMensaje(mensaje);
         } 
+        listaMensajes.clear();
     }
     
     private void procesarMensaje(String mensaje) {
@@ -147,6 +148,7 @@ public class ControlServidor implements Observer {
     
     // MENSAJES DEL MODELO AL SOCKET
     
+    @Override
     public void update(Observable o, Object arg) {
         GameEvent evento = (GameEvent) arg;
         manejarEvento(evento);
@@ -183,7 +185,7 @@ public class ControlServidor implements Observer {
                 Posicion posFruta = (Posicion) evento.getDatos1();
                 int frutaX = posFruta.getColumna();
                 int frutaY = posFruta.getFila();
-                enviarTodos("FRT; " + frutaX + frutaY);
+                enviarTodos("FRT; " + frutaX + "; " + frutaY);
                 break;         
                    
             case FINALIZAR_JUEGO:

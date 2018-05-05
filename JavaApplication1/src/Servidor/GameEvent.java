@@ -22,7 +22,8 @@ public class GameEvent {
         FINALIZAR_JUEGO, 
         NOMBRE_NO_VALIDO,
         COLOR_NO_VALIDO,
-        
+        PUNTOS,
+        ERROR
         
     }
     

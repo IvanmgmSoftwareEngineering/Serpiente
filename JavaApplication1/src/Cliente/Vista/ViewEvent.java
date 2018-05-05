@@ -12,7 +12,12 @@ package Cliente.Vista;
 public class ViewEvent {
 
     public enum EventType{
-        
+        START,
+        ARRIBA,
+        ABAJO,
+        IZQUIERDA,
+        DERECHA,
+        FINALIZAR_JUEGO
         
     }
     

@@ -97,7 +97,7 @@ public class Controlador {
         
     }
     
-    public void dibujarSerpiente(Posicion primero, Posicion ultimo, )
+    //public void dibujarSerpiente(Posicion primero, Posicion ultimo, )
     
     
 }
