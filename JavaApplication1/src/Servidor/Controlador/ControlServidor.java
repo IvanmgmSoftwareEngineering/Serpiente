@@ -38,6 +38,7 @@ public class ControlServidor implements Observer {
     
         Protocolos propios:
             FRT para decir al cliente que hay una fruta nueva
+            MOV ha sido editado para que tenga el número de cliente al final
     */
     
     private ServerSocket serverSocket;
@@ -45,6 +46,7 @@ public class ControlServidor implements Observer {
     private ArrayList<BufferedReader> entradaDatos;
     private ArrayList<DataOutputStream> salidaDatos;
     private int numJugadores = 0;
+    private ArrayList<String> listaMensajes;
     
     
     public ControlServidor(GameModel modelo) throws IOException {
@@ -64,6 +66,62 @@ public class ControlServidor implements Observer {
     
     
     // MENSAJES DEL SOCKET AL MODELO
+    
+    private void recibirMensajes() {
+        Iterator iterator = entradaDatos.iterator();
+        BufferedReader flujoEntrada;
+        try {
+            while(iterator.hasNext()) {
+                flujoEntrada = (BufferedReader) iterator.next();
+                while (flujoEntrada.ready()) {
+                    listaMensajes.add( flujoEntrada.readLine() );
+                }
+            }
+        }
+        catch (IOException ioe) {
+            //modelo.errorDeConexion();
+        }
+    }
+    
+    private void leerMensajes() {
+        Iterator iterator = listaMensajes.iterator();
+        String mensaje;
+        while(iterator.hasNext()) {
+            mensaje = (String) iterator.next();
+            procesarMensaje(mensaje);
+        } 
+    }
+    
+    private void procesarMensaje(String mensaje) {
+        String[] partes = mensaje.split(";");
+        String cabecera = partes[0];
+        switch (cabecera) {
+            case "DIR":
+                String dir = partes[1].trim();
+                int idC = Integer.parseInt(partes[2].trim());
+                switch (dir) {
+                    case "ARRIBA":
+                        girarArriba(idC);
+                        break;
+                    case "ABAJO":
+                        girarAbajo(idC);
+                        break;
+                    case "DER":
+                        girarDerecha(idC);
+                        break;
+                    case "IZQ":
+                        girarIzquierda(idC);
+                        break;
+                }
+                break;
+                
+            case "FIN":
+                int idFin = Integer.parseInt(partes[1].trim());
+                finalizar(idFin);
+                break;
+        }
+    }
+    
     
     public void girarDerecha(int idVentana) {
         modelo.girarDerecha(idVentana);
@@ -110,13 +168,13 @@ public class ControlServidor implements Observer {
                 int blancoY = posBlanco.getFila();
                 int blancoX = posBlanco.getColumna();
                 int idJugador = (int) evento.getDatos4();
-                enviarTodos("MOV; " + idJugador + ";" + nuevaX + ";" + nuevaY + ";" + blancoX + ";" + blancoY + ":");
+                enviarTodos("MOV; " + idJugador + ";" + nuevaX + ";" + nuevaY + ";" + blancoX + ";" + blancoY);
                 break; 
                     
             case PUNTOS: 
                 int jugPuntos = (int) evento.getDatos1();
                 int puntos = (int) evento.getDatos2();
-                enviarTodos("PTS; " + jugPuntos + "; " + puntos + ":");
+                enviarTodos("PTS; " + jugPuntos + "; " + puntos);
                 break;
                     
             case NUEVA_FRUTA: 
@@ -125,18 +183,18 @@ public class ControlServidor implements Observer {
                 Posicion posFruta = (Posicion) evento.getDatos1();
                 int frutaX = posFruta.getColumna();
                 int frutaY = posFruta.getFila();
-                enviarTodos("FRT; " + frutaX + frutaY + ":");
+                enviarTodos("FRT; " + frutaX + frutaY);
                 break;         
                    
             case FINALIZAR_JUEGO:
                 int idFin = (int) evento.getDatos1(); 
                 // Cuando se use este evento, especificar para quién se acaba el juego
-                enviarTodos("FIN; " + idFin + ":");
+                enviarTodos("FIN; " + idFin);
                 break;
              
             case ERROR:
                 String textoDescriptivo = (String) evento.getDatos1();
-                enviarTodos("ERR; " + textoDescriptivo + ":");
+                enviarTodos("ERR; " + textoDescriptivo);
                 break;
                     
                     
