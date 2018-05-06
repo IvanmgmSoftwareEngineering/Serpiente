@@ -6,6 +6,7 @@
 package main;
 
 import Cliente.Controlador.Controlador;
+import Cliente.Observable.Observer;
 import Servidor.GameModel;
 import Cliente.Vista.VentanaPrincipal;
 import Cliente.Vista.VentanaPuntuacion;

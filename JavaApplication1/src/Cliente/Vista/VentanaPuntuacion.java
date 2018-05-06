@@ -6,8 +6,7 @@
 package Cliente.Vista;
 
 import Servidor.GameEvent;
-import java.util.Observable;
-import java.util.Observer;
+import Cliente.Observable.Observer;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -126,10 +125,7 @@ public class VentanaPuntuacion extends JFrame implements Observer {
         });
     }
     
-    public void update(Observable o, Object arg) {
-        GameEvent evento = (GameEvent) arg;
-        manejarEvento(evento);
-    }
+    
     
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){

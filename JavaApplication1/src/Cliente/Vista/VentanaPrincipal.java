@@ -5,17 +5,17 @@ package Cliente.Vista;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-//uuuuuuuuuuuuuu
 import Servidor.Posicion;
 import Cliente.Controlador.Controlador;
+import Cliente.Observable.Observer;
 import Servidor.GameEvent;
 import java.awt.Color;
 import javax.swing.*;
-import java.util.Observer;
-import java.util.Observable;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import Cliente.Observable.Observer;
+
 
 
 
@@ -37,6 +37,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     private int altura_tablero;
     private int ancho_tablero;
     private int velocidadSerpiente;
+    private boolean juegoIniciado;
     
     
    
@@ -63,6 +64,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         this.anadirFuncionalidadTeclado();
         this.colorFruta = Color.pink;
         this.nombreIntroducido = false;
+        this.juegoIniciado = false;
         
 
         
@@ -431,10 +433,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         });
     }
     
-    public void update(Observable o, Object arg) {
-        GameEvent evento = (GameEvent) arg;
-        manejarEvento(evento);
-    }
+    
     
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
@@ -442,9 +441,10 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             case START: 
                 if(this.idVentana == (int) evento.getDatos6()){
                     this.start();
-                }
+                    this.juegoIniciado = true;
                     this.dibujaFruta((Posicion)evento.getDatos5());
                     this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int) evento.getDatos6());
+                }   
                     break; 
   
             case PAUSE:
@@ -460,7 +460,9 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                     break;
                     
             case MOVER_SERPIENTE: 
+                if(this.juegoIniciado == true){
                     this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int)evento.getDatos4());
+                }
                     break; 
                     
             case NUEVA_FRUTA: 
@@ -546,6 +548,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         muestraCoordenadaX.setText("-");
         muestraCoordenadaY.setText("-");
         nombreIntroducido = false;
+        this.juegoIniciado = false;
         SwingUtilities.invokeLater(new Runnable() {
                         @Override
                         public void run() {
