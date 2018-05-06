@@ -37,6 +37,22 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     private int ancho_tablero;
     private int velocidadSerpiente;
     
+    /* 
+        Como Observable es clase y no interfaz (y las ventanas
+        ya extienden de la clase JFrame), hay que usar una forma
+        alternativa de notificar eventos. Creamos una clase 
+        observable como atributo de la ventana y mandamos las
+        notificaciones a través de esta.
+    */
+    
+    private static class MyObservable extends Observable {
+        @Override
+        public void setChanged() {
+            super.setChanged();
+        }
+    }
+    private final MyObservable observable = new MyObservable();
+    
     
    
     
@@ -293,12 +309,15 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
-        if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {           
-            this.controlador.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
+        if("Iniciar".equals(botonIniciar.getText()) && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {           
+            //this.controlador.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
+            observable.setChanged();
+            observable.notifyObservers(new ViewEvent(ViewEvent.EventType.START, null, null));
         }
-        else if (botonIniciar.getText() == "Reiniciar"){           
+        /*else if ("Reiniciar".equals(botonIniciar.getText())){           
             this.controlador.reiniciar();
-        }
+            
+        }*/
     }//GEN-LAST:event_botonIniciarActionPerformed
 
     private void introducirNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_introducirNombreActionPerformed
@@ -315,16 +334,18 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     }//GEN-LAST:event_introducirNombreActionPerformed
 
     private void botonPausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPausaActionPerformed
-        if(botonPausa.getText() == "Pause") {
-            this.controlador.pause();
+        if("Pause".equals(botonPausa.getText())) {
+            //this.controlador.pause();
          }
-        else if (botonPausa.getText() == "Reanudar"){
-            this.controlador.reanudar();  
+        else if ("Reanudar".equals(botonPausa.getText())){
+            //this.controlador.reanudar();  
         }    
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
-        this.controlador.girarDerecha(this.idVentana);
+        //this.controlador.girarDerecha(this.idVentana);
+        observable.setChanged();
+        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.DERECHA, null, null));
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
     private void desplegableColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableColoresActionPerformed
@@ -332,15 +353,21 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
-        this.controlador.girarIzquierda(this.idVentana);
+        //this.controlador.girarIzquierda(this.idVentana);
+        observable.setChanged();
+        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.IZQUIERDA, null, null));
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
-        this.controlador.girarArriba(this.idVentana);
+        //this.controlador.girarArriba(this.idVentana);
+        observable.setChanged();
+        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.ARRIBA, null, null));
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
-    this.controlador.girarAbajo(this.idVentana);
+        //this.controlador.girarAbajo(this.idVentana);
+        observable.setChanged();
+        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.ABAJO, null, null));
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
     private void muestraCoordenadaXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muestraCoordenadaXActionPerformed
@@ -430,7 +457,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         });
     }
     
-    public void update(Observable o, Object arg) {
+    /*public void update(Observable o, Object arg) {
         GameEvent evento = (GameEvent) arg;
         manejarEvento(evento);
     }
@@ -484,7 +511,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                     
                     
         } 
-    }
+    }*/
     
     public void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana){
         this.matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(this.StringColorSerpienteToColor(colorSerpiente));
@@ -546,11 +573,11 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         muestraCoordenadaY.setText("-");
         nombreIntroducido = false;
         SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            ponerBlanco();  
-                        }
-                    });
+            @Override
+            public void run() {
+                ponerBlanco();  
+            }
+        });
         
     }
     
@@ -814,5 +841,11 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             public void keyReleased(KeyEvent e) {
             }
         });
+    }
+    
+    // MÉTODOS QUE USA EL CONTROLADOR
+    
+    public void setIdVentana(int id) {
+        this.idVentana = id;
     }
 }
