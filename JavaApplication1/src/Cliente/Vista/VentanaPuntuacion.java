@@ -15,15 +15,14 @@ import javax.swing.SwingUtilities;
  *
  * @author img
  */
-public class VentanaPuntuacion extends JFrame implements Observer {
+public class VentanaPuntuacion extends JFrame {
     
     private int idVentana;
     private int puntuacion;
     private String nombreCliente;
 
-    public VentanaPuntuacion(int idVentana) {
+    public VentanaPuntuacion() {
            initComponents();
-           this.idVentana = idVentana;
            this.puntuacion = 1;
            this.nombreCliente = "";
            this.puntuacionTextField.setEnabled(true);
@@ -31,6 +30,22 @@ public class VentanaPuntuacion extends JFrame implements Observer {
            this.puntuacionTextField.setText("");
 
     }
+    
+    /* 
+        Como Observable es clase y no interfaz (y las ventanas
+        ya extienden de la clase JFrame), hay que usar una forma
+        alternativa de notificar eventos. Creamos una clase 
+        observable como atributo de la ventana y mandamos las
+        notificaciones a través de esta.
+    */
+    
+    private static class MyObservable extends Observable {
+        @Override
+        public void setChanged() {
+            super.setChanged();
+        }
+    }
+    private final MyObservable observable = new MyObservable();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -101,7 +116,7 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void puntuacionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puntuacionTextFieldActionPerformed
-        // TODO add your handling code here:
+        // No queremos de momento que haga nada
     }//GEN-LAST:event_puntuacionTextFieldActionPerformed
 
     
@@ -112,59 +127,40 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     private javax.swing.JTextField puntuacionTextField;
     // End of variables declaration//GEN-END:variables
 
-    //@Override
-    public void notifyEvent(GameEvent evento) {
-        
-        SwingUtilities.invokeLater(new Runnable() {
-            //SwingUtilities clase que contiene el metodod static 'invokeLater'
-            //Runnable: interfaz que solo tiene el método run
-            // el objetivo de lo anterior es crear una cola de eventos para ir almacenando los eventos
-            @Override
-            public void run() {
-                manejarEvento(evento);
-            } 
-        });
-    }
-    
-    public void update(Observable o, Object arg) {
-        GameEvent evento = (GameEvent) arg;
-        manejarEvento(evento);
-    }
-    
-    public void manejarEvento (GameEvent evento) {
-        switch (evento.getEvento()){
-            
-            case START:
-                if(this.idVentana == (int)evento.getDatos6()){
-                    this.nombreCliente = (String)evento.getDatos4();
-                    iniciarMarcador();
-                }
-                    break; 
-            
-            case NUEVA_FRUTA: 
-                if(this.idVentana == (int)evento.getDatos2()){
-                    this.puntuacion = this.puntuacion +1;
-                    mostrarPuntuacion(this.puntuacion);
-                }
-                    break;
-                    
-            case REINICIAR: 
-                    reiniciarMarcador();
-                    break; 
-        }
-    }
     
     private void mostrarPuntuacion(int puntuacion) {
         puntuacionTextField.setText("         " + puntuacion);
-    }
-
-    private void reiniciarMarcador() {
-        this.jLabel1.setText("Puntuación");
-        puntuacionTextField.setText("         1");
     }
 
     private void iniciarMarcador() {
         this.jLabel1.setText(this.nombreCliente);
         puntuacionTextField.setText("         1");
     }
+    
+    // MÉTODOS QUE USA EL CONTROLADOR
+    
+    public void setIdVentana(int id) {
+        this.idVentana = id;
+    }
+    
+    public void actualizarPuntuacion(int jugPuntos, int puntuacion) {
+        if (this.idVentana == jugPuntos) {
+            this.puntuacion = puntuacion;
+            mostrarPuntuacion(this.puntuacion);
+        }
+    }
+    
+    public void reiniciarMarcador() {
+        this.jLabel1.setText("Puntuación");
+        puntuacionTextField.setText("         1");
+    }
+    
+    public void setNombre(String nombre) {
+        this.nombreCliente = nombre;
+        this.jLabel1.setText(this.nombreCliente);
+    }
+    
+    // Esta ventana de momento no le envía información al controlador
+    
+    
 }
