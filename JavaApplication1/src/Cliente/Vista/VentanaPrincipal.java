@@ -5,7 +5,7 @@ package Cliente.Vista;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+//uuuuuuuuuuuuuu
 import Servidor.Posicion;
 import Cliente.Controlador.Controlador;
 import Servidor.GameEvent;
