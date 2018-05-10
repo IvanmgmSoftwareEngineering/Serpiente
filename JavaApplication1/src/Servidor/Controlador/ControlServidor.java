@@ -67,7 +67,7 @@ public class ControlServidor implements Observer {
     
     // MENSAJES DEL SOCKET AL MODELO
     
-    private void recibirMensajes() {
+    public void recibirMensajes() {
         Iterator iterator = entradaDatos.iterator();
         BufferedReader flujoEntrada;
         try {
@@ -83,7 +83,7 @@ public class ControlServidor implements Observer {
         }
     }
     
-    private void leerMensajes() {
+    public void leerMensajes() {
         Iterator iterator = listaMensajes.iterator();
         String mensaje;
         while(iterator.hasNext()) {

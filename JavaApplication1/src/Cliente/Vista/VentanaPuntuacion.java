@@ -46,6 +46,8 @@ public class VentanaPuntuacion extends JFrame {
         }
     }
     private final MyObservable observable = new MyObservable();
+    
+    public Observable getObservable() { return this.observable; }
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -7,10 +7,8 @@ package Cliente.Vista;
  */
 
 import Cliente.Controlador.Controlador;
-import Servidor.GameEvent;
 import java.awt.Color;
 import javax.swing.*;
-import java.util.Observer;
 import java.util.Observable;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
@@ -22,14 +20,13 @@ import java.awt.event.KeyListener;
  *
  * @author i.martingo.2016
  */
-public class VentanaPrincipal  extends JFrame implements Observer {
+public class VentanaPrincipal  extends JFrame {
 
     /**
      * Creates new form NewJFrame
      */
     private int idVentana;
     private JPanel [][] matriz;
-    private Controlador controlador;
     private boolean nombreIntroducido;
     private String nombreJugador;
     private Color colorFruta;
@@ -53,13 +50,14 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     }
     private final MyObservable observable = new MyObservable();
     
+    public Observable getObservable() { return this.observable; }
+    
     
    
     
-    public VentanaPrincipal(int idVentana,Controlador controlador, int altura_tablero, int ancho_tablero, int velocidad_serpiente) {
+    public VentanaPrincipal(int idVentana, int altura_tablero, int ancho_tablero, int velocidad_serpiente) {
         initComponents();
         this.idVentana = idVentana;
-        this.controlador = controlador;
         this.altura_tablero = altura_tablero;
         this.ancho_tablero = ancho_tablero;
         this.velocidadSerpiente = velocidad_serpiente;
@@ -443,7 +441,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     // End of variables declaration//GEN-END:variables
     
    
-    //@Override
+    /*@Override
     public void notifyEvent(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -457,7 +455,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         });
     }
     
-    /*public void update(Observable o, Object arg) {
+    public void update(Observable o, Object arg) {
         GameEvent evento = (GameEvent) arg;
         manejarEvento(evento);
     }
@@ -821,19 +819,27 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode()== 39){
                     
-                        controlador.girarDerecha(idVentana);     
+                        //controlador.girarDerecha(idVentana);     
+                        observable.setChanged();
+                        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.DERECHA, null, null));
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode()== 37){
                     
-                        controlador.girarIzquierda(idVentana);    
+                        //controlador.girarIzquierda(idVentana);  
+                        observable.setChanged();
+                        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.IZQUIERDA, null, null));
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode()== 38){
                     
-                        controlador.girarArriba(idVentana);
+                        //controlador.girarArriba(idVentana);
+                        observable.setChanged();
+                        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.ARRIBA, null, null));
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
                     
-                        controlador.girarAbajo(idVentana);
+                        //controlador.girarAbajo(idVentana);
+                        observable.setChanged();
+                        observable.notifyObservers(new ViewEvent(ViewEvent.EventType.ABAJO, null, null));
                 }           
             }
 

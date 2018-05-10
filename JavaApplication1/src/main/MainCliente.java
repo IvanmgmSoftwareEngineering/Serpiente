@@ -28,9 +28,13 @@ public class MainCliente {
             VentanaPrincipal vPrin = new VentanaPrincipal(0,ALTURA_TABLERO, ANCHURA_TABLERO,VELOCIDAD_SERPIENTE);
             VentanaPuntuacion vPunt = new VentanaPuntuacion();
             ControlCliente controlCliente = new ControlCliente(vPrin,vPunt);
-            int idJugador = controlCliente.conectar();
-            vPrin.setIdVentana(idJugador);
-            vPunt.setIdVentana(idJugador);
+            vPrin.getObservable().addObserver(controlCliente);
+            vPunt.getObservable().addObserver(controlCliente);
+            vPrin.setVisible(true);
+            vPunt.setVisible(true);
+            //int idJugador = controlCliente.conectar();
+            //vPrin.setIdVentana(idJugador);
+            //vPunt.setIdVentana(idJugador);
             Boolean sigueBucle = true;
             while(sigueBucle) {
                 controlCliente.leerMensajes();

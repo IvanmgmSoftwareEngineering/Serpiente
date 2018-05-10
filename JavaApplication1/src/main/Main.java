@@ -5,8 +5,11 @@
  */
 package main;
 
+import Cliente.*;
+import Servidor.*;
+import Servidor.Controlador.ControlServidor;
+import Cliente.Controlador.ControlCliente;
 import Cliente.Controlador.Controlador;
-import Servidor.GameModel;
 import Cliente.Vista.VentanaPrincipal;
 import Cliente.Vista.VentanaPuntuacion;
 import javax.swing.SwingUtilities;
@@ -32,14 +35,15 @@ public class Main {
             //Runnable: interfaz que solo tiene el método run.
             // el objetivo de lo anterior es crear una cola de eventos para ir almacenando los eventos
             public void run() {
+                /*
                 GameModel modelo1 = new GameModel(ALTURA_TABLERO,ANCHURA_TABLERO);
                 GameModel modelo2 = new GameModel(ALTURA_TABLERO,ANCHURA_TABLERO);
                 Controlador controlador1 = new Controlador(modelo1);
                 Controlador controlador2 = new Controlador(modelo2);
-                VentanaPuntuacion ventanaPuntuacion1 = new VentanaPuntuacion(1);               
-                VentanaPuntuacion ventanaPuntuacion2 = new VentanaPuntuacion(2);
-                VentanaPrincipal ventanaPrincipal1 = new VentanaPrincipal(1,controlador1, ALTURA_TABLERO, ANCHURA_TABLERO,VELOCIDAD_SERPIENTE);
-                VentanaPrincipal ventanaPrincipal2 = new VentanaPrincipal(2,controlador2, ALTURA_TABLERO, ANCHURA_TABLERO,VELOCIDAD_SERPIENTE);                
+                VentanaPuntuacion ventanaPuntuacion1 = new VentanaPuntuacion();               
+                VentanaPuntuacion ventanaPuntuacion2 = new VentanaPuntuacion();
+                VentanaPrincipal ventanaPrincipal1 = new VentanaPrincipal(1, ALTURA_TABLERO, ANCHURA_TABLERO,VELOCIDAD_SERPIENTE);
+                VentanaPrincipal ventanaPrincipal2 = new VentanaPrincipal(2, ALTURA_TABLERO, ANCHURA_TABLERO,VELOCIDAD_SERPIENTE);                
                 modelo1.addObserver(ventanaPuntuacion1);
                 modelo2.addObserver(ventanaPuntuacion2);               
                 modelo1.addObserver(ventanaPrincipal1);
@@ -48,6 +52,9 @@ public class Main {
                 ventanaPuntuacion2.setVisible(true);
                 ventanaPrincipal1.setVisible(true);
                 ventanaPrincipal2.setVisible(true);
+                
+                */
+                
                 
             }
         });

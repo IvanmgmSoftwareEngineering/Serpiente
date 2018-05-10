@@ -87,27 +87,27 @@ public class GameModel extends Observable implements Serpiente {
  
     public void pause() {
             this.juegoPausado = true;
-            for(Jugador jugador: this.jugadores){
+            this.jugadores.forEach((jugador) -> {
                 jugador.getSerpiente().pausar();
-            }
+        });
             this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.PAUSE, null,null,null,null,null,null));   
     }
     
     public void reanudar() {
             this.juegoPausado = false;
-            for(Jugador jugador: this.jugadores){
+            this.jugadores.forEach((jugador) -> {
                 jugador.getSerpiente().reanudar();
-            }
+        });
             this.setChanged();
             this.notifyObservers(new GameEvent(GameEvent.EventType.REANUDAR, null,null,null,null,null,null));   
     }
     
     public void reiniciar() {
         this.juegoPausado = false;
-        for(Jugador jugador: this.jugadores){
-                jugador.getSerpiente().interrupt();
-            }
+        this.jugadores.forEach((jugador) -> {
+            jugador.getSerpiente().interrupt();
+        });
         jugadores.clear();
         this.setChanged();
         this.notifyObservers(new GameEvent(GameEvent.EventType.REINICIAR, null,null,null,null,null,null));

@@ -77,8 +77,9 @@ public class ControlCliente implements Observer {
     
     // MENSAJES DEL SOCKET A LA VISTA
     
-    private void leerMensajes() {
+    public void leerMensajes() {
         try {
+            
             while (entradaDatos.ready()) {
                 procesarMensaje(entradaDatos.readLine());
             }
@@ -105,8 +106,7 @@ public class ControlCliente implements Observer {
             case "PTS":
                 int jugPuntos = Integer.parseInt(partes[1].trim());
                 int puntuacion = Integer.parseInt(partes[2].trim());
-                //ventanaPuntuacion.actualizar(jugPuntos, puntuacion);
-                // Hay que impementar este método en VentanaPuntuacion
+                ventanaPuntuacion.actualizarPuntuacion(jugPuntos, puntuacion);
                 break;
                 
             case "ERR":
@@ -140,6 +140,8 @@ public class ControlCliente implements Observer {
         switch(evento.getEvento()) {
             case START:
                 this.conectar();
+                ventanaPrincipal.setIdVentana(this.idJugador);
+                ventanaPuntuacion.setIdVentana(this.idJugador);
                 break;
                 
             case ARRIBA:
@@ -161,6 +163,9 @@ public class ControlCliente implements Observer {
             case FINALIZAR_JUEGO:
                 enviarSocket("FIN; " + idJugador);
                 break;
+                
+            case FIJAR_NOMBRE: // Este evento es para comunicárselo a la ventana de puntuación
+                ventanaPuntuacion.setNombre( (String) evento.getDatos1() );
         }
     }
     

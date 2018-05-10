@@ -24,9 +24,9 @@ public class MainServidor {
     public static void main(String args[]) {
     
         try {
-            
             GameModel modelo = new GameModel(ALTURA_TABLERO,ANCHURA_TABLERO);
             ControlServidor controlServidor = new ControlServidor(modelo);
+            modelo.addObserver(controlServidor);
             Boolean sigueBucle = true;
             while(sigueBucle) {
                 controlServidor.conectar();

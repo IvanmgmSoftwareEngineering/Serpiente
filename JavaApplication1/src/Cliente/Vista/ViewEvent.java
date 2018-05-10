@@ -17,30 +17,22 @@ public class ViewEvent {
         ABAJO,
         IZQUIERDA,
         DERECHA,
-        FINALIZAR_JUEGO
+        FINALIZAR_JUEGO,
+        FIJAR_NOMBRE // Evento entre ventanas, no pasa por socket
         
     }
     
    
     private Object datos1;
     private Object datos2;
-    private Object datos3;
-    private Object datos4;
-    private Object datos5;
-    private Object datos6;
     private EventType evento;
     
     
     
-    public ViewEvent(EventType evento, Object datos1, Object datos2, Object datos3, Object datos4, Object datos5, Object datos6){
+    public ViewEvent(EventType evento, Object datos1, Object datos2){
         this.evento = evento;
         this.datos1 = datos1;
         this.datos2 = datos2;
-        this.datos3 = datos3;
-        this.datos4 = datos4;
-        this.datos5 = datos5;
-        this.datos6 = datos6;
-        
     }
 
     public Object getDatos1() {
@@ -49,22 +41,6 @@ public class ViewEvent {
     
     public Object getDatos2() {
         return datos2;
-    }
-
-    public Object getDatos3() {
-        return datos3;
-    }
-
-    public Object getDatos4() {
-        return datos4;
-    }
-
-    public Object getDatos5() {
-        return datos5;
-    }
-
-    public Object getDatos6() {
-        return datos6;
     }
     
     public EventType getEvento() {
