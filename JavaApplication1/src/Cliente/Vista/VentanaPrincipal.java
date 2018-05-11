@@ -311,6 +311,7 @@ public class VentanaPrincipal  extends JFrame {
             //this.controlador.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
             observable.setChanged();
             observable.notifyObservers(new ViewEvent(ViewEvent.EventType.START, null, null));
+            
         }
         /*else if ("Reiniciar".equals(botonIniciar.getText())){           
             this.controlador.reiniciar();
@@ -324,6 +325,8 @@ public class VentanaPrincipal  extends JFrame {
             introducirNombre.setText("");
             nombreIntroducido = true;
             this.nombreJugador = muestraNombre.getText();
+            observable.setChanged();
+            observable.notifyObservers(new ViewEvent(ViewEvent.EventType.FIJAR_NOMBRE, muestraNombre.getText(), null));
         }
         else{
             introducirNombre.setCaretColor(Color.red);

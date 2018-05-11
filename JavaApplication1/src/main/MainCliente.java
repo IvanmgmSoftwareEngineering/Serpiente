@@ -35,10 +35,10 @@ public class MainCliente {
             //int idJugador = controlCliente.conectar();
             //vPrin.setIdVentana(idJugador);
             //vPunt.setIdVentana(idJugador);
-            Boolean sigueBucle = true;
-            while(sigueBucle) {
-                controlCliente.leerMensajes();
-            }
+//            Boolean sigueBucle = true;
+//            while(sigueBucle) {
+//                controlCliente.leerMensajes();
+//            }
             
         }
         catch (IOException ioe) {

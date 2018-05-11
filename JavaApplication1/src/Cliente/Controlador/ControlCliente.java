@@ -56,7 +56,10 @@ public class ControlCliente implements Observer {
             InputStreamReader inputStream = new InputStreamReader(socket.getInputStream());
             entradaDatos = new BufferedReader(inputStream);
             salidaDatos = new DataOutputStream(socket.getOutputStream());
-            return asignarId(entradaDatos.readLine());
+            if (entradaDatos.ready()) {
+                return asignarId(entradaDatos.readLine());
+            }
+            else return -3;
         }
         catch (IOException ioe) {
             //ventanaApp.errorConexion();
@@ -71,7 +74,7 @@ public class ControlCliente implements Observer {
             return idJugador;
         }
         else {
-            return -1; // Te devuelven -1 si hay errores
+            return -2; // Te devuelven negativos si hay errores
         }
     }
     
@@ -92,6 +95,12 @@ public class ControlCliente implements Observer {
     private void procesarMensaje(String mensaje) {
         String[] partes = mensaje.split(";");
         switch (partes[0]) {
+            case "IDC":
+                idJugador = Integer.parseInt(partes[1].trim());
+                ventanaPrincipal.setIdVentana(this.idJugador);
+                ventanaPuntuacion.setIdVentana(this.idJugador);
+                break;
+            
             case "MOV":
                 int idSerpiente = Integer.parseInt(partes[1].trim());
                 int nuevoX = Integer.parseInt(partes[2].trim());
@@ -140,8 +149,6 @@ public class ControlCliente implements Observer {
         switch(evento.getEvento()) {
             case START:
                 this.conectar();
-                ventanaPrincipal.setIdVentana(this.idJugador);
-                ventanaPuntuacion.setIdVentana(this.idJugador);
                 break;
                 
             case ARRIBA:

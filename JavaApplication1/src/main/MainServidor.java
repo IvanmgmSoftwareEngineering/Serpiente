@@ -29,6 +29,7 @@ public class MainServidor {
             modelo.addObserver(controlServidor);
             Boolean sigueBucle = true;
             while(sigueBucle) {
+                
                 controlServidor.conectar();
                 controlServidor.recibirMensajes();
                 controlServidor.leerMensajes();
