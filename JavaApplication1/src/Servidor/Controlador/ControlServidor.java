@@ -55,13 +55,23 @@ public class ControlServidor implements Observer {
     }
     
     public int conectar() throws IOException {
-        Socket socket = serverSocket.accept();
+        Socket socket = new Socket();
+        try {
+        socket = serverSocket.accept();
         InputStreamReader inputStream = new InputStreamReader(socket.getInputStream());
+        this.entradaDatos = new ArrayList<BufferedReader>();
+        this.salidaDatos = new ArrayList<DataOutputStream>();
         this.entradaDatos.add( numJugadores, new BufferedReader(inputStream) );
         this.salidaDatos.add( numJugadores, new DataOutputStream(socket.getOutputStream()) ); 
         numJugadores ++;
         manejarEvento(new GameEvent(GameEvent.EventType.START, numJugadores - 1, null, null, null, null, null));
         return numJugadores - 1; // El identificador empieza a contar a partir del 0
+        }
+        finally {
+            if (socket != null) {
+                socket.close();
+            }
+        }
     }
     
     
@@ -71,6 +81,7 @@ public class ControlServidor implements Observer {
     public void recibirMensajes() {
         Iterator iterator = entradaDatos.iterator();
         BufferedReader flujoEntrada;
+        listaMensajes = new ArrayList<String>();
         try {
             while(iterator.hasNext()) {
                 flujoEntrada = (BufferedReader) iterator.next();
@@ -85,13 +96,15 @@ public class ControlServidor implements Observer {
     }
     
     public void leerMensajes() {
-        Iterator iterator = listaMensajes.iterator();
-        String mensaje;
-        while(iterator.hasNext()) {
-            mensaje = (String) iterator.next();
-            procesarMensaje(mensaje);
-        } 
-        listaMensajes.clear();
+        if (listaMensajes.size() != 0) {
+            Iterator iterator = listaMensajes.iterator();
+            String mensaje;
+            while(iterator.hasNext()) {
+                mensaje = (String) iterator.next();
+                procesarMensaje(mensaje);
+            } 
+            listaMensajes.clear();
+        }
     }
     
     private void procesarMensaje(String mensaje) {
@@ -159,7 +172,7 @@ public class ControlServidor implements Observer {
         switch (evento.getEvento()){
             
             case START: 
-                int idStart = (int) evento.getDatos6();
+                int idStart = (int) evento.getDatos1();
                 enviarSocket(idStart, "IDC; " + idStart + ":");             
                 break; 
 
