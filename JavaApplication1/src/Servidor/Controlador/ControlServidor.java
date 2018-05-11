@@ -60,6 +60,7 @@ public class ControlServidor implements Observer {
         this.entradaDatos.add( numJugadores, new BufferedReader(inputStream) );
         this.salidaDatos.add( numJugadores, new DataOutputStream(socket.getOutputStream()) ); 
         numJugadores ++;
+        manejarEvento(new GameEvent(GameEvent.EventType.START, numJugadores - 1, null, null, null, null, null));
         return numJugadores - 1; // El identificador empieza a contar a partir del 0
     }
     
