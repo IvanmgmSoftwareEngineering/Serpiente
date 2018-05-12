@@ -133,9 +133,11 @@ public class GameModel implements ObservableServidor, Serpiente {
         System.out.println("Estoy en el metodo REINICIAR del modelo");
         this.reiniciarPulsado = true;
         this.juegoPausado = false;
-        //for(Jugador jugador: this.jugadores){
-                //jugador.getSerpiente().interrupt();
-            //}
+        for(Jugador jugador: this.jugadores){
+                jugador.getSerpiente().interrupt();
+        }
+        this.reiniciarPulsado = false;
+       
         jugadores.clear();
         this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.REINICIAR, null,null,null,null,null,null));
     }

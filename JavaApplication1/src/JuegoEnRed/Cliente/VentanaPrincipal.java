@@ -478,12 +478,27 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         } 
     }
     
-    private void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana){
-        this.matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(this.StringColorSerpienteToColor(colorSerpiente));
-        this.matriz[PosicionColaPonerABlanco.getFila()][PosicionColaPonerABlanco.getColumna()].setBackground(Color.white);
-        if(idVentana == this.idVentana){
-            this.mostrarCoordenadasCabeza(nuevaPosicionCabeza.getFila(),nuevaPosicionCabeza.getColumna());
-        }
+    private void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana1){
+        SwingUtilities.invokeLater(new Runnable() {
+            //SwingUgilities clase que contiene el metodod static 'invokeLater'
+            //Runnable: interfaz que solo tiene el método run
+            // el objetivo de lo anterior es crear una cola de eventos para ir almacenando los eventos
+            @Override
+            public void run() {
+                try{
+                matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(StringColorSerpienteToColor(colorSerpiente));
+                matriz[PosicionColaPonerABlanco.getFila()][PosicionColaPonerABlanco.getColumna()].setBackground(Color.white);
+                if(idVentana1 == idVentana){
+                    mostrarCoordenadasCabeza(nuevaPosicionCabeza.getFila(),nuevaPosicionCabeza.getColumna());
+                }
+                }
+                catch(Exception e){
+                    System.out.println("Problema al dibujar la serpiente en la ventana principal");
+                }
+            } 
+            
+        });
+        
 
         
 

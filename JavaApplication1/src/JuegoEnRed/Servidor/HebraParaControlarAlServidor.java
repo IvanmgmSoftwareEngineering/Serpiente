@@ -26,7 +26,7 @@ public class HebraParaControlarAlServidor extends Thread {
             while(!this.controladorServidor.isConexionFinalizada()){
                 
                 try {
-                    Thread.sleep(1000/1000000);
+                    Thread.sleep(0,000000000000001);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(HebraParaControlarAlServidor.class.getName()).log(Level.SEVERE, null, ex);
                 }

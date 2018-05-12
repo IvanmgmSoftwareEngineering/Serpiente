@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JuegoEnRed.main;
+package JuegoEnRed.mainRed;
 
 import JuegoEnRed.Cliente.ControladorCliente;
 import JuegoEnRed.Cliente.VentanaPrincipal;
@@ -16,7 +16,7 @@ public class MainCliente {
     
     private static final int ALTURA_TABLERO = 40;
     private static final int ANCHURA_TABLERO = 50;
-    private static final int VELOCIDAD_SERPIENTE =  1;
+    private static final int VELOCIDAD_SERPIENTE =  3;
     
     public static void main(String[] args) {
         try {

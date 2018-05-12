@@ -43,7 +43,7 @@ public class HebraParaControlarAlCliente extends Thread {
             while(!this.controladorCliente.isConexionFinalizada()){
                 
                 try {
-                Thread.sleep(1000/1000000);
+                Thread.sleep(0,00000000000000000000000001);
                 /*synchronized (this){
                     while (suspended){
                         this.wait();

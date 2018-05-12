@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JuegoEnRed.main;
+package JuegoEnRed.mainRed;
 
 import JuegoEnRed.Servidor.ControladorServidor;
 import JuegoEnRed.Servidor.GameModel;
