@@ -5,16 +5,12 @@
  */
 package Servidor;
 
-import Cliente.Observable.Observable;
-import Cliente.Observable.Observer;
-import Cliente.Vista.Direccion;
-import java.util.ArrayDeque;
+import Conexion.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 /**
  *
- * @author img
  */
 public class GameModel implements ObservableServidor, Serpiente {
     

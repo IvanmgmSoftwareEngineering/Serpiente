@@ -5,27 +5,21 @@
  */
 package Cliente;
 
-import Cliente.Conexion.Conexion;
-import Cliente.Observable.Observable;
-import Cliente.Observable.Observer;
+import Conexion.Conexion;
 import Servidor.GameEvent;
 import Servidor.Posicion;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.SwingUtilities;
-/**
- *
- * @author img
- */
+
+
+
 public class ControladorCliente extends Conexion implements ObservableCliente, InterfazParaControlarAlCliente {
     private boolean conexionFinalizada;
     private List<ObserverCliente> observadores;

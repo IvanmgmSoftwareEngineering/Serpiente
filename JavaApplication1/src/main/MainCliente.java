@@ -5,17 +5,13 @@
  */
 package main;
 
-import Cliente.Vista.ControladorCliente;
-import Cliente.Vista.VentanaPrincipal;
-import Cliente.Vista.VentanaPuntuacion;
+import Cliente.ControladorCliente;
+import Cliente.VentanaPrincipal;
+import Cliente.VentanaPuntuacion;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author img
- */
 public class MainCliente {
     
     private static final int ALTURA_TABLERO = 40;

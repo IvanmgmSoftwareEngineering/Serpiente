@@ -7,10 +7,7 @@ package Servidor;
 
 import java.net.Socket;
 
-/**
- *
- * @author img
- */
+
 public interface InterfazParaControlarAlServidor {
     
     void servidorEnviaRecibe();

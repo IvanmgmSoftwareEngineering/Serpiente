@@ -7,13 +7,8 @@ package Servidor;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
-import java.util.Objects;
 
-/**
- *
- * @author img
- */
+
 public class Jugador {
    
     private int idVentana;

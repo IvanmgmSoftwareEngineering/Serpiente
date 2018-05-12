@@ -5,13 +5,7 @@
  */
 package Servidor;
 
-import Cliente.Observable.*;
 
-/**
- *
- * @author img
- */
-    
 
  
 public interface ObservableServidor {

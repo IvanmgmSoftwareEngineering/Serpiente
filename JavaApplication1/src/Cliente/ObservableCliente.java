@@ -5,12 +5,7 @@
  */
 package Cliente;
 
-import Cliente.Observable.*;
 
-/**
- *
- * @author img
- */
     
 
  

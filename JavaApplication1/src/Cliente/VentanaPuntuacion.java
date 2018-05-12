@@ -5,15 +5,11 @@
  */
 package Cliente;
 
-import Servidor.GameEvent;
-import Cliente.Observable.Observer;
+import Conexion.GameEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author img
- */
+
 public class VentanaPuntuacion extends JFrame implements ObserverCliente {
     
     private int idVentana;

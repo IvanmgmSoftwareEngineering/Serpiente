@@ -5,14 +5,9 @@
  */
 package Servidor;
 
-import Cliente.Vista.Direccion;
-import Servidor.Serpiente;
-import java.util.Objects;
 
-/**
- *
- * @author img
- */
+
+
 public class HebraSerpiente extends Thread {
     
     private int velocidad; 

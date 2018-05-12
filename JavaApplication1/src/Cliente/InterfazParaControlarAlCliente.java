@@ -5,12 +5,8 @@
  */
 package Cliente;
 
-import java.net.Socket;
 
-/**
- *
- * @author img
- */
+
 public interface InterfazParaControlarAlCliente {
     
     boolean isConexionFinalizada();

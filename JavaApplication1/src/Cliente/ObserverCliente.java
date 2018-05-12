@@ -6,13 +6,9 @@
 package Cliente;
 
 
-import Cliente.Observable.*;
-import Servidor.GameEvent;
+import Conexion.GameEvent;
 
-/**
- *
- * @author img
- */
+
 public interface ObserverCliente {
     
     void notifyEventVistasCliente(GameEvent evento);

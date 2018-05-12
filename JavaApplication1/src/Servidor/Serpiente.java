@@ -5,13 +5,7 @@
  */
 package Servidor;
 
-import Cliente.Vista.Direccion;
-import javax.swing.JPanel;
 
-/**
- *
- * @author img
- */
 public interface Serpiente {
     
     public void moverSerpiente(Direccion direccion, int idVentana);

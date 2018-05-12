@@ -5,17 +5,10 @@
  */
 package Servidor;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-/**
- *
- * @author img
- */
+
 public class HebraParaEscucharNuevosClientes extends Thread {
     private InterfazParaEscucharNuevosClientes controladorServidor;
     private ServerSocket ss;

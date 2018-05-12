@@ -5,10 +5,7 @@
  */
 package Servidor;
 
-/**
- *
- * @author img
- */
+
 public interface InterfazParaEscucharNuevosClientes {
     
     boolean isConexionFinalizada();

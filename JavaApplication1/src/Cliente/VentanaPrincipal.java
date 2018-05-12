@@ -6,23 +6,17 @@ package Cliente;
  * and open the template in the editor.
  */
 import Servidor.Posicion;
-import Cliente.Controlador.Controlador;
-import Cliente.Observable.Observer;
-import Servidor.GameEvent;
+import Conexion.GameEvent;
 import java.awt.Color;
 import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import Cliente.Observable.Observer;
 
 
 
 
-/**
- *
- * @author i.martingo.2016
- */
+
 public class VentanaPrincipal  extends JFrame implements ObserverCliente {
 
     /**

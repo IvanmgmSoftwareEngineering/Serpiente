@@ -5,24 +5,16 @@
  */
 package Servidor;
 
-import Cliente.Conexion.Conexion; 
-import Cliente.Observable.Observer;
+import Conexion.Conexion; 
+import Conexion.GameEvent;
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author img
- */
+
 public class ControladorServidor extends Conexion implements ObserverServidor, InterfazParaControlarAlServidor, InterfazParaEscucharNuevosClientes {
     
     private String cabeceraCodificada;
@@ -187,7 +179,8 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
             this.clientes.add(new Cliente(this.contadorClientes,cs));
             System.out.println("Nuevo Cliente conectado al servidor. Id Cliente: " + contadorClientes );
         } catch (IOException ex) {
-            Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("No se ha conectado ningun nuevo cliente");
+            //Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         
@@ -203,7 +196,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
         if(!cabecerasCodificadasParaEnviar.isEmpty()){
             System.out.println("Hay "+cabecerasCodificadasParaEnviar.size() +" datos listos para enviarse desde el controlador del servidor al controlador del cliente");
 
-            try {
+            
                 
                 //ENVIAMOS A CADA UNO DE LOS CLIENTES TODOS LOS DATOS PENDIENTES DE ENVIAR DESDE EL SERVIDOR
                 synchronized(this.hebra){
@@ -221,7 +214,8 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                             
                         }
                         catch (IOException ex) {
-                            Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
+                            System.out.println("Problemas en el servidor al enviar el dato: "+i+"que contiene: "+cabecerasCodificadasParaEnviar.get(d));
+                            //Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
                     System.out.println("-----Todos los datos enviados al cliente: "+ clientes.get(h).getIdCliente());
@@ -231,10 +225,8 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                 this.cabecerasCodificadasParaEnviar.clear();
                 }
 
-            }
-            catch (Exception ex) {
-                Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
+            
         }
         
         Iterator iterador2 = this.clientes.iterator();
@@ -318,11 +310,11 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                         while(iterador6.hasNext()){
                             String dato = (String) iterador6.next();
                             String[] datos = dato.split(";");
-                            if(datos[0]!= "MOVER_SERPIENTE"){
+                            if(!(datos[0].equals("MOVER_SERPIENTE"))){
                                 lista_aux.add(dato);
                             }
                             else{
-                                if (datos[6]!=mensajeRecibidoDecodificado[1]){
+                                if (!(datos[6].equals(mensajeRecibidoDecodificado[1]))){
                                     lista_aux.add(dato);
                                 }
                             }
@@ -341,7 +333,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                         while(iterador7.hasNext()){
                             String dato = (String) iterador7.next();
                             String[] datos = dato.split(";");
-                            if(datos[0]!= "MOVER_SERPIENTE"){
+                            if(!(datos[0].equals("MOVER_SERPIENTE"))){
                                 lista_aux.add(dato);
                             }
                         }
@@ -417,6 +409,8 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
         } 
     }
     }
+
+    
 
     
                 

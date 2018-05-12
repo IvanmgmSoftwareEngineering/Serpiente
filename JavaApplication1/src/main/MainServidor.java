@@ -12,10 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- *
- * @author img
- */
+
 public class MainServidor {
     private static final int ALTURA_TABLERO = 40;
     private static final int ANCHURA_TABLERO = 50;

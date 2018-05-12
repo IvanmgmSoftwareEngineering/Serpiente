@@ -5,12 +5,8 @@
  */
 package Servidor;
 
-import Cliente.Vista.Direccion;
 
-/**
- *
- * @author img
- */
+
 public class Posicion {
     
     private int posicionFila;
