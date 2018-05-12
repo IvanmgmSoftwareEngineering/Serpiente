@@ -3,17 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
+package JuegoEnRed.Servidor;
+
+import java.net.Socket;
 
 
-
- 
-public interface ObservableServidor {
+public interface InterfazParaControlarAlServidor {
     
-    void addObserver(ObserverServidor observador);
-    void removeObserver(ObserverServidor observador);
-    
+    void servidorEnviaRecibe();
+    boolean isConexionFinalizada();
     
 }
-    
-

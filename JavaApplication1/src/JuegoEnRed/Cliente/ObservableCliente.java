@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente;
+package JuegoEnRed.Cliente;
 
 
-import Conexion.GameEvent;
-
-
-public interface ObserverCliente {
     
-    void notifyEventVistasCliente(GameEvent evento);
 
+ 
+public interface ObservableCliente {
+    
+    void addObserver(ObserverCliente observador);
+    void removeObserver(ObserverCliente observador);
+    
     
 }
     

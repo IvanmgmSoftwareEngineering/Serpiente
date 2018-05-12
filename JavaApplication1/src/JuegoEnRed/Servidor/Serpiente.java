@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente;
+package JuegoEnRed.Servidor;
 
 
+public interface Serpiente {
     
-
- 
-public interface ObservableCliente {
+    public void moverSerpiente(Direccion direccion, int idVentana);
+            
     
-    void addObserver(ObserverCliente observador);
-    void removeObserver(ObserverCliente observador);
     
+    public void finalizarJuego ();    
     
 }
-    
-

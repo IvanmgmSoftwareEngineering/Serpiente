@@ -3,14 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
-
-import java.net.Socket;
+package JuegoEnRed.Servidor;
 
 
-public interface InterfazParaControlarAlServidor {
+public interface InterfazParaEscucharNuevosClientes {
     
-    void servidorEnviaRecibe();
     boolean isConexionFinalizada();
+    void escuchaANuevosClientes();
     
 }

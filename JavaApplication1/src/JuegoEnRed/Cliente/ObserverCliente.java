@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
+package JuegoEnRed.Cliente;
 
 
 import Conexion.GameEvent;
 
 
-public interface ObserverServidor {
+public interface ObserverCliente {
     
-    void notifyEventControladorServidor(GameEvent evento);
+    void notifyEventVistasCliente(GameEvent evento);
 
     
 }

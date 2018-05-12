@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente;
+package JuegoEnRed.Servidor;
 
 
 
-public interface InterfazParaControlarAlCliente {
+ 
+public interface ObservableServidor {
     
-    boolean isConexionFinalizada();
-    
-    void  clienteEnviaRecibe();
-    
+    void addObserver(ObserverServidor observador);
+    void removeObserver(ObserverServidor observador);
     
     
 }
+    
+

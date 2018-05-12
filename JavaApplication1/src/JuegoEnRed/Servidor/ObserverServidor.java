@@ -3,12 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
+package JuegoEnRed.Servidor;
 
 
-public interface InterfazParaEscucharNuevosClientes {
+import Conexion.GameEvent;
+
+
+public interface ObserverServidor {
     
-    boolean isConexionFinalizada();
-    void escuchaANuevosClientes();
+    void notifyEventControladorServidor(GameEvent evento);
+
     
 }
+    
+

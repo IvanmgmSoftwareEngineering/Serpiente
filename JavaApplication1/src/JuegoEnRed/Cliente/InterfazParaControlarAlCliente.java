@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
+package JuegoEnRed.Cliente;
 
 
-public interface Serpiente {
+
+public interface InterfazParaControlarAlCliente {
     
-    public void moverSerpiente(Direccion direccion, int idVentana);
-            
+    boolean isConexionFinalizada();
+    
+    void  clienteEnviaRecibe();
     
     
-    public void finalizarJuego ();    
     
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Servidor;
+package JuegoEnRed.Servidor;
 
 import Conexion.Conexion; 
 import Conexion.GameEvent;
