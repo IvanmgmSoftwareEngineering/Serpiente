@@ -5,8 +5,8 @@
  */
 package JuegoEnRed.Servidor;
 
-import Conexion.Conexion; 
-import Conexion.GameEvent;
+import JuegoEnRed.Conexion.Conexion; 
+import JuegoEnRed.Conexion.GameEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;

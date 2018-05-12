@@ -5,9 +5,9 @@
  */
 package JuegoEnRed.Cliente;
 
-import Conexion.Conexion;
-import Servidor.GameEvent;
-import Servidor.Posicion;
+import JuegoEnRed.Conexion.Conexion;
+import JuegoEnRed.Conexion.GameEvent;
+import JuegoEnRed.Servidor.Posicion;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;

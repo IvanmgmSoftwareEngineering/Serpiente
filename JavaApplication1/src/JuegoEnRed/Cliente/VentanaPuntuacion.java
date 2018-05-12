@@ -5,7 +5,7 @@
  */
 package JuegoEnRed.Cliente;
 
-import Conexion.GameEvent;
+import JuegoEnRed.Conexion.GameEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 

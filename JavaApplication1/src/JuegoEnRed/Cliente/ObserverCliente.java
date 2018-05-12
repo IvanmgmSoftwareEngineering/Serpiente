@@ -6,7 +6,7 @@
 package JuegoEnRed.Cliente;
 
 
-import Conexion.GameEvent;
+import JuegoEnRed.Conexion.GameEvent;
 
 
 public interface ObserverCliente {

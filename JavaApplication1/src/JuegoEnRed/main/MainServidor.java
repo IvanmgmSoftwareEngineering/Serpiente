@@ -5,8 +5,8 @@
  */
 package JuegoEnRed.main;
 
-import Servidor.ControladorServidor;
-import Servidor.GameModel;
+import JuegoEnRed.Servidor.ControladorServidor;
+import JuegoEnRed.Servidor.GameModel;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -5,7 +5,7 @@
  */
 package JuegoEnRed.Servidor;
 
-import Conexion.GameEvent;
+import JuegoEnRed.Conexion.GameEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;

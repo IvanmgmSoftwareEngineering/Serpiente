@@ -5,9 +5,9 @@
  */
 package JuegoEnRed.main;
 
-import Cliente.ControladorCliente;
-import Cliente.VentanaPrincipal;
-import Cliente.VentanaPuntuacion;
+import JuegoEnRed.Cliente.ControladorCliente;
+import JuegoEnRed.Cliente.VentanaPrincipal;
+import JuegoEnRed.Cliente.VentanaPuntuacion;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
