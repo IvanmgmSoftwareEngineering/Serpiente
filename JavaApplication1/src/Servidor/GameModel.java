@@ -78,8 +78,16 @@ public class GameModel extends Observable implements Serpiente {
         
  
         this.setChanged();
-        this.notifyObservers(new GameEvent(GameEvent.EventType.START, this.jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getFirst(),jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getLast(),jugadores.get(jugadores.size()-1).getSerpiente().getColor(), nombreCliente, this.posicionFruta, idVentana));
-        //this.notifyObservers(new GameEvent(GameEvent.EventType.APARECE_FRUTA, this.posicionFruta,null,null));
+        /*this.notifyObservers(new GameEvent(GameEvent.EventType.START, 
+                this.jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getFirst(),
+                jugadores.get(jugadores.size()-1).getPosicionesSerpiente().getLast(),
+                jugadores.get(jugadores.size()-1).getSerpiente().getColor(), 
+                nombreCliente, 
+                this.posicionFruta, 
+                idVentana));*/
+        this.notifyObservers(new GameEvent(GameEvent.EventType.START, idVentana, null, null, null, null, null));
+        this.setChanged();
+        this.notifyObservers(new GameEvent(GameEvent.EventType.NUEVA_FRUTA, this.posicionFruta,null,null,null,null,null));
         
         this.jugadores.get(jugadores.size()-1).getSerpiente().start();
         }
@@ -220,7 +228,7 @@ public class GameModel extends Observable implements Serpiente {
             }
             else{
                 this.pause();
-                this.finalizarJuego();
+                //this.finalizarJuego();
             }
         }
             
@@ -254,6 +262,7 @@ public class GameModel extends Observable implements Serpiente {
         }
     }
     
+    @Override
     public void finalizarJuego() {
         this.setChanged();
         this.notifyObservers(new GameEvent(GameEvent.EventType.FINALIZAR_JUEGO, null,null,null,null,null,null));

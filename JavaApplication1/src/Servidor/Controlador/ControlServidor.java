@@ -52,6 +52,9 @@ public class ControlServidor implements Observer {
     public ControlServidor(GameModel modelo) throws IOException {
         this.modelo = modelo;
         serverSocket = new ServerSocket(8000);
+        this.entradaDatos = new ArrayList<BufferedReader>();
+        this.salidaDatos = new ArrayList<DataOutputStream>();
+        listaMensajes = new ArrayList<String>();
     }
     
     public int conectar() throws IOException {
@@ -59,12 +62,10 @@ public class ControlServidor implements Observer {
         try {
         socket = serverSocket.accept();
         InputStreamReader inputStream = new InputStreamReader(socket.getInputStream());
-        this.entradaDatos = new ArrayList<BufferedReader>();
-        this.salidaDatos = new ArrayList<DataOutputStream>();
         this.entradaDatos.add( numJugadores, new BufferedReader(inputStream) );
         this.salidaDatos.add( numJugadores, new DataOutputStream(socket.getOutputStream()) ); 
+        modelo.start(numJugadores, "Black", 3, "Jugador " + numJugadores );
         numJugadores ++;
-        manejarEvento(new GameEvent(GameEvent.EventType.START, numJugadores - 1, null, null, null, null, null));
         return numJugadores - 1; // El identificador empieza a contar a partir del 0
         }
         finally {
@@ -81,7 +82,6 @@ public class ControlServidor implements Observer {
     public void recibirMensajes() {
         Iterator iterator = entradaDatos.iterator();
         BufferedReader flujoEntrada;
-        listaMensajes = new ArrayList<String>();
         try {
             while(iterator.hasNext()) {
                 flujoEntrada = (BufferedReader) iterator.next();
@@ -173,7 +173,7 @@ public class ControlServidor implements Observer {
             
             case START: 
                 int idStart = (int) evento.getDatos1();
-                enviarSocket(idStart, "IDC; " + idStart + ":");             
+                enviarSocket(idStart, "IDC; " + idStart + "\n");             
                 break; 
 
             case MOVER_SERPIENTE: 
@@ -184,13 +184,13 @@ public class ControlServidor implements Observer {
                 int blancoY = posBlanco.getFila();
                 int blancoX = posBlanco.getColumna();
                 int idJugador = (int) evento.getDatos4();
-                enviarTodos("MOV; " + idJugador + ";" + nuevaX + ";" + nuevaY + ";" + blancoX + ";" + blancoY);
+                enviarTodos("MOV; " + idJugador + ";" + nuevaX + ";" + nuevaY + ";" + blancoX + ";" + blancoY + "\n");
                 break; 
                     
             case PUNTOS: 
                 int jugPuntos = (int) evento.getDatos1();
                 int puntos = (int) evento.getDatos2();
-                enviarTodos("PTS; " + jugPuntos + "; " + puntos);
+                enviarTodos("PTS; " + jugPuntos + "; " + puntos + "\n");
                 break;
                     
             case NUEVA_FRUTA: 
@@ -199,18 +199,18 @@ public class ControlServidor implements Observer {
                 Posicion posFruta = (Posicion) evento.getDatos1();
                 int frutaX = posFruta.getColumna();
                 int frutaY = posFruta.getFila();
-                enviarTodos("FRT; " + frutaX + "; " + frutaY);
+                enviarTodos("FRT; " + frutaX + "; " + frutaY + "\n");
                 break;         
                    
             case FINALIZAR_JUEGO:
                 int idFin = (int) evento.getDatos1(); 
                 // Cuando se use este evento, especificar para quién se acaba el juego
-                enviarTodos("FIN; " + idFin);
+                enviarTodos("FIN; " + idFin + "\n");
                 break;
              
             case ERROR:
                 String textoDescriptivo = (String) evento.getDatos1();
-                enviarTodos("ERR; " + textoDescriptivo);
+                enviarTodos("ERR; " + textoDescriptivo + "\n");
                 break;
                     
                     
@@ -221,7 +221,7 @@ public class ControlServidor implements Observer {
     private void enviarSocket (int identificador, String mensaje) {
         DataOutputStream flujoSalida = salidaDatos.get(identificador);
         try {
-            flujoSalida.writeUTF(mensaje);
+            flujoSalida.write(mensaje.getBytes("UTF-8"),0,mensaje.length());
         }
         catch (IOException ioe) {
             //modelo.errorDeConexion();
@@ -235,7 +235,7 @@ public class ControlServidor implements Observer {
         try {
             while(iterator.hasNext()) {
                 flujoSalida = (DataOutputStream) iterator.next();
-                flujoSalida.writeUTF(mensaje);
+                flujoSalida.write(mensaje.getBytes("UTF-8"),0,mensaje.length());
             }
         }
         catch (IOException ioe) {

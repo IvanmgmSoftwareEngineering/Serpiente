@@ -419,6 +419,10 @@ public class VentanaPrincipal  extends JFrame {
         });
     }
     
+    private void updateUI() {
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+    
     //public JPanel muestraPosicion (JPanel panelPrincipal){
         
     
@@ -528,21 +532,17 @@ public class VentanaPrincipal  extends JFrame {
     public void dibujaFruta (Posicion posicionFruta){
         this.matriz[posicionFruta.getFila()][posicionFruta.getColumna()].setBackground(this.colorFruta);
     }
-    /*
-    private void dibujaSerpiente (int nuevaPosicionFila, int nuevaPosicionColumna, String colorSerpiente){
-        this.matriz[nuevaPosicionFila][nuevaPosicionColumna].setBackground(this.StringColorSerpienteToColor(colorSerpiente));
-        this.matriz[this.posicionCabeza.getFila()][this.posicionCabeza.getColumna()].setBackground(Color.white);
-        this.posicionCabeza.setFila(nuevaPosicionFila);
-        this.posicionCabeza.setColumna(nuevaPosicionColumna);
-        
-        //this.posicionesSerpiente.addFirst (nuevaPosCabeza);
-        //this.matriz[this.posicionesSerpiente.getFirst().getFila()][this.posicionesSerpiente.getFirst().getColumna()].setBackground(this.colorSerpiente);
-        //this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(Color.white);
-        //this.posicionesSerpiente.removeLast(); 
-    }
-*/
     
-    private void start(){
+    public void nuevaSerpiente (Boolean esPropio) {
+        this.matriz[altura_tablero/2][ancho_tablero/2].setBackground(this.StringColorSerpienteToColor("Green"));
+        if(idVentana == this.idVentana){
+            this.mostrarCoordenadasCabeza(altura_tablero/2,ancho_tablero/2);
+        }
+        this.updateUI();
+    }
+
+    
+    public void start(){
         introducirNombre.setText("");
         muestraCoordenadaX.setEnabled(true);
         muestraCoordenadaY.setEnabled(true);
@@ -554,7 +554,7 @@ public class VentanaPrincipal  extends JFrame {
         botonGirarArriba.setEnabled(true);
         botonIniciar.setText("Reiniciar");
         desplegableColores.setEnabled(false);
-        
+        this.updateUI();
     }
     
     private void reiniciar(){

@@ -32,13 +32,8 @@ public class MainCliente {
             vPunt.getObservable().addObserver(controlCliente);
             vPrin.setVisible(true);
             vPunt.setVisible(true);
-            //int idJugador = controlCliente.conectar();
-            //vPrin.setIdVentana(idJugador);
-            //vPunt.setIdVentana(idJugador);
-//            Boolean sigueBucle = true;
-//            while(sigueBucle) {
-//                controlCliente.leerMensajes();
-//            }
+
+
             
         }
         catch (IOException ioe) {

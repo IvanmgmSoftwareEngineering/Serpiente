@@ -50,31 +50,29 @@ public class ControlCliente implements Observer {
         this.ventanaPuntuacion = vPun;
     }
     
-    public int conectar() {
+    public void conectar() {
         try {
             socket = new Socket(dirServidor, 8000);
             InputStreamReader inputStream = new InputStreamReader(socket.getInputStream());
             entradaDatos = new BufferedReader(inputStream);
             salidaDatos = new DataOutputStream(socket.getOutputStream());
             if (entradaDatos.ready()) {
-                return asignarId(entradaDatos.readLine());
+                asignarId(entradaDatos.readLine());
             }
-            else return -3;
         }
         catch (IOException ioe) {
             //ventanaApp.errorConexion();
-            return -1;
         }
     }
         
-    private int asignarId(String mensaje) {
+    private void asignarId(String mensaje) {
         String[] partes = mensaje.split(";");
         if ("IDC".equals(partes[0].trim())) {
             idJugador = Integer.parseInt(partes[1].trim());
-            return idJugador;
-        }
-        else {
-            return -2; // Te devuelven negativos si hay errores
+            ventanaPrincipal.setIdVentana(this.idJugador);
+            ventanaPuntuacion.setIdVentana(this.idJugador);
+            ventanaPrincipal.start();
+            ventanaPrincipal.nuevaSerpiente(true);
         }
     }
     
@@ -82,7 +80,6 @@ public class ControlCliente implements Observer {
     
     public void leerMensajes() {
         try {
-            
             while (entradaDatos.ready()) {
                 procesarMensaje(entradaDatos.readLine());
             }
@@ -149,26 +146,30 @@ public class ControlCliente implements Observer {
         switch(evento.getEvento()) {
             case START:
                 this.conectar();
+                Boolean sigueBucle = true;
+                while(sigueBucle) {     // Tengo dudas sobre dónde poner este bucle
+                    leerMensajes();
+                }
                 break;
                 
             case ARRIBA:
-                enviarSocket("DIR; ARRIBA; " + idJugador);
+                enviarSocket("DIR; ARRIBA; " + idJugador + "\n");
                 break;
                 
             case ABAJO:
-                enviarSocket("DIR; ABAJO; " + idJugador);
+                enviarSocket("DIR; ABAJO; " + idJugador + "\n");
                 break;
                 
             case IZQUIERDA:
-                enviarSocket("DIR; IZQ; " + idJugador);
+                enviarSocket("DIR; IZQ; " + idJugador + "\n");
                 break;
                 
             case DERECHA:
-                enviarSocket("DIR; DER; " + idJugador);
+                enviarSocket("DIR; DER; " + idJugador + "\n");
                 break;
                 
             case FINALIZAR_JUEGO:
-                enviarSocket("FIN; " + idJugador);
+                enviarSocket("FIN; " + idJugador + "\n");
                 break;
                 
             case FIJAR_NOMBRE: // Este evento es para comunicárselo a la ventana de puntuación
@@ -179,7 +180,7 @@ public class ControlCliente implements Observer {
     // Envía un mensaje al socket del servidor
     private void enviarSocket(String mensaje) {
         try {
-            salidaDatos.writeUTF(mensaje);
+            salidaDatos.write(mensaje.getBytes("UTF-8"),0,mensaje.length());
         }
         catch (IOException ioe) {
             //ventana.errorDeConexion();
