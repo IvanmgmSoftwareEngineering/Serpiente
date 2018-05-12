@@ -3,21 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente.Observable;
+package Cliente;
+
+import java.net.Socket;
 
 /**
  *
  * @author img
  */
+public interface InterfazParaControlarAlCliente {
     
-
- 
-public interface Observable {
+    boolean isConexionFinalizada();
     
-    void addObserver(Observer observador);
-    void removeObserver(Observer observador);
+    void  clienteEnviaRecibe();
+    
     
     
 }
-    
-

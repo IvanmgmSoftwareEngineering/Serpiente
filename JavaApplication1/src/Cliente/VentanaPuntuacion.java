@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente.Vista;
+package Cliente;
 
 import Servidor.GameEvent;
 import Cliente.Observable.Observer;
@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
  *
  * @author img
  */
-public class VentanaPuntuacion extends JFrame implements Observer {
+public class VentanaPuntuacion extends JFrame implements ObserverCliente {
     
     private int idVentana;
     private int puntuacion;
@@ -112,7 +112,7 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     // End of variables declaration//GEN-END:variables
 
     //@Override
-    public void notifyEvent(GameEvent evento) {
+    public void notifyEventVistasCliente(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
             //SwingUtilities clase que contiene el metodod static 'invokeLater'
@@ -163,4 +163,10 @@ public class VentanaPuntuacion extends JFrame implements Observer {
         this.jLabel1.setText(this.nombreCliente);
         puntuacionTextField.setText("         1");
     }
+
+    
+
+    
+
+    
 }

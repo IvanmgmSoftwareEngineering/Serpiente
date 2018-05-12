@@ -3,18 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Cliente.Observable;
+package Servidor;
 
-
-import Servidor.GameEvent;
+import Cliente.Observable.*;
 
 /**
  *
  * @author img
  */
-public interface Observer {
     
-    void notifyEvent(GameEvent evento);
+
+ 
+public interface ObservableServidor {
+    
+    void addObserver(ObserverServidor observador);
+    void removeObserver(ObserverServidor observador);
+    
     
 }
     

@@ -1,4 +1,4 @@
-package Cliente.Vista;
+package Cliente;
 
  /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,14 +23,14 @@ import Cliente.Observable.Observer;
  *
  * @author i.martingo.2016
  */
-public class VentanaPrincipal  extends JFrame implements Observer {
+public class VentanaPrincipal  extends JFrame implements ObserverCliente {
 
     /**
      * Creates new form NewJFrame
      */
     private int idVentana;
     private JPanel [][] matriz;
-    private Controlador controlador;
+    private ControladorCliente controladorCliente;
     private boolean nombreIntroducido;
     private String nombreJugador;
     private Color colorFruta;
@@ -42,14 +42,16 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     
    
     
-    public VentanaPrincipal(int idVentana,Controlador controlador, int altura_tablero, int ancho_tablero, int velocidad_serpiente) {
+    public VentanaPrincipal(int idVentana,ControladorCliente controladorCliente, int altura_tablero, int ancho_tablero, int velocidad_serpiente) {
         initComponents();
         this.idVentana = idVentana;
-        this.controlador = controlador;
+        this.controladorCliente = controladorCliente;
         this.altura_tablero = altura_tablero;
         this.ancho_tablero = ancho_tablero;
         this.velocidadSerpiente = velocidad_serpiente;
         this.nombreJugador = "";
+        this.botonIniciar.setEnabled(true);
+        
         
         matriz = new JPanel [altura_tablero][ancho_tablero];
         this.jPanel2.setLayout(new GridLayout(altura_tablero,ancho_tablero));
@@ -64,11 +66,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         this.anadirFuncionalidadTeclado();
         this.colorFruta = Color.pink;
         this.nombreIntroducido = false;
-        this.juegoIniciado = false;
-        
-
-        
-        
+        this.juegoIniciado = false;   
     }
 
     /**
@@ -297,10 +295,10 @@ public class VentanaPrincipal  extends JFrame implements Observer {
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
         if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {           
-            this.controlador.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
+            this.controladorCliente.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
         }
         else if (botonIniciar.getText() == "Reiniciar"){           
-            this.controlador.reiniciar();
+            this.controladorCliente.reiniciar();
         }
     }//GEN-LAST:event_botonIniciarActionPerformed
 
@@ -314,20 +312,19 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         else{
             introducirNombre.setCaretColor(Color.red);
         }
-
     }//GEN-LAST:event_introducirNombreActionPerformed
 
     private void botonPausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPausaActionPerformed
         if(botonPausa.getText() == "Pause") {
-            this.controlador.pause();
+            this.controladorCliente.pause();
          }
         else if (botonPausa.getText() == "Reanudar"){
-            this.controlador.reanudar();  
+            this.controladorCliente.reanudar();  
         }    
     }//GEN-LAST:event_botonPausaActionPerformed
 
     private void botonGirarDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarDerechaActionPerformed
-        this.controlador.girarDerecha(this.idVentana);
+        this.controladorCliente.girarDerecha(this.idVentana);
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
     private void desplegableColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableColoresActionPerformed
@@ -335,24 +332,21 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
-        this.controlador.girarIzquierda(this.idVentana);
+        this.controladorCliente.girarIzquierda(this.idVentana);
     }//GEN-LAST:event_botonGirarIzquierdaActionPerformed
 
     private void botonGirarArribaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarArribaActionPerformed
-        this.controlador.girarArriba(this.idVentana);
+        this.controladorCliente.girarArriba(this.idVentana);
     }//GEN-LAST:event_botonGirarArribaActionPerformed
 
     private void botonGirarAbajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarAbajoActionPerformed
-    this.controlador.girarAbajo(this.idVentana);
+    this.controladorCliente.girarAbajo(this.idVentana);
     }//GEN-LAST:event_botonGirarAbajoActionPerformed
 
     private void muestraCoordenadaXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muestraCoordenadaXActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_muestraCoordenadaXActionPerformed
-
-    
-    
-    
+  
     public int getNumFilas() {
         return this.altura_tablero;
     }
@@ -420,7 +414,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     
    
     //@Override
-    public void notifyEvent(GameEvent evento) {
+    public void notifyEventVistasCliente(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
             //SwingUgilities clase que contiene el metodod static 'invokeLater'
@@ -432,9 +426,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             } 
         });
     }
-    
-    
-    
+      
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
             
@@ -461,7 +453,12 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                     
             case MOVER_SERPIENTE: 
                 if(this.juegoIniciado == true){
-                    this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int)evento.getDatos4());
+                    try{
+                        this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int)evento.getDatos4());
+                    }
+                    catch(Exception e){
+                        System.out.println("La serpiente ha chocado");
+                    }
                 }
                     break; 
                     
@@ -483,9 +480,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                     if(this.idVentana == (int)evento.getDatos3()){
                         this.colorNoValido((String) evento.getDatos1());
                     }
-                    break; 
-                    
-                    
+                    break;                  
         } 
     }
     
@@ -503,19 +498,6 @@ public class VentanaPrincipal  extends JFrame implements Observer {
     private void dibujaFruta (Posicion posicionFruta){
         this.matriz[posicionFruta.getFila()][posicionFruta.getColumna()].setBackground(this.colorFruta);
     }
-    /*
-    private void dibujaSerpiente (int nuevaPosicionFila, int nuevaPosicionColumna, String colorSerpiente){
-        this.matriz[nuevaPosicionFila][nuevaPosicionColumna].setBackground(this.StringColorSerpienteToColor(colorSerpiente));
-        this.matriz[this.posicionCabeza.getFila()][this.posicionCabeza.getColumna()].setBackground(Color.white);
-        this.posicionCabeza.setFila(nuevaPosicionFila);
-        this.posicionCabeza.setColumna(nuevaPosicionColumna);
-        
-        //this.posicionesSerpiente.addFirst (nuevaPosCabeza);
-        //this.matriz[this.posicionesSerpiente.getFirst().getFila()][this.posicionesSerpiente.getFirst().getColumna()].setBackground(this.colorSerpiente);
-        //this.matriz[this.posicionesSerpiente.getLast().getFila()][this.posicionesSerpiente.getLast().getColumna()].setBackground(Color.white);
-        //this.posicionesSerpiente.removeLast(); 
-    }
-*/
     
     private void start(){
         introducirNombre.setText("");
@@ -528,8 +510,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         botonGirarAbajo.setEnabled(true);
         botonGirarArriba.setEnabled(true);
         botonIniciar.setText("Reiniciar");
-        desplegableColores.setEnabled(false);
-        
+        desplegableColores.setEnabled(false);     
     }
     
     private void reiniciar(){
@@ -554,21 +535,18 @@ public class VentanaPrincipal  extends JFrame implements Observer {
                         public void run() {
                             ponerBlanco();  
                         }
-                    });
-        
+                    });   
     }
     
     private void pause(){
         botonIniciar.setEnabled(true);
-        botonPausa.setText("Reanudar");
-        
+        botonPausa.setText("Reanudar");    
     }
     
     private void reanudar(){
         this.anadirFuncionalidadTeclado();
-        botonPausa.setText("Pause");
-        
-        
+        botonPausa.setText("Pause"); 
+        botonIniciar.setEnabled(false);
     }
     
     private void nombreNoValido(String nombreCliente){
@@ -720,17 +698,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             }
         });
     }
-   
-    
-       
-    
-   
-        
-        
-    
-    
-            
-
+  
     private Color StringColorSerpienteToColor(String color) {
         
         Color resultado = Color.ORANGE;
@@ -778,15 +746,11 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         return resultado;             
     }
     
-    public void mostrarCoordenadasCabeza(int posicionCabezaX, int posicionCabezaY ){
+    private void mostrarCoordenadasCabeza(int posicionCabezaX, int posicionCabezaY ){
         muestraCoordenadaX.setText(String.valueOf(posicionCabezaX));
         muestraCoordenadaY.setText(String.valueOf(posicionCabezaY));
     }
-    
-    
-    
-     
-
+   
     private void anadirFuncionalidadTeclado() {
         this.setFocusable(true);
         this.addKeyListener(new KeyListener() {
@@ -798,19 +762,19 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode()== 39){
                     
-                        controlador.girarDerecha(idVentana);     
+                        controladorCliente.girarDerecha(idVentana);     
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode()== 37){
                     
-                        controlador.girarIzquierda(idVentana);    
+                        controladorCliente.girarIzquierda(idVentana);    
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode()== 38){
                     
-                        controlador.girarArriba(idVentana);
+                        controladorCliente.girarArriba(idVentana);
                 }
                 else if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode()== 40){
                     
-                        controlador.girarAbajo(idVentana);
+                        controladorCliente.girarAbajo(idVentana);
                 }           
             }
 
@@ -819,4 +783,8 @@ public class VentanaPrincipal  extends JFrame implements Observer {
             }
         });
     }
+
+    
+
+    
 }
