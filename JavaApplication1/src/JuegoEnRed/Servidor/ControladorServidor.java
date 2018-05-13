@@ -14,6 +14,25 @@ import java.util.Iterator;
 import java.util.List;
 import javax.swing.SwingUtilities;
 
+/*
+        El controlador del servidor va a mandarle información al modelo
+        a través de métodos del modelo, y va a recibirla observándolo
+        (modelo será observable y esta clase, observer).
+        
+        En su conexión con el server socket va a recibir y enviar 
+        información usando los caminos adecuados.
+    
+        Además, según el enunciado hay unos mensajes estándares que
+        son los que hay que usar.
+    
+        Mensajes a recibir: START, PAUSE, REANUDAR, REINICIAR ,DIR, MOV y FIN
+        Mensajes a enviar: START, PAUSE, REANUDAR, REINICIAR, IDC, MOV, PTS, FRT, ERR y FIN
+    
+        Protocolos propios:
+            FRT para decir al cliente que hay una fruta nueva
+            DIR ha sido editado para que tenga el número de cliente al final
+    */
+
 
 public class ControladorServidor extends Conexion implements ObserverServidor, InterfazParaControlarAlServidor, InterfazParaEscucharNuevosClientes {
     
@@ -127,13 +146,13 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                 
                     break; 
                     
-            case NUEVA_FRUTA: 
+            case FRT: 
                     Posicion posicionFruta2 = (Posicion)evento.getDatos1();
                     int posicionFrutaX2 = posicionFruta2.getFila();
                     int posicionFrutaY2 = posicionFruta2.getColumna();
                     int idVentana5 = (int)evento.getDatos2();
                     
-                    this.cabecerasCodificadasParaEnviar.add("NUEVA_FRUTA;"+posicionFrutaX2+";"+posicionFrutaY2+";"+idVentana5+"\n");
+                    this.cabecerasCodificadasParaEnviar.add("FRT;"+posicionFrutaX2+";"+posicionFrutaY2+";"+idVentana5+"\n");
 
                     
                     break; 
@@ -165,7 +184,12 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                     
                     this.cabecerasCodificadasParaEnviar.add("COLOR_NO_VALIDO;"+color4+";"+nombreCliente4+";"+idVentana4+"\n");
                     
-                    break;             
+                    break; 
+                    
+            case ERROR:
+                //String textoDescriptivo = (String) evento.getDatos1();
+                //enviarTodos("ERR; " + textoDescriptivo + "\n");
+                break;
         } 
         }
     

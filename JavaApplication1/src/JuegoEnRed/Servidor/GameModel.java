@@ -281,7 +281,7 @@ public class GameModel implements ObservableServidor, Serpiente {
             if(jugadorAux.getPosicionesSerpiente().getFirst().equals(this.posicionFruta)){
                 jugadorAux.getPosicionesSerpiente().addLast(new Posicion(jugadorAux.getPosicionesSerpiente().getLast().getFila()- direccion.getVariacionFila(),jugadorAux.getPosicionesSerpiente().getLast().getColumna()- direccion.getVariacionColumna()));
                 this.nuevaFruta();
-                this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.NUEVA_FRUTA,this.posicionFruta,idVentana,null,null,null,null));      
+                this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.FRT,this.posicionFruta,idVentana,null,null,null,null));      
                 this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.PTS,idVentana,jugadorAux.getPosicionesSerpiente().size(),null,null,null,null));      
             }
              

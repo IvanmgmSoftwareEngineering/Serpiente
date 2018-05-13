@@ -18,6 +18,25 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/*  
+        El controlador del cliente va a mandarle información a la vista
+        a través de métodos de las ventanas, y va a recibirla desde
+        eventos que observe de ellas (las ventanas serán observables y
+        el controlador será un observador de las ventanas).
+    
+        Para comunicarse con el controlador del servidor usará sockets.
+        Se conectará al serversocket y empezará a enviar y recibir comandos.
+    
+        Además, según el enunciado hay que usar unos mensajes determinados.
+    
+        Mensajes a recibir: START, PAUSE, REANUDAR, REINICIAR ,IDC, MOV, PTS, FRT, ERR y FIN
+        Mensajes a enviar: START, PAUSE, REANUDAR, REINICIAR, MOV y FIN
+    
+        Protocolos propios:
+            NUEVA_FRUTA para decir al cliente que hay una fruta nueva
+            DIR ha sido editado para que tenga el número de cliente al final
+    */
+
 
 
 public class ControladorCliente extends Conexion implements ObservableCliente, InterfazParaControlarAlCliente {
@@ -309,7 +328,7 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                             
                             break;
                             
-                        case "NUEVA_FRUTA":
+                        case "FRT":
                             
                             Posicion posicionFruta5 = new Posicion (Integer.parseInt(mensajeRecibidoDecodificado[1]),Integer.parseInt(mensajeRecibidoDecodificado[2]));
                             int idVentana4 = Integer.parseInt(mensajeRecibidoDecodificado[3]);
@@ -321,7 +340,7 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                             System.out.println("");
                             System.out.println("--Generando evento... para notificarselo a las vistas(ventanas)");
                             
-                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.NUEVA_FRUTA,posicionFruta5,idVentana4,null,null,null,null));
+                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.FRT,posicionFruta5,idVentana4,null,null,null,null));
                             
                             break;
                             
