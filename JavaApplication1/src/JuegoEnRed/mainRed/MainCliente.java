@@ -16,7 +16,7 @@ public class MainCliente {
     
     private static final int ALTURA_TABLERO = 40;
     private static final int ANCHURA_TABLERO = 50;
-    private static final int VELOCIDAD_SERPIENTE =  3;
+    private static final int VELOCIDAD_SERPIENTE =  2;
     
     public static void main(String[] args) {
         try {

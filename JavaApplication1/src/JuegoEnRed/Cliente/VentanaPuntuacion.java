@@ -6,18 +6,26 @@
 package JuegoEnRed.Cliente;
 
 import JuegoEnRed.Conexion.GameEvent;
+import JuegoEnRed.Servidor.Cliente;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 
 public class VentanaPuntuacion extends JFrame implements ObserverCliente {
     
+    private boolean juegoInicaido;
     private int idVentana;
     private int puntuacion;
     private String nombreCliente;
+    private List<Cliente> clientes;
 
     public VentanaPuntuacion(int idVentana) {
            initComponents();
+           this.juegoInicaido = false;
+           this.clientes = new ArrayList<Cliente>();
            this.idVentana = idVentana;
            this.puntuacion = 1;
            this.nombreCliente = "";
@@ -56,23 +64,22 @@ public class VentanaPuntuacion extends JFrame implements ObserverCliente {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(134, 134, 134)
-                        .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(puntuacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(130, Short.MAX_VALUE))
+                .addGap(142, 142, 142)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(puntuacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(37, 37, 37)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(puntuacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(puntuacionTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -82,14 +89,14 @@ public class VentanaPuntuacion extends JFrame implements ObserverCliente {
             .addGroup(layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -125,44 +132,68 @@ public class VentanaPuntuacion extends JFrame implements ObserverCliente {
     
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
-            
+            case IDC:
+                if(!this.juegoInicaido){
+                    this.juegoInicaido = true;
+                    this.idVentana = (int) evento.getDatos1();
+                }
+
             case START:
-                if(this.idVentana == (int)evento.getDatos6()){
-                    this.nombreCliente = (String)evento.getDatos4();
-                    iniciarMarcador();
+                boolean encontrado = false;
+                Iterator iterador = this.clientes.iterator();
+                while(iterador.hasNext()&&!encontrado){
+                    Cliente cliente = (Cliente) iterador.next();
+                    if(cliente.getIdCliente() == (int) evento.getDatos6()){
+                         encontrado = true;
+                    }
                 }
-                    break; 
+                if(!encontrado){
+                    this.clientes.add(new Cliente((int) evento.getDatos6(),(String)evento.getDatos4(),(String) evento.getDatos3()));
+                }
+                
+                this.pintaMarcador();
+                     
+            break; 
+                
+            case PTS:
+                
+                boolean encontrado1 = false;
+                Iterator iterador1 = this.clientes.iterator();
+                while(iterador1.hasNext()&& !encontrado1){
+                    Cliente cliente = (Cliente) iterador1.next();
+                    if(cliente.getIdCliente() == (int) evento.getDatos1()){
+                         encontrado1 = true;
+                         cliente.setPuntuacion((int)evento.getDatos2());
+                    }
+                }
+                
+                this.pintaMarcador();
+               
+                
+              break;
             
-            case NUEVA_FRUTA: 
-                if(this.idVentana == (int)evento.getDatos2()){
-                    this.puntuacion = this.puntuacion +1;
-                    mostrarPuntuacion(this.puntuacion);
-                }
-                    break;
-                    
             case REINICIAR: 
                     reiniciarMarcador();
                     break; 
         }
     }
     
-    private void mostrarPuntuacion(int puntuacion) {
-        puntuacionTextField.setText("         " + puntuacion);
-    }
+    
 
     private void reiniciarMarcador() {
         this.jLabel1.setText("Puntuación");
-        puntuacionTextField.setText("         1");
+        puntuacionTextField.setText("");
+        this.clientes.clear();
     }
 
-    private void iniciarMarcador() {
-        this.jLabel1.setText(this.nombreCliente);
-        puntuacionTextField.setText("         1");
+    private void pintaMarcador() {
+        String puntuaciones = "";
+        Iterator iterador2 = this.clientes.iterator();
+        while(iterador2.hasNext()){
+            Cliente cliente = (Cliente) iterador2.next();
+            puntuaciones = "Jugador "+cliente.getIdCliente()+": "+"("+cliente.getNombre()+") "+ "tiene   "+ cliente.getPuntuacion()+" puntos."+"\n";
+        }
+        puntuacionTextField.setText(puntuaciones);
     }
-
-    
-
-    
-
-    
+ 
 }

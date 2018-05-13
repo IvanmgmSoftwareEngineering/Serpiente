@@ -67,6 +67,8 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
     private void notifyObserversControladorCliente (GameEvent evento){
         for(ObserverCliente observer : observadores){ // para cada obervador en observadores
             observer.notifyEventVistasCliente(evento);
+                            System.out.println("aquisssssssssss11");
+
         }
         
     }
@@ -104,42 +106,42 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
     }
     
     public void finalizarJuego() {
-        this.cabecerasCodificadasParaEnviar.add("FINALIZAR_JUEGO;" + "\n");
+        this.cabecerasCodificadasParaEnviar.add("FIN;" + "\n");
         System.out.println("Llamado desde la vista el metodo FINALIZAR_JUEGO del controlador cliente");
         System.out.println("Codificando cabecera... y almacenando para enviar cuando se pueda");
         System.out.println("");
     }
     
     public void girarDerecha(int idVentana) {
-        this.cabecerasCodificadasParaEnviar.add("GIRAR_DERECHA;"+idVentana + "\n");
+        this.cabecerasCodificadasParaEnviar.add("GIRAR;DERECHA;"+idVentana + "\n");
         System.out.println("Llamado desde la vista el metodo GIRAR_DERECHA del controlador cliente");
         System.out.println("Codificando cabecera... y almacenando para enviar cuando se pueda");
         System.out.println("");
     }
 
     public void girarArriba(int idVentana) {
-        this.cabecerasCodificadasParaEnviar.add("GIRAR_ARRIBA;"+idVentana + "\n");
+        this.cabecerasCodificadasParaEnviar.add("GIRAR;ARRIBA;"+idVentana + "\n");
         System.out.println("Llamado desde la vista el metodo GIRAR_ARRIBA del controlador cliente");
         System.out.println("Codificando cabecera... y almacenando para enviar cuando se pueda");
         System.out.println("");
     }
 
     public void girarAbajo(int idVentana) {
-        this.cabecerasCodificadasParaEnviar.add("GIRAR_ABAJO;"+idVentana + "\n");
+        this.cabecerasCodificadasParaEnviar.add("GIRAR;ABAJO;"+idVentana + "\n");
         System.out.println("Llamado desde la vista el metodo GIRAR_ABAJO del controlador cliente");
         System.out.println("Codificando cabecera... y almacenando para enviar cuando se pueda");
         System.out.println("");
     }
 
     public void girarIzquierda(int idVentana) {
-        this.cabecerasCodificadasParaEnviar.add("GIRAR_IZQUIERDA;"+idVentana + "\n");
+        this.cabecerasCodificadasParaEnviar.add("GIRAR;IZQUIERDA;"+idVentana + "\n");
         System.out.println("Llamado desde la vista el metodo GIRAR_IZQUIERDA del controlador cliente");
         System.out.println("Codificando cabecera... y almacenando para enviar cuando se pueda");
     }
     
     public  void  clienteEnviaRecibe(){
                 System.out.println("....");
-               if(!nuncaEnviadoNada){
+               //if(!nuncaEnviadoNada){
                 if(cabecerasCodificadasParaEnviar.size() > 0){
                     //Flujo de datos hacia el servidor
                     System.out.println("Hay "+cabecerasCodificadasParaEnviar.size() +" datos listos para enviarse desde el controlador del CLIENTE al controlador del SERVIDOR");
@@ -201,10 +203,10 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                 if(!cabecerasCodificadasRecibidas.isEmpty()){
                     System.out.println("Procesando datos recibidos en el Cliente...");
                     System.out.println("Hay "+ this.cabecerasCodificadasRecibidas.size() + " datos pendientes de procesar");
-                    
+                    int contador = 1;
                     for(int j=0;j<this.cabecerasCodificadasRecibidas.size();j++){
-                        System.out.println("--"+j+"de"+cabecerasCodificadasRecibidas.size()+"...Decodificando dato "+this.cabecerasCodificadasRecibidas.get(j));
-
+                        System.out.println("--"+contador+"de"+cabecerasCodificadasRecibidas.size()+"...Decodificando dato "+this.cabecerasCodificadasRecibidas.get(j));
+                        contador = contador +1;
                         String[] mensajeRecibidoDecodificado = this.cabecerasCodificadasRecibidas.get(j).split(";");
                         String cabecera = mensajeRecibidoDecodificado[0];
                         try{
@@ -218,6 +220,17 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                     
                     switch (mensajeRecibidoDecodificado[0]){
                         
+                        case "IDC":
+                            System.out.println("----------Cabecera: " +mensajeRecibidoDecodificado[0]);
+                            System.out.println("----------IdCliente: " +mensajeRecibidoDecodificado[1]);
+                            
+                            System.out.println("");
+                            System.out.println("--Generando evento... para notificarselo a las vistas(ventanas)");
+                            int  idClienteAux = Integer.parseInt(mensajeRecibidoDecodificado[1]);
+                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.IDC,idClienteAux,null,null,null,null,null));
+                            
+                            break;
+                            
                         case "START":
                             Posicion posicionCabeza = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[1]),Integer.parseInt(mensajeRecibidoDecodificado[2]));
                             Posicion posicionCola = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[3]),Integer.parseInt(mensajeRecibidoDecodificado[4]));
@@ -275,24 +288,24 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                                   
                             break;
                             
-                        case "MOVER_SERPIENTE":
-                            Posicion posicionCabeza1 = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[1]),Integer.parseInt(mensajeRecibidoDecodificado[2]));
-                            Posicion posicionCola1 = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[3]),Integer.parseInt(mensajeRecibidoDecodificado[4]));
-                            String color1 = mensajeRecibidoDecodificado[5];
-                            int idVentana1 = Integer.parseInt(mensajeRecibidoDecodificado[6]);
+                        case "MOV":
+                            Posicion posicionCabeza1 = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[2]),Integer.parseInt(mensajeRecibidoDecodificado[3]));
+                            Posicion posicionCola1 = new Posicion(Integer.parseInt(mensajeRecibidoDecodificado[4]),Integer.parseInt(mensajeRecibidoDecodificado[5]));
+                            int idVentana1 = Integer.parseInt(mensajeRecibidoDecodificado[1]);
                             
                             System.out.println("-----Decodificando...");
                             System.out.println("----------Cabecera: " +mensajeRecibidoDecodificado[0]);
-                            System.out.println("----------X Cabeza: " +mensajeRecibidoDecodificado[1]);
-                            System.out.println("----------Y Cabeza: " +mensajeRecibidoDecodificado[2]);
-                            System.out.println("----------X Cola: " +mensajeRecibidoDecodificado[3]);
-                            System.out.println("----------Y Cola: " +mensajeRecibidoDecodificado[4]);
+                            System.out.println("----------Id Ventana: " +mensajeRecibidoDecodificado[1]);
+                            System.out.println("----------X Cabeza: " +mensajeRecibidoDecodificado[2]);
+                            System.out.println("----------Y Cabeza: " +mensajeRecibidoDecodificado[3]);
+                            System.out.println("----------X Cola: " +mensajeRecibidoDecodificado[4]);
+                            System.out.println("----------Y Cola: " +mensajeRecibidoDecodificado[5]);
                             
                             System.out.println("");
                             System.out.println("--Generando evento... para notificarselo a las vistas(ventanas)");
                           
                             
-                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.MOVER_SERPIENTE, posicionCabeza1, posicionCola1,color1,idVentana1,null,null));
+                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.MOV, posicionCabeza1, posicionCola1,idVentana1,null,null,null));
                             
                             break;
                             
@@ -312,14 +325,26 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                             
                             break;
                             
-                        case "FINALIZAR_JUEGO":
+                        case "PTS":
+                            
+                            int idCliente = Integer.parseInt(mensajeRecibidoDecodificado[1]);
+                            int puntuacion = Integer.parseInt(mensajeRecibidoDecodificado[2]);
+                            
+                            System.out.println("-----Decodificando...");
+                            System.out.println("----------Cabecera: " +mensajeRecibidoDecodificado[0]);
+                            System.out.println("----------Id Ventana: " +mensajeRecibidoDecodificado[1]);
+                            System.out.println("----------Puntuacion: " +mensajeRecibidoDecodificado[2]);
+                            
+                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.PTS,idCliente,puntuacion,null,null,null,null));
+                           break; 
+                        case "FIN":
                             
                             System.out.println("-----Decodificando...");
                             System.out.println("----------Cabecera: " +mensajeRecibidoDecodificado[0]);
                             System.out.println("");
                             System.out.println("--Generando evento... para notificarselo a las vistas(ventanas)");
                            
-                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.FINALIZAR_JUEGO, null,null,null,null,null,null));
+                            notifyObserversControladorCliente(new GameEvent(GameEvent.EventType.FIN, null,null,null,null,null,null));
                             //conexionFinalizada = true;
                             break;
                             
@@ -362,7 +387,7 @@ public class ControladorCliente extends Conexion implements ObservableCliente, I
                     }
                 }
                     this.cabecerasCodificadasRecibidas.clear();
-                }
+                //}
                }
             
             

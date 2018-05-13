@@ -1,17 +1,21 @@
 package JuegoEnRed.Cliente;
 
  /*
- * To change this license header, choose License Headers in Project Properties.
+ * To chage this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 import JuegoEnRed.Servidor.Posicion;
 import JuegoEnRed.Conexion.GameEvent;
+import JuegoEnRed.Servidor.Cliente;
 import java.awt.Color;
 import javax.swing.*;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 
@@ -24,10 +28,12 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
      */
     private int idVentana;
     private JPanel [][] matriz;
+    private List<Cliente> clientes;
     private ControladorCliente controladorCliente;
     private boolean nombreIntroducido;
     private String nombreJugador;
     private Color colorFruta;
+    private Color colorSerpiente;
     private int altura_tablero;
     private int ancho_tablero;
     private int velocidadSerpiente;
@@ -38,6 +44,7 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     
     public VentanaPrincipal(int idVentana,ControladorCliente controladorCliente, int altura_tablero, int ancho_tablero, int velocidad_serpiente) {
         initComponents();
+        this.clientes = new ArrayList<Cliente>();
         this.idVentana = idVentana;
         this.controladorCliente = controladorCliente;
         this.altura_tablero = altura_tablero;
@@ -45,6 +52,8 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         this.velocidadSerpiente = velocidad_serpiente;
         this.nombreJugador = "";
         this.botonIniciar.setEnabled(true);
+        this.jTextPane1.setText("No conectado");
+        this.jTextPane1.setCaretColor(Color.RED);
         
         
         matriz = new JPanel [altura_tablero][ancho_tablero];
@@ -89,6 +98,9 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         botonPausa = new javax.swing.JButton();
         desplegableColores = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -193,6 +205,10 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
 
         jLabel4.setText("Color");
 
+        jLabel5.setText("Status conexion:");
+
+        jScrollPane2.setViewportView(jTextPane1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,42 +220,44 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(muestraCoordenadaX, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(51, 51, 51)
-                                        .addComponent(jLabel3)
-                                        .addGap(19, 19, 19)
-                                        .addComponent(muestraCoordenadaY, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(introducirNombre)
+                                .addGap(18, 18, 18)
+                                .addComponent(botonGirarArriba, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(57, 57, 57))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(muestraCoordenadaX, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51)
+                                .addComponent(jLabel3)
+                                .addGap(19, 19, 19)
+                                .addComponent(muestraCoordenadaY, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(16, 16, 16)
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(45, 45, 45))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(botonGirarIzquierda, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(botonGirarAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(botonGirarDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(introducirNombre)
-                                .addGap(18, 18, 18)
-                                .addComponent(botonGirarArriba, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(57, 57, 57))))
+                                .addComponent(botonGirarDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(209, 209, 209)
-                                .addComponent(botonIniciar)
-                                .addGap(34, 34, 34)
-                                .addComponent(botonPausa))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(41, 41, 41)
-                                .addComponent(jLabel4)
-                                .addGap(18, 18, 18)
-                                .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(209, 209, 209)
+                        .addComponent(botonIniciar)
+                        .addGap(34, 34, 34)
+                        .addComponent(botonPausa)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -274,9 +292,12 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                             .addComponent(botonGirarDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonGirarAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonIniciar)
@@ -288,10 +309,10 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonIniciarActionPerformed
-        if(botonIniciar.getText() == "Iniciar" && nombreIntroducido == true && desplegableColores.getSelectedItem()!= " " ) {           
+        if(botonIniciar.getText().equals("Iniciar")  && nombreIntroducido  && !desplegableColores.getSelectedItem().equals("") ) {           
             this.controladorCliente.start(this.idVentana,(String)desplegableColores.getSelectedItem(), this.velocidadSerpiente,this.nombreJugador); 
         }
-        else if (botonIniciar.getText() == "Reiniciar"){           
+        else if (botonIniciar.getText().equals("Reiniciar") ){           
             this.controladorCliente.reiniciar();
         }
     }//GEN-LAST:event_botonIniciarActionPerformed
@@ -309,10 +330,10 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     }//GEN-LAST:event_introducirNombreActionPerformed
 
     private void botonPausaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonPausaActionPerformed
-        if(botonPausa.getText() == "Pause") {
+        if(botonPausa.getText().equals("Pause") ) {
             this.controladorCliente.pause();
          }
-        else if (botonPausa.getText() == "Reanudar"){
+        else if (botonPausa.getText().equals("Reanudar") ){
             this.controladorCliente.reanudar();  
         }    
     }//GEN-LAST:event_botonPausaActionPerformed
@@ -322,7 +343,7 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     }//GEN-LAST:event_botonGirarDerechaActionPerformed
 
     private void desplegableColoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_desplegableColoresActionPerformed
-       
+
     }//GEN-LAST:event_desplegableColoresActionPerformed
 
     private void botonGirarIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGirarIzquierdaActionPerformed
@@ -399,15 +420,18 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextField muestraCoordenadaX;
     private javax.swing.JTextField muestraCoordenadaY;
     private javax.swing.JTextPane muestraNombre;
     // End of variables declaration//GEN-END:variables
     
    
-    //@Override
+    @Override
     public void notifyEventVistasCliente(GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
@@ -417,6 +441,9 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
             @Override
             public void run() {
                 manejarEvento(evento);
+                System.out.println("aquisssssssssss22");
+                
+
             } 
         });
     }
@@ -424,13 +451,40 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     public void manejarEvento (GameEvent evento) {
         switch (evento.getEvento()){
             
+            case IDC:
+                if(!this.juegoIniciado){
+                
+                    System.out.println("aquisssssssssss33");
+                    this.jTextPane1.setCaretColor(Color.GREEN);
+                    this.jTextPane1.setText("Conectado");
+                    this.idVentana = (int) evento.getDatos1();
+                }
+                
+                break;
+                
             case START: 
                 if(this.idVentana == (int) evento.getDatos6()){
                     this.start();
                     this.juegoIniciado = true;
+                    this.colorSerpiente =this.StringColorSerpienteToColor((String) evento.getDatos3());
+                    this.clientes.add(new Cliente((int) evento.getDatos6(),(String)evento.getDatos4(),this.ColorSerpienteToString(colorSerpiente)));
                     this.dibujaFruta((Posicion)evento.getDatos5());
-                    this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int) evento.getDatos6());
-                }   
+                    this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),colorSerpiente);
+                }
+                else{
+                    // SI EL EVENTO STAR NO ESTA ASICIADO A ESTE CLIENTE, ENTONCES LO BUSCA EN LA LSITA DE CLIENTES, SI NO ESTA ENTONCES ALAMCENA SU ID JUNTO CON SU COLOR
+                    boolean encontrado = false;
+                    Iterator iterador = this.clientes.iterator();
+                    while(iterador.hasNext() && !encontrado){
+                        Cliente cliente = (Cliente) iterador.next();
+                        if(cliente.getIdCliente() == (int) evento.getDatos6()){
+                            encontrado = true;
+                        }
+                    }
+                    if(!encontrado){
+                        this.clientes.add(new Cliente((int) evento.getDatos6(),(String)evento.getDatos4(),(String) evento.getDatos3()));
+                    }
+                }
                     break; 
   
             case PAUSE:
@@ -445,10 +499,23 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                     this.reiniciar();
                     break;
                     
-            case MOVER_SERPIENTE: 
+            case MOV: 
                 if(this.juegoIniciado == true){
                     try{
-                        this.dibujaSerpiente((Posicion)evento.getDatos1(),(Posicion) evento.getDatos2(),(String) evento.getDatos3(), (int)evento.getDatos4());
+                        int idVentana1 = (int)evento.getDatos3();
+                        Posicion posicionCabeza = (Posicion)evento.getDatos1();
+                        Posicion posicionCola = (Posicion)evento.getDatos2();
+                        Iterator iterador1 = this.clientes.iterator();
+                        
+                        while(iterador1.hasNext()){
+                            Cliente cliente = (Cliente) iterador1.next();
+                            if(cliente.getIdCliente() == idVentana1){
+                                this.dibujaSerpiente(posicionCabeza,posicionCola, this.StringColorSerpienteToColor(cliente.getColor()));
+                            }
+                        }
+                        if(idVentana1 == idVentana){
+                            mostrarCoordenadasCabeza(posicionCabeza.getFila(),posicionCabeza.getColumna());
+                        }
                     }
                     catch(Exception e){
                         System.out.println("La serpiente ha chocado");
@@ -460,7 +527,7 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                     this.dibujaFruta((Posicion) evento.getDatos1());
                     break;         
                    
-            case FINALIZAR_JUEGO:
+            case FIN:
                     this.finalizarJuego();
                     break;
              
@@ -478,7 +545,7 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         } 
     }
     
-    private void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, String colorSerpiente, int idVentana1){
+    private void dibujaSerpiente (Posicion nuevaPosicionCabeza, Posicion PosicionColaPonerABlanco, Color colorSerpiente){
         SwingUtilities.invokeLater(new Runnable() {
             //SwingUgilities clase que contiene el metodod static 'invokeLater'
             //Runnable: interfaz que solo tiene el método run
@@ -486,11 +553,9 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
             @Override
             public void run() {
                 try{
-                matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(StringColorSerpienteToColor(colorSerpiente));
+                matriz[nuevaPosicionCabeza.getFila()][nuevaPosicionCabeza.getColumna()].setBackground(colorSerpiente);
                 matriz[PosicionColaPonerABlanco.getFila()][PosicionColaPonerABlanco.getColumna()].setBackground(Color.white);
-                if(idVentana1 == idVentana){
-                    mostrarCoordenadasCabeza(nuevaPosicionCabeza.getFila(),nuevaPosicionCabeza.getColumna());
-                }
+                
                 }
                 catch(Exception e){
                     System.out.println("Problema al dibujar la serpiente en la ventana principal");

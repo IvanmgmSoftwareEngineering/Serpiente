@@ -113,7 +113,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                 
                     break;
                     
-            case MOVER_SERPIENTE: 
+            case MOV: 
                     Posicion posicionCabeza1 = (Posicion)evento.getDatos1();
                     Posicion posicionCola1 = (Posicion)evento.getDatos2();
                     int posicionCabezaX1 = posicionCabeza1.getFila();
@@ -123,7 +123,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                     String color1 = (String)evento.getDatos3();
                     int idVentana1 = (int) evento.getDatos4();
                     
-                    this.cabecerasCodificadasParaEnviar.add("MOVER_SERPIENTE;"+posicionCabezaX1+";"+posicionCabezaY1+";"+posicionColaX1+";"+posicionColaY1+";"+color1+";"+idVentana1+"\n"); 
+                    this.cabecerasCodificadasParaEnviar.add("MOV;"+idVentana1+";"+posicionCabezaX1+";"+posicionCabezaY1+";"+posicionColaX1+";"+posicionColaY1+"\n"); 
                 
                     break; 
                     
@@ -136,10 +136,17 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                     this.cabecerasCodificadasParaEnviar.add("NUEVA_FRUTA;"+posicionFrutaX2+";"+posicionFrutaY2+";"+idVentana5+"\n");
 
                     
-                    break;         
-                   
-            case FINALIZAR_JUEGO:
-                    this.cabecerasCodificadasParaEnviar.add("FINALIZAR_JUEGO;"+"\n");
+                    break; 
+                    
+            case PTS:
+                    int idCliente = (int)evento.getDatos1();
+                    int puntuacion = (int)evento.getDatos2();
+                    
+                    this.cabecerasCodificadasParaEnviar.add("PTS;"+idCliente+";"+puntuacion+"\n");
+
+                   break;
+            case FIN:
+                    this.cabecerasCodificadasParaEnviar.add("FIN;"+"\n");
                     //this.conexionFinalizada = true;
                     
                     break;
@@ -177,6 +184,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
             cs.setSoTimeout(1000);
             this.contadorClientes = this.contadorClientes + 1;
             this.clientes.add(new Cliente(this.contadorClientes,cs));
+            this.cabecerasCodificadasParaEnviar.add("IDC;"+this.contadorClientes+"\n");
             System.out.println("Nuevo Cliente conectado al servidor. Id Cliente: " + contadorClientes );
         } catch (IOException ex) {
             System.out.println("No se ha conectado ningun nuevo cliente");
@@ -228,7 +236,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
             
             
         }
-        
+        if(this.clientes.size()!=0){
         Iterator iterador2 = this.clientes.iterator();
         while(iterador2.hasNext()){
             Cliente cliente = (Cliente) iterador2.next();
@@ -257,6 +265,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                 System.out.println("-----El cliente no ha enviado ningun dato");
                 //Logger.getLogger(ControladorServidor.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
         }
         
         //Se almacena en  la lista de mensajes recibidos
@@ -289,7 +298,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                     System.out.println("--------------" + "Mostrando dato decodificado: " + mensajeRecibidoDecodificado[i]);
                 }
                 synchronized(this.hebra){
-                if(mensajeRecibidoDecodificado[0].equals("GIRAR_DERECHA")  ||mensajeRecibidoDecodificado[0].equals("GIRAR_IZQUIERDA") ||mensajeRecibidoDecodificado[0].equals("GIRAR_ABAJO")||mensajeRecibidoDecodificado[0].equals("GIRAR_ARRIBA")  ){
+                if(mensajeRecibidoDecodificado[0].equals("GIRAR")){
                     System.out.println("Como el dato recibido es de GIRO_, entonces hay que hacer dos cosas:");
                     
                     System.out.println("-----1º Bloqueo la hebra de la serpiente del jugador que quiere girar para que deje de moverse hasta que se le notificca al modelo el cambio de direcion");
@@ -297,7 +306,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                     boolean encontrado = false;
                     while(iterador5.hasNext()&&!encontrado){
                         Jugador jugador = (Jugador) iterador5.next();
-                        if(jugador.getIdVentana()== Integer.parseInt(mensajeRecibidoDecodificado[1])){
+                        if(jugador.getIdVentana()== Integer.parseInt(mensajeRecibidoDecodificado[2])){
                             encontrado = true;
                             this.modelo.pauseJugador(jugador.getIdVentana());
                             this.modelo.setPuedesEntrar(true);
@@ -310,11 +319,11 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                         while(iterador6.hasNext()){
                             String dato = (String) iterador6.next();
                             String[] datos = dato.split(";");
-                            if(!(datos[0].equals("MOVER_SERPIENTE"))){
+                            if(!(datos[0].equals("MOV"))){
                                 lista_aux.add(dato);
                             }
                             else{
-                                if (!(datos[6].equals(mensajeRecibidoDecodificado[1]))){
+                                if (!(datos[1].equals(mensajeRecibidoDecodificado[1]))){
                                     lista_aux.add(dato);
                                 }
                             }
@@ -333,7 +342,7 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                         while(iterador7.hasNext()){
                             String dato = (String) iterador7.next();
                             String[] datos = dato.split(";");
-                            if(!(datos[0].equals("MOVER_SERPIENTE"))){
+                            if(!(datos[0].equals("MOV"))){
                                 lista_aux.add(dato);
                             }
                         }
@@ -368,35 +377,27 @@ public class ControladorServidor extends Conexion implements ObserverServidor, I
                         
                         break;
                         
-                    case "GIRAR_DERECHA":
+                    case "GIRAR":
                         System.out.println("LLevando datos al modelo...");
-                        
-                        modelo.girarDerecha(Integer.parseInt(mensajeRecibidoDecodificado[1]));
-                        
+                        switch(mensajeRecibidoDecodificado[1]){
+                            
+                            case "DERECHA":
+                                modelo.girarDerecha(Integer.parseInt(mensajeRecibidoDecodificado[2]));
+                                break;
+                            case "IZQUIERDA":
+                                modelo.girarIzquierda(Integer.parseInt(mensajeRecibidoDecodificado[2]));
+                                break;
+                            case "ARRIBA":
+                                modelo.girarArriba(Integer.parseInt(mensajeRecibidoDecodificado[2]));
+                                break;
+                            case "ABAJO":
+                                modelo.girarAbajo(Integer.parseInt(mensajeRecibidoDecodificado[2]));
+                                break;
+                            
+                        }
                         break;
-                        
-                    case "GIRAR_IZQUIERDA":
-                        System.out.println("LLevando datos al modelo...");
-                        
-                        modelo.girarIzquierda(Integer.parseInt(mensajeRecibidoDecodificado[1]));
-                        
-                        break;
-                        
-                    case "GIRAR_ARRIBA":
-                        System.out.println("LLevando datos al modelo...");
-                        
-                        modelo.girarArriba(Integer.parseInt(mensajeRecibidoDecodificado[1]));
-                        
-                        break;
-                        
-                    case "GIRAR_ABAJO":
-                        System.out.println("LLevando datos al modelo...");
-                        
-                        modelo.girarAbajo(Integer.parseInt(mensajeRecibidoDecodificado[1]));
-                        
-                        break;
-                        
-                    case "FINALIZAR_JUEGO":
+                     
+                    case "FIN":
                         System.out.println("LLevando datos al modelo...");
                         
                         modelo.finalizarJuego();

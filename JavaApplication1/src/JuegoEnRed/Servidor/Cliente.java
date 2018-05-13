@@ -15,17 +15,28 @@ import java.util.logging.Logger;
 
 
 public class Cliente {
+    private String nombre;
+    private int puntuacion;
     private int idCliente;
     private Socket socketCliente;
     //private DataOutputStream flujoParaEnviarAlCliente;
     private InputStreamReader flujoParaRecibirDatosCliente;
     private BufferedReader bufferParaRecibirDatosDelCliente;
+    private String color;
 
-
+    
+    
+    public Cliente(int idCliente, String nombre, String color) {
+        this.idCliente = idCliente;
+        this.color = color;
+        this.puntuacion = 0;
+        this.nombre = nombre;
+    }
 
     public Cliente(int idCliente, Socket socketCliente) {
         try {
             this.idCliente = idCliente;
+            this.color = "";
             this.socketCliente = socketCliente;
             this.socketCliente.setSoTimeout(1000);
             //this.flujoParaEnviarAlCliente = new DataOutputStream(socketCliente.getOutputStream());
@@ -36,6 +47,12 @@ public class Cliente {
         }
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    
+    
     public int getIdCliente() {
         return idCliente;
     }
@@ -47,6 +64,26 @@ public class Cliente {
     public BufferedReader getBufferParaRecibirDatosDelCliente() {
         return bufferParaRecibirDatosDelCliente;
     }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public int getPuntuacion() {
+        return puntuacion;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setPuntuacion(int puntuacion) {
+        this.puntuacion = puntuacion;
+    }
+    
+    
+    
+    
     
     
 
@@ -69,5 +106,26 @@ public class Cliente {
             return null;
         }
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if(obj instanceof Cliente){
+            Cliente cliente = (Cliente) obj;
+            return this.idCliente == cliente.idCliente;
+        }
+        else{
+            return false;
+        }
+    }
+    
+        
+    
+    
    
 }

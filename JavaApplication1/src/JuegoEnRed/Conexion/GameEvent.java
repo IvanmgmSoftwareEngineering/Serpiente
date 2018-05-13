@@ -9,14 +9,17 @@ package JuegoEnRed.Conexion;
 public class GameEvent {
     
     public enum EventType{
+        
+        IDC,
         START,
         PAUSE,
         STOP,
-        MOVER_SERPIENTE,
+        MOV,
         NUEVA_FRUTA,
+        PTS,
         REANUDAR,
         REINICIAR,
-        FINALIZAR_JUEGO, 
+        FIN, 
         NOMBRE_NO_VALIDO,
         COLOR_NO_VALIDO,
         

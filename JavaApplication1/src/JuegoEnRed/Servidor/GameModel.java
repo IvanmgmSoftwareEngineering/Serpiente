@@ -131,12 +131,12 @@ public class GameModel implements ObservableServidor, Serpiente {
     
     public void reiniciar() {
         System.out.println("Estoy en el metodo REINICIAR del modelo");
-        this.reiniciarPulsado = true;
-        this.juegoPausado = false;
-        for(Jugador jugador: this.jugadores){
-                jugador.getSerpiente().interrupt();
-        }
-        this.reiniciarPulsado = false;
+        //this.reiniciarPulsado = true;
+        //for(Jugador jugador: this.jugadores){
+          //      jugador.getSerpiente().interrupt();
+        //}
+        this.juegoPausado = false;      
+        //this.reiniciarPulsado = false;
        
         jugadores.clear();
         this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.REINICIAR, null,null,null,null,null,null));
@@ -278,21 +278,16 @@ public class GameModel implements ObservableServidor, Serpiente {
                 }
             }
             //COMPROBAMOS QUE LA POSICION DE LA CABEZA COINCIDE CON LA POSICION DE LA FRUTA
-            boolean encontrado1 = false;
             if(jugadorAux.getPosicionesSerpiente().getFirst().equals(this.posicionFruta)){
-                encontrado1 = true;
-            }
-            
-            if(encontrado1){
                 jugadorAux.getPosicionesSerpiente().addLast(new Posicion(jugadorAux.getPosicionesSerpiente().getLast().getFila()- direccion.getVariacionFila(),jugadorAux.getPosicionesSerpiente().getLast().getColumna()- direccion.getVariacionColumna()));
                 this.nuevaFruta();
                 this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.NUEVA_FRUTA,this.posicionFruta,idVentana,null,null,null,null));      
-                
+                this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.PTS,idVentana,jugadorAux.getPosicionesSerpiente().size(),null,null,null,null));      
             }
-            
-            if( this.serpienteEstaDentroLimitesDelTablero(jugadorAux.getPosicionesSerpiente().getFirst()) && (!this.serpientesChocan(jugadorAux))){
+             
+           if(this.serpienteEstaDentroLimitesDelTablero(jugadorAux.getPosicionesSerpiente().getFirst()) && (!this.serpientesChocan(jugadorAux))){
                 jugadorAux.getPosicionesSerpiente().addFirst(new Posicion(jugadorAux.getPosicionesSerpiente().getFirst().getFila()+ direccion.getVariacionFila(),jugadorAux.getPosicionesSerpiente().getFirst().getColumna()+ direccion.getVariacionColumna()));
-                this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.MOVER_SERPIENTE, jugadorAux.getPosicionesSerpiente().getFirst(), jugadorAux.getPosicionesSerpiente().getLast(),jugadorAux.getSerpiente().getColor(),idVentana,null,null));      
+                this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.MOV, jugadorAux.getPosicionesSerpiente().getFirst(), jugadorAux.getPosicionesSerpiente().getLast(),jugadorAux.getSerpiente().getColor(),idVentana,null,null));      
                 jugadorAux.getPosicionesSerpiente().removeLast();   
             }
             else{
@@ -337,7 +332,7 @@ public class GameModel implements ObservableServidor, Serpiente {
     public void finalizarJuego() {
         System.out.println("Estoy en el metodo FINALIZAR_JUEGO del modelo");
 
-        this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.FINALIZAR_JUEGO, null,null,null,null,null,null));
+        this.notifyObserversModeloServidor(new GameEvent(GameEvent.EventType.FIN, null,null,null,null,null,null));
         
     }
     
