@@ -51,6 +51,7 @@ public class VentanaPrincipal  extends JFrame implements Observer {
         this.jPanel2.setLayout(new GridLayout(altura_tablero,ancho_tablero));
         this.rellenaPanel();
         
+        desplegableColores.removeAllItems();
         desplegableColores.addItem("Green");
         desplegableColores.addItem("Red");
         desplegableColores.addItem("Black");

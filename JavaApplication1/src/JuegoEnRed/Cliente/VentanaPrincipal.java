@@ -52,8 +52,8 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         this.velocidadSerpiente = velocidad_serpiente;
         this.nombreJugador = "";
         this.botonIniciar.setEnabled(true);
-        this.jTextPane1.setText("No conectado");
-        this.jTextPane1.setCaretColor(Color.RED);
+        //this.jTextPane1.setText("No conectado");
+        //this.jTextPane1.setCaretColor(Color.RED);
         
         
         matriz = new JPanel [altura_tablero][ancho_tablero];
@@ -99,9 +99,6 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
         botonPausa = new javax.swing.JButton();
         desplegableColores = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -206,10 +203,6 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
 
         jLabel4.setText("Color");
 
-        jLabel5.setText("Status conexion:");
-
-        jScrollPane2.setViewportView(jTextPane1);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -239,11 +232,7 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
                                 .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(45, 45, 45))
+                                .addGap(45, 459, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -293,12 +282,9 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                             .addComponent(botonGirarDerecha, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(botonGirarAbajo, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4)
-                        .addComponent(jLabel5))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(desplegableColores, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(botonIniciar)
@@ -421,11 +407,8 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextField muestraCoordenadaX;
     private javax.swing.JTextField muestraCoordenadaY;
     private javax.swing.JTextPane muestraNombre;
@@ -456,8 +439,8 @@ public class VentanaPrincipal  extends JFrame implements ObserverCliente {
                 if(!this.juegoIniciado){
                 
                     System.out.println("aquisssssssssss33");
-                    this.jTextPane1.setCaretColor(Color.GREEN);
-                    this.jTextPane1.setText("Conectado");
+                    //this.jTextPane1.setCaretColor(Color.GREEN);
+                    //this.jTextPane1.setText("Conectado");
                     this.idVentana = (int) evento.getDatos1();
                 }
                 

@@ -4,27 +4,42 @@
  * and open the template in the editor.
  */
 package JuegoEnLocal.Vistas;
-
-import JuegoEnLocal.Modelo.GameEvent;
 import JuegoEnLocal.Observer.Observer;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 
 public class VentanaPuntuacion extends JFrame implements Observer {
     
+    private boolean juegoInicaido;
     private int idVentana;
     private int puntuacion;
     private String nombreCliente;
+    private List<Cliente> clientes;
+    private List<JTextField> marcadores;
 
     public VentanaPuntuacion(int idVentana) {
            initComponents();
+           this.juegoInicaido = false;
+           this.clientes = new ArrayList<Cliente>();
+           this.marcadores = new ArrayList<>();
+           this.marcadores.add(jTextField1);
+           this.marcadores.add(jTextField2);
            this.idVentana = idVentana;
            this.puntuacion = 1;
            this.nombreCliente = "";
-           this.puntuacionTextField.setEnabled(true);
-           this.puntuacionTextField.setEditable(true);
-           this.puntuacionTextField.setText("");
+           this.jTextField1.setText("");
+           this.jTextField2.setText("");
+
+           
+           //this.jTextField1.setEnabled(true);
+           //this.jTextField1.setEditable(true);
+           //this.jTextField1.setText("");
 
     }
 
@@ -38,19 +53,17 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        puntuacionTextField = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        puntuacionTextField.setText("jTextField1");
-        puntuacionTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                puntuacionTextFieldActionPerformed(evt);
-            }
-        });
-
         jLabel1.setText("Puntuación");
+
+        jTextField1.setText("jTextField1");
+
+        jTextField2.setText("jTextField2");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -59,21 +72,25 @@ public class VentanaPuntuacion extends JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(134, 134, 134)
+                        .addGap(131, 131, 131)
                         .addComponent(jLabel1))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(122, 122, 122)
-                        .addComponent(puntuacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(130, Short.MAX_VALUE))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
+                .addContainerGap()
                 .addComponent(jLabel1)
+                .addGap(27, 27, 27)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(puntuacionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(63, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -90,26 +107,22 @@ public class VentanaPuntuacion extends JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addGap(67, 67, 67)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(76, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void puntuacionTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_puntuacionTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_puntuacionTextFieldActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField puntuacionTextField;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
-
-    //@Override
-    public void notifyEvent(GameEvent evento) {
+//@Override
+    public void notifyEvent(JuegoEnLocal.Modelo.GameEvent evento) {
         
         SwingUtilities.invokeLater(new Runnable() {
             //SwingUtilities clase que contiene el metodod static 'invokeLater'
@@ -124,40 +137,80 @@ public class VentanaPuntuacion extends JFrame implements Observer {
     
     
     
-    public void manejarEvento (GameEvent evento) {
+    public void manejarEvento (JuegoEnLocal.Modelo.GameEvent evento) {
         switch (evento.getEvento()){
             
             case START:
-                if(this.idVentana == (int)evento.getDatos6()){
-                    this.nombreCliente = (String)evento.getDatos4();
-                    iniciarMarcador();
+                boolean encontrado = false;
+                Iterator iterador = this.clientes.iterator();
+                while(iterador.hasNext()&&!encontrado){
+                    Cliente cliente = (Cliente) iterador.next();
+                    if(cliente.getIdCliente() == (int) evento.getDatos6()){
+                         encontrado = true;
+                         
+                    }
                 }
-                    break; 
+                if(!encontrado){
+                    int idClien = (int) evento.getDatos6();
+                    this.clientes.add(new Cliente(idClien,(String)evento.getDatos4(),(String) evento.getDatos3(),this.marcadores.get(this.clientes.size())));
+
+                    this.pintaMarcador(this.clientes.get(this.clientes.size()-1));
+
+                    //this.clientes.get(this.clientes.size()).getTextArea()
+                }
+                
+                     
+            break; 
+                
+            case NUEVA_FRUTA:
+                
+                boolean encontrado1 = false;
+                Iterator iterador1 = this.clientes.iterator();
+                Cliente clienteAux = new Cliente(0,null,null,null);
+                while(iterador1.hasNext()&& !encontrado1){
+                    Cliente cliente = (Cliente) iterador1.next();
+                    if(cliente.getIdCliente() == (int) evento.getDatos2()){
+                         encontrado1 = true;
+                         cliente.setPuntuacion((int)evento.getDatos2());
+                         clienteAux = cliente;
+                    }
+                }
+                if(encontrado1){
+                
+                this.pintaMarcador(clienteAux);
+                }
+               
+                
+              break;
             
-            case NUEVA_FRUTA: 
-                if(this.idVentana == (int)evento.getDatos2()){
-                    this.puntuacion = this.puntuacion +1;
-                    mostrarPuntuacion(this.puntuacion);
-                }
-                    break;
-                    
             case REINICIAR: 
                     reiniciarMarcador();
                     break; 
         }
     }
     
-    private void mostrarPuntuacion(int puntuacion) {
-        puntuacionTextField.setText("         " + puntuacion);
-    }
+    
 
     private void reiniciarMarcador() {
         this.jLabel1.setText("Puntuación");
-        puntuacionTextField.setText("         1");
+        //jTextField1.setText("");
+        this.clientes.clear();
     }
 
-    private void iniciarMarcador() {
-        this.jLabel1.setText(this.nombreCliente);
-        puntuacionTextField.setText("         1");
+    private void pintaMarcador(Cliente cliente) {
+        //String puntuaciones = "";
+        //Iterator iterador2 = this.clientes.iterator();
+        //while(iterador2.hasNext()){
+            //Cliente cliente = (Cliente) iterador2.next();
+            cliente.getTextArea().setText("Jugador "+cliente.getIdCliente()+": "+"("+cliente.getNombre()+") "+ "tiene   "+ cliente.getPuntuacion()+" puntos."+"\n"); 
+        }
+        //jTextField1.setText(puntuaciones);
     }
-}
+
+
+    
+
+    
+ 
+  
+
